@@ -927,7 +927,7 @@
         }
         
         .mobile-bottom-nav-inner {
-            display: grid; grid-template-columns: repeat(4, 1fr);
+            display: flex; justify-content: space-around; align-items: stretch;
             gap: 4px; padding: 0 8px; max-width: 600px; margin: 0 auto;
         }
         
@@ -1964,7 +1964,6 @@
             <button type="button" class="btn-nav active" id="nav-dashboard" onclick="switchTab('dashboard')">Ana Ekran</button>
             <button type="button" class="btn-nav" id="nav-stats" onclick="switchTab('stats')">İstatistikler</button>
             <button type="button" class="btn-nav" id="nav-debts" onclick="switchTab('debts')">Borçlarım</button>
-            <button type="button" class="btn-nav" id="nav-expenses" onclick="switchTab('expenses')">Giderlerim</button>
             <button type="button" class="btn-nav" id="nav-settings" onclick="switchTab('settings')">Ayarlar</button>
             <button type="button" class="btn-nav btn-accent" id="btn-kur-guncelle" onclick="fetchAndSavePrices()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>
@@ -3171,11 +3170,10 @@
         document.getElementById('debts-view').style.display = tab === 'debts' ? 'block' : 'none';
         document.getElementById('settings-view').style.display = tab === 'settings' ? 'block' : 'none';
         
-        document.getElementById('nav-dashboard').classList.toggle('active', tab === 'dashboard');
-        document.getElementById('nav-stats').classList.toggle('active', tab === 'stats');
-        document.getElementById('nav-expenses').classList.toggle('active', tab === 'expenses');
-        document.getElementById('nav-debts').classList.toggle('active', tab === 'debts');
-        document.getElementById('nav-settings').classList.toggle('active', tab === 'settings');
+        document.getElementById('nav-dashboard')?.classList.toggle('active', tab === 'dashboard');
+        document.getElementById('nav-stats')?.classList.toggle('active', tab === 'stats');
+        document.getElementById('nav-debts')?.classList.toggle('active', tab === 'debts');
+        document.getElementById('nav-settings')?.classList.toggle('active', tab === 'settings');
         
         // Mobile navigation update
         document.querySelectorAll('.mobile-nav-item').forEach(btn => {
@@ -5220,6 +5218,15 @@
         
         // Mobil Bottom Navigation aktif durumu
         updateMobileNav();
+
+        // URL hash ile gizli sayfa yönlendirmesi (örn: #expenses)
+        if (window.location.hash) {
+            const hashTab = window.location.hash.replace('#', '');
+            const validTabs = ['dashboard', 'stats', 'expenses', 'debts', 'settings'];
+            if (validTabs.includes(hashTab)) {
+                setTimeout(() => switchTab(hashTab), 100);
+            }
+        }
     });
 
     // Mobil Bottom Nav handler
@@ -5310,15 +5317,6 @@
                 </svg>
             </div>
             <span class="mobile-nav-label">Ana Ekran</span>
-        </button>
-        
-        <button type="button" class="mobile-nav-item" data-target="expenses" onclick="switchTab('expenses')">
-            <div class="mobile-nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-            </div>
-            <span class="mobile-nav-label">Giderler</span>
         </button>
         
         <button type="button" class="mobile-nav-item" data-target="debts" onclick="switchTab('debts')">
