@@ -753,7 +753,6 @@
         ============================================================ */
         .settings-grid {
             display: flex; flex-direction: column; gap: 1.25rem;
-            max-width: 640px; margin: 0 auto;
         }
 
         .settings-card {
@@ -1976,9 +1975,7 @@
             .settings-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 1.25rem;
-                max-width: 920px;
-                margin: 0 auto;
+                gap: 1.5rem;
                 align-items: start;
             }
             .settings-card-danger { grid-column: 1 / -1; }
@@ -2049,6 +2046,229 @@
 
         /* ───────────── SMOOTH SCROLL ───────────── */
         .page-content { -webkit-overflow-scrolling: touch; }
+
+        /* Mobile-first banking app polish */
+        @media(max-width: 1200px) {
+            .nav-inner, main { max-width: 1120px; }
+            .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .stat-strip .stat-card:first-child { grid-column: 1 / -1; }
+            .content-grid { grid-template-columns: minmax(320px, 360px) minmax(0, 1fr); gap: 1.25rem; }
+        }
+
+        @media(max-width: 900px) {
+            .nav-inner { padding: 0 1.25rem; }
+            main { padding: 1.5rem 1.25rem 6rem; }
+            .stat-strip, .debt-stats-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .content-grid { grid-template-columns: 1fr; }
+            .sidebar { order: 2; }
+            .panel { order: 1; }
+            .settings-grid { grid-template-columns: 1fr !important; }
+        }
+
+        @media(max-width: 600px) {
+            :root { --radius-xl: 20px; --radius-lg: 16px; --radius-md: 12px; }
+            body { background: linear-gradient(180deg, var(--bg) 0%, var(--bg-input) 100%); }
+            body::before { opacity: 0.25; }
+            nav:not(.mobile-bottom-nav) { top: 0; }
+            .nav-inner {
+                height: 58px;
+                padding: 0 max(14px, env(safe-area-inset-left)) 0 max(14px, env(safe-area-inset-right));
+            }
+            .nav-title { max-width: 132px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            #price-last-update { display: none; }
+            .btn-nav.btn-accent {
+                display: inline-flex !important;
+                width: 40px; height: 40px; padding: 0;
+                justify-content: center; border-radius: 14px;
+            }
+            .btn-nav.btn-accent svg { width: 17px !important; height: 17px !important; }
+            .btn-nav.btn-accent { font-size: 0; gap: 0; }
+            .btn-theme { border-radius: 14px; width: 40px; height: 40px; }
+
+            main {
+                padding: 1rem max(14px, env(safe-area-inset-left)) calc(6.25rem + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-right));
+            }
+            .page-header { margin-bottom: 0.9rem !important; }
+            .page-header h1 { font-size: clamp(1.45rem, 8vw, 1.9rem); letter-spacing: -0.02em; }
+            .page-header-sub { max-width: 30rem; }
+
+            .stat-strip { grid-template-columns: 1fr; gap: 0.85rem; }
+            .stat-strip .stat-card:first-child { grid-column: auto; }
+            .stat-card {
+                min-height: 128px;
+                padding: 1.1rem 1.15rem;
+                border: 1px solid var(--border);
+            }
+            .stat-value { font-size: clamp(1.65rem, 9vw, 2.05rem); overflow-wrap: anywhere; }
+            .stat-card-icon { width: 42px; height: 42px; border-radius: 14px; }
+
+            .zekat-banner {
+                padding: 1.05rem;
+                border: 1px solid var(--border);
+                box-shadow: var(--shadow-sm);
+            }
+            .zekat-banner-top { align-items: stretch; }
+            .zekat-banner-left, .zekat-badge-wrap { width: 100%; }
+            .zekat-banner-amount { font-size: clamp(1.65rem, 9vw, 2.05rem); overflow-wrap: anywhere; }
+            .zekat-split-info { display: grid; grid-template-columns: 1fr; gap: 8px; }
+            .split-tag { display: flex; justify-content: space-between; gap: 8px; width: 100%; border-radius: 12px; }
+            .zekat-badge, .btn-pay-zakat { flex: 1; justify-content: center; text-align: center; }
+            .hijri-info-box, .hijri-left { align-items: flex-start; }
+            .hijri-info-box { padding: 12px; }
+            .hijri-link { width: 100%; text-align: center; padding-top: 8px; }
+
+            .card, .panel, .settings-card, .stats-chart-card, .debt-form-card, .debt-card {
+                border-radius: 18px;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 26px rgba(0,80,90,0.06);
+            }
+            .card, .debt-form-card { padding: 1.05rem; }
+            .card::before { height: 0; }
+            .input-field, .modal-input {
+                border-radius: 14px;
+                min-height: 46px;
+                background-color: var(--bg-card);
+            }
+            .btn-primary, .debt-form-submit, .settings-save-btn, .settings-danger-btn {
+                height: 48px;
+                border-radius: 14px;
+            }
+
+            .panel { overflow: visible; background: transparent; border: 0; box-shadow: none; }
+            .panel-top {
+                position: sticky; top: 58px; z-index: 20;
+                margin: 0 -2px 0.75rem;
+                border: 1px solid var(--border);
+                border-radius: 18px;
+                background: var(--bg-nav);
+                backdrop-filter: blur(20px) saturate(150%);
+                -webkit-backdrop-filter: blur(20px) saturate(150%);
+            }
+            .panel-title { justify-content: space-between; width: 100%; }
+            .record-count { padding: 5px 10px; }
+            .panel-footer {
+                border: 0;
+                background: transparent;
+                padding: 0.85rem 0 0;
+            }
+            .panel-footer .btn-pdf { width: 100%; justify-content: center; border-radius: 14px; }
+
+            .table-wrap, .inventory-table-wrapper { overflow: visible; }
+            .table-wrap table, .inventory-table { border-collapse: separate; border-spacing: 0 10px; }
+            .table-wrap thead, .inventory-table thead { display: none; }
+            .table-wrap tbody, .inventory-table tbody { display: grid; gap: 10px; }
+            .table-wrap tr, .inventory-table tr {
+                display: grid;
+                gap: 8px;
+                padding: 14px;
+                border: 1px solid var(--border);
+                border-radius: 18px;
+                background: var(--bg-card);
+                box-shadow: var(--shadow-sm);
+            }
+            .table-wrap td, .inventory-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 14px;
+                padding: 0 !important;
+                border: 0 !important;
+                text-align: right !important;
+                min-width: 0;
+            }
+            .table-wrap td::before, .inventory-table td::before {
+                content: attr(data-label);
+                flex: 0 0 auto;
+                color: var(--text-tertiary);
+                font-size: 0.68rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                text-align: left;
+            }
+            .table-wrap td:first-child, .inventory-table td:first-child {
+                align-items: flex-start;
+                padding-bottom: 8px !important;
+                border-bottom: 1px solid var(--border) !important;
+            }
+            .table-wrap td:first-child::before, .inventory-table td:first-child::before { display: none; }
+            .table-wrap td:last-child, .inventory-table td:last-child { justify-content: flex-end; padding-top: 6px !important; }
+            .table-wrap td:last-child::before, .inventory-table td:last-child::before { display: none; }
+            .td-date-main { font-size: 0.98rem; }
+            .row-value { font-size: 1rem; }
+            .btn-delete, .btn-icon-danger { width: 40px; height: 40px; border-radius: 14px; background: var(--red-light); color: var(--red); }
+
+            .debt-stats-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; }
+            .debt-stat-card { padding: 0.95rem; flex-direction: column; align-items: flex-start; gap: 8px; }
+            .debt-stat-label { white-space: normal; }
+            .debt-stat-value { max-width: 100%; font-size: 1.15rem; }
+            .debt-card-top { flex-direction: row; align-items: flex-start; }
+            .debt-card-amount { width: auto; text-align: right; }
+            .debt-card-payment-row, .debt-card-payment-stats { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .debt-card-actions { justify-content: stretch; }
+            .debt-action-btn, .debt-action-paid { flex: 1; justify-content: center; border-radius: 14px; min-height: 42px; }
+
+            .stats-hero { min-height: auto; border-radius: 18px; }
+            .stats-hero-content { text-align: left; align-items: stretch; gap: 1.25rem; }
+            .stats-hero-right { align-self: center; }
+            .stats-summary-card { padding: 1rem; border-radius: 16px; }
+            .stats-chart-body { height: 230px; }
+            .pnl-detail-grid, .pnl-modal-info-grid, .pnl-modal-stats-row { grid-template-columns: 1fr 1fr; }
+            .pnl-modal-compact-row { display: grid; grid-template-columns: 1fr; }
+            .pnl-modal-compact-vs { width: 100%; min-height: 28px; }
+
+            .settings-input-row { flex-direction: column; align-items: stretch; }
+            .settings-save-btn { width: 100%; justify-content: center; }
+            .modal-card {
+                min-height: 100dvh;
+                max-height: 100dvh;
+                padding: calc(1.1rem + env(safe-area-inset-top)) 1rem calc(1.1rem + env(safe-area-inset-bottom));
+            }
+            .modal-actions { position: sticky; bottom: 0; background: var(--bg-card); padding-top: 0.75rem; }
+            .toast { bottom: calc(5.25rem + env(safe-area-inset-bottom)); width: calc(100vw - 28px); justify-content: center; }
+
+            .mobile-bottom-nav {
+                display: block;
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: auto;
+                padding: 8px max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+                background: color-mix(in srgb, var(--bg-card) 86%, transparent);
+                border-top: 1px solid var(--border-strong);
+                border-bottom: 0;
+                box-shadow: 0 -10px 30px rgba(0,80,90,0.10);
+            }
+            .mobile-bottom-nav-inner {
+                padding: 5px;
+                gap: 2px;
+                border: 1px solid var(--border);
+                border-radius: 22px;
+                background: var(--bg-card);
+                box-shadow: var(--shadow-md);
+            }
+            .mobile-nav-item {
+                flex: 1;
+                min-width: 0;
+                min-height: 54px;
+                border-radius: 17px;
+                padding: 7px 4px 6px;
+            }
+            .mobile-nav-item.active { background: var(--teal); color: #fff; }
+            .mobile-nav-item.active::after { display: none; }
+            .mobile-nav-item.active .mobile-nav-icon,
+            .mobile-nav-item.active .mobile-nav-label { color: #fff !important; }
+            .mobile-nav-label { font-size: 0.62rem; white-space: nowrap; }
+        }
+
+        @media(max-width: 380px) {
+            .nav-title { max-width: 104px; }
+            .debt-stats-strip, .pnl-detail-grid, .pnl-modal-info-grid, .pnl-modal-stats-row { grid-template-columns: 1fr; }
+            .debt-card-top { flex-direction: column; }
+            .debt-card-amount { width: 100%; text-align: left; }
+            .mobile-nav-label { font-size: 0.58rem; }
+        }
 
         .modal-note {
             font-size: 0.78rem; color: var(--text-tertiary);
@@ -2709,7 +2929,7 @@
                             <label>Açıklama (Opsiyonel)</label>
                             <input type="text" id="expense-note" class="input-field" placeholder="Örn: Aralık ayı faturası">
                         </div>
-                        <button type="submit" class="btn-submit">
+                        <button type="submit" class="debt-form-submit">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8 10h8"/></svg>
                             Gider Ekle
                         </button>
@@ -3485,19 +3705,19 @@
 
             tbody.insertAdjacentHTML('beforeend', `
                 <tr onclick="openPnlModal(${index})" style="cursor:pointer;">
-                    <td>
+                    <td data-label="Tarih">
                         <div class="td-date">
                             <span class="td-date-main">${dateFormatted}</span>
                             <span class="td-date-sub">${dayName}</span>
                         </div>
                     </td>
-                    <td><span class="ayar-tag">${typeNames[item.ayar] || item.ayar}</span></td>
-                    <td style="font-variant-numeric:tabular-nums;">${isCoin ? `${w} Adet` : `${w.toFixed(2)} g`}</td>
-                    <td style="font-variant-numeric:tabular-nums; color:var(--text-secondary);">${pure.toFixed(2)} g</td>
-                    <td><span class="row-value">${val.toLocaleString('tr-TR', {maximumFractionDigits:0})} TL</span></td>
-                    <td style="text-align:center;">${pnlHtml}</td>
-                    <td style="color:var(--text-tertiary); font-size:0.8rem;">${item.note || '<span style="color:var(--border-strong);">—</span>'}</td>
-                    <td style="text-align:right;"><button class="btn-delete" onclick="event.stopPropagation();deleteItem(${index})" title="Kaydı Sil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></td>
+                    <td data-label="Tür"><span class="ayar-tag">${typeNames[item.ayar] || item.ayar}</span></td>
+                    <td data-label="Miktar" style="font-variant-numeric:tabular-nums;">${isCoin ? `${w} Adet` : `${w.toFixed(2)} g`}</td>
+                    <td data-label="Saf" style="font-variant-numeric:tabular-nums; color:var(--text-secondary);">${pure.toFixed(2)} g</td>
+                    <td data-label="Değer"><span class="row-value">${val.toLocaleString('tr-TR', {maximumFractionDigits:0})} TL</span></td>
+                    <td data-label="Kar/Zarar" style="text-align:center;">${pnlHtml}</td>
+                    <td data-label="Not" style="color:var(--text-tertiary); font-size:0.8rem;">${item.note || '<span style="color:var(--border-strong);">—</span>'}</td>
+                    <td data-label="İşlem" style="text-align:right;"><button class="btn-delete" onclick="event.stopPropagation();deleteItem(${index})" title="Kaydı Sil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></td>
                 </tr>
             `);
         });
@@ -4805,11 +5025,11 @@
         filteredExpenses.forEach(expense => {
             const dateStr = new Date(expense.date).toLocaleDateString('tr-TR', {day:'2-digit', month:'short', year:'numeric'});
             html += `<tr>
-                <td style="color:var(--text-tertiary);">${dateStr}</td>
-                <td><span class="ayar-tag" style="background:var(--bg); border:1px solid var(--border-strong); color:var(--text-secondary);">${expenseCategoryNames[expense.category]}</span></td>
-                <td style="font-weight:600; color:var(--red);">${expense.amount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</td>
-                <td style="color:var(--text-secondary); font-size:0.85rem;">${expense.note || '—'}</td>
-                <td style="text-align:right;">
+                <td data-label="Tarih" style="color:var(--text-tertiary);">${dateStr}</td>
+                <td data-label="Kategori"><span class="ayar-tag" style="background:var(--bg); border:1px solid var(--border-strong); color:var(--text-secondary);">${expenseCategoryNames[expense.category]}</span></td>
+                <td data-label="Tutar" style="font-weight:600; color:var(--red);">${expense.amount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</td>
+                <td data-label="Açıklama" style="color:var(--text-secondary); font-size:0.85rem;">${expense.note || '—'}</td>
+                <td data-label="İşlem" style="text-align:right;">
                     <button type="button" onclick="deleteExpense(${expense.id})" class="btn-icon-danger" title="Sil">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     </button>
@@ -5422,19 +5642,6 @@
         } catch(e) {}
     }
 
-    // iOS standalone mode detection
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; // MSStream: Edge/IE on Win8+ tablet, iOS değil
-    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-    
-    if (isIOS && !isStandalone) {
-        const hasSeenPrompt = localStorage.getItem('pwaPromptSeen');
-        if (!hasSeenPrompt) {
-            setTimeout(() => {
-                showToast('💡 Ana ekrana ekle: Safari → Paylaş → Ana Ekrana Ekle', 'loading');
-                localStorage.setItem('pwaPromptSeen', 'true');
-            }, 3000);
-        }
-    }
 </script>
 
 <!-- MOBİL BOTTOM NAVIGATION -->
