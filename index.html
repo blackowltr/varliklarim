@@ -1942,6 +1942,114 @@
             box-shadow: 0 6px 20px rgba(26,127,55,0.25);
         }
         .modal-btn-confirm:active { transform: translateY(0) scale(0.97); }
+        /* ───────────── VIEW TRANSITIONS ───────────── */
+        @keyframes viewFadeIn {
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .view-enter {
+            animation: viewFadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* ───────────── CARD ENTRANCE STAGGER ───────────── */
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.94); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .settings-card,
+        .stat-card,
+        .debt-card,
+        .card { animation: cardFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
+        .settings-card:nth-child(1),
+        .stat-card:nth-child(1) { animation-delay: 0.04s; }
+        .settings-card:nth-child(2),
+        .stat-card:nth-child(2) { animation-delay: 0.08s; }
+        .settings-card:nth-child(3),
+        .stat-card:nth-child(3) { animation-delay: 0.12s; }
+        .settings-card:nth-child(4),
+        .stat-card:nth-child(4) { animation-delay: 0.16s; }
+        .settings-card:nth-child(5),
+        .stat-card:nth-child(5) { animation-delay: 0.20s; }
+
+        /* ───────────── SETTINGS 2‑COL GRID ───────────── */
+        @media(min-width: 770px) {
+            .settings-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.25rem;
+                max-width: 920px;
+                margin: 0 auto;
+                align-items: start;
+            }
+            .settings-card-danger { grid-column: 1 / -1; }
+        }
+
+        /* ───────────── MOBILE BOTTOM NAV GLASS ───────────── */
+        .mobile-nav {
+            backdrop-filter: blur(22px) saturate(1.8);
+            -webkit-backdrop-filter: blur(22px) saturate(1.8);
+            background: rgba(255,255,255,0.82) !important;
+            border-top: 1px solid var(--border) !important;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+        }
+        [data-theme="dark"] .mobile-nav {
+            background: rgba(25,25,30,0.88) !important;
+            border-top-color: rgba(255,255,255,0.06) !important;
+        }
+        .mobile-nav-item {
+            position: relative; transition: var(--transition);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-nav-item::after {
+            content: ''; position: absolute; top: 3px; left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 20px; height: 2.5px; border-radius: 3px;
+            background: var(--teal);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .mobile-nav-item.active::after { transform: translateX(-50%) scaleX(1); }
+        .mobile-nav-item.active .mobile-nav-icon {
+            transform: scale(1.12); color: var(--teal) !important;
+        }
+        .mobile-nav-item.active .mobile-nav-label {
+            color: var(--teal) !important; font-weight: 600;
+        }
+        .mobile-nav-icon { transition: transform 0.2s; }
+        .mobile-nav-label { transition: color 0.2s; }
+
+        /* ───────────── MICRO‑INTERACTIONS ───────────── */
+        button:active,
+        .btn:active,
+        .settings-save-btn:active,
+        .settings-backup-btn:active,
+        .debt-action-btn:active,
+        .theme-color-btn:active { transform: scale(0.95) !important; }
+
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(0,147,158,0.15), 0 1px 2px rgba(0,0,0,0.04) !important;
+        }
+
+        .theme-color-btn {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.2s, border-color 0.2s;
+        }
+        .theme-color-btn.active {
+            box-shadow: 0 0 0 3px var(--teal), 0 4px 14px var(--teal-glow);
+        }
+
+        /* ───────────── DEEPER CARDS ───────────── */
+        .settings-card, .stat-card, .card, .debt-card {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 6px 18px rgba(0,0,0,0.04);
+        }
+        [data-theme="dark"] .settings-card,
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .card {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.18);
+        }
+
+        /* ───────────── SMOOTH SCROLL ───────────── */
+        .page-content { -webkit-overflow-scrolling: touch; }
+
         .modal-note {
             font-size: 0.78rem; color: var(--text-tertiary);
             margin-top: 1rem; line-height: 1.5;
@@ -1964,6 +2072,7 @@
             <button type="button" class="btn-nav active" id="nav-dashboard" onclick="switchTab('dashboard')">Ana Ekran</button>
             <button type="button" class="btn-nav" id="nav-stats" onclick="switchTab('stats')">İstatistikler</button>
             <button type="button" class="btn-nav" id="nav-debts" onclick="switchTab('debts')">Borçlarım</button>
+            <button type="button" class="btn-nav" id="nav-expenses" onclick="switchTab('expenses')">Giderler</button>
             <button type="button" class="btn-nav" id="nav-settings" onclick="switchTab('settings')">Ayarlar</button>
             <button type="button" class="btn-nav btn-accent" id="btn-kur-guncelle" onclick="fetchAndSavePrices()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>
@@ -3164,15 +3273,37 @@
     }
 
     function switchTab(tab) {
-        document.getElementById('dashboard-view').style.display = tab === 'dashboard' ? 'block' : 'none';
-        document.getElementById('stats-view').style.display = tab === 'stats' ? 'block' : 'none';
-        document.getElementById('expenses-view').style.display = tab === 'expenses' ? 'block' : 'none';
-        document.getElementById('debts-view').style.display = tab === 'debts' ? 'block' : 'none';
-        document.getElementById('settings-view').style.display = tab === 'settings' ? 'block' : 'none';
+        const views = ['dashboard-view', 'stats-view', 'expenses-view', 'debts-view', 'settings-view'];
+        const targetId = tab + '-view';
+        views.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (id === targetId) {
+                el.style.display = 'block';
+                el.classList.remove('view-enter');
+                // Force reflow so the animation restarts
+                void el.offsetWidth;
+                el.classList.add('view-enter');
+            } else {
+                el.style.display = 'none';
+                el.classList.remove('view-enter');
+            }
+        });
+        
+        // Trigger card stagger: remove & re-add animation on cards inside target
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+            targetEl.querySelectorAll('.settings-card, .stat-card, .debt-card, .card').forEach((card, i) => {
+                card.style.animation = 'none';
+                card.offsetHeight; // reflow
+                card.style.animation = '';
+            });
+        }
         
         document.getElementById('nav-dashboard')?.classList.toggle('active', tab === 'dashboard');
         document.getElementById('nav-stats')?.classList.toggle('active', tab === 'stats');
         document.getElementById('nav-debts')?.classList.toggle('active', tab === 'debts');
+        document.getElementById('nav-expenses')?.classList.toggle('active', tab === 'expenses');
         document.getElementById('nav-settings')?.classList.toggle('active', tab === 'settings');
         
         // Mobile navigation update
@@ -5326,6 +5457,15 @@
                 </svg>
             </div>
             <span class="mobile-nav-label">Borçlar</span>
+        </button>
+        
+        <button type="button" class="mobile-nav-item" data-target="expenses" onclick="switchTab('expenses')">
+            <div class="mobile-nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+            </div>
+            <span class="mobile-nav-label">Giderler</span>
         </button>
         
         <button type="button" class="mobile-nav-item" data-target="settings" onclick="switchTab('settings')">
