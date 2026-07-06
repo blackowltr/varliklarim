@@ -750,130 +750,290 @@
         /* ============================================================
            SETTINGS PAGE — PREMIUM DESIGN
         ============================================================ */
-        .settings-grid {
-            display: flex; flex-direction: column; gap: 1.25rem;
+        /* ============================================================
+               SETTINGS — MODERN GROUPED LIST (iOS STYLE)
+            ============================================================ */
+        .settings-container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 0 2rem;
+        }
+
+        .settings-section {
+            margin-bottom: 1.75rem;
+        }
+        .settings-section-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            padding: 0 0.25rem 0.6rem;
         }
 
         .settings-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius-xl); box-shadow: var(--shadow-sm);
-            transition: var(--transition); overflow: hidden;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg, 14px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .settings-card:hover { box-shadow: var(--shadow-md); }
-
-        .settings-card-accent { border-color: rgba(0, 147, 158, 0.2); }
-        [data-theme="dark"] .settings-card-accent { border-color: rgba(46, 203, 214, 0.15); }
-        .settings-card-danger { border-color: rgba(192, 57, 43, 0.2); }
-        [data-theme="dark"] .settings-card-danger { border-color: rgba(255, 107, 107, 0.15); }
-
-        .settings-card-header {
-            display: flex; align-items: center; gap: 14px;
-            padding: 1.4rem 1.6rem 0;
+        [data-theme="dark"] .settings-card {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
 
-        .settings-card-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: var(--transition);
+        .settings-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px;
+            min-height: 52px;
+            transition: background 0.15s;
         }
-        .settings-card:hover .settings-card-icon { transform: scale(1.06); }
-        .settings-icon-teal { background: var(--teal-light); color: var(--teal); }
-        .settings-icon-red { background: var(--red-light); color: var(--red); }
-        .settings-card-icon svg { width: 22px; height: 22px; }
+        .settings-row:active { background: var(--bg-input); }
 
-        .settings-card-title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
-        .settings-card-sub { font-size: 0.76rem; color: var(--text-tertiary); margin-top: 2px; }
-
-        .settings-card-body { padding: 1.2rem 1.6rem 1.5rem; }
-
-        .settings-input-row { display: flex; gap: 10px; align-items: flex-end; }
-        .settings-input-wrap { flex: 1; }
-        .settings-input-wrap label { display: block; font-size: 0.76rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
-        .settings-input-wrap .input-field { width: 100%; }
-
-        .settings-save-btn {
-            height: 44px; padding: 0 20px; border: none; border-radius: var(--radius-md);
-            background: var(--teal); color: #fff; font-family: inherit; font-size: 0.85rem;
-            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center;
-            gap: 6px; transition: var(--transition); white-space: nowrap; flex-shrink: 0;
+        .settings-row + .settings-row-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 16px;
+            opacity: 0.6;
         }
-        .settings-save-btn:hover { background: var(--teal-hover); transform: translateY(-1px); box-shadow: 0 4px 14px var(--teal-glow); }
-        .settings-save-btn:active { transform: translateY(0) scale(0.97); }
-        .settings-save-btn svg { width: 16px; height: 16px; }
-        .settings-save-btn.is-saved { background: var(--green); }
-        .settings-save-btn.is-saved:hover { background: var(--green); }
+        .settings-row:last-child + .settings-row-divider { display: none; }
 
-        .settings-hint {
-            font-size: 0.76rem; color: var(--green); margin-top: 8px; font-weight: 500;
-            opacity: 0; transition: opacity 0.3s;
+        /* Icon */
+        .settings-row-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
-        .settings-hint.is-visible { opacity: 1; }
+        .settings-row-icon svg { width: 18px; height: 18px; }
 
-        /* Backup Grid */
-        .settings-backup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-        @media(max-width: 500px){ .settings-backup-grid { grid-template-columns: 1fr; } }
+        .settings-icon-teal  { background: var(--teal-light); color: var(--teal); }
+        .settings-icon-red   { background: var(--red-light); color: var(--red); }
+        .settings-icon-blue  { background: var(--blue-light, rgba(0,102,204,0.12)); color: var(--blue, #0066CC); }
+        .settings-icon-green { background: rgba(52,199,89,0.14); color: #34C759; }
+        .settings-icon-purple{ background: rgba(175,82,222,0.14); color: #AF52DE; }
+        .settings-icon-orange{ background: rgba(255,159,10,0.14); color: #FF9F0A; }
 
-        .settings-backup-btn {
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            padding: 1.1rem 1rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-strong);
-            background: var(--bg-input); cursor: pointer; transition: var(--transition); text-align: center;
+        /* Content (label + desc) */
+        .settings-row-content {
+            flex: 1;
+            min-width: 0;
         }
-        .settings-backup-btn:hover { border-color: var(--teal); background: var(--bg-card); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow-sm); }
-        .settings-backup-btn:active { transform: translateY(0) scale(0.98); }
-        .settings-backup-btn svg { width: 24px; height: 24px; color: var(--teal); }
-        .settings-backup-label { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
-        .settings-backup-desc { font-size: 0.7rem; color: var(--text-tertiary); line-height: 1.3; }
-
-        .settings-info-bar {
-            display: flex; align-items: flex-start; gap: 8px; padding: 10px 14px;
-            background: var(--bg-input); border-radius: var(--radius-sm); border: 1px solid var(--border);
-            font-size: 0.75rem; color: var(--text-tertiary); line-height: 1.5;
+        .settings-row-label {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-primary);
         }
-        .settings-info-bar svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: var(--teal); }
-
-        /* Danger Zone */
-        .settings-danger-content { display: flex; flex-direction: column; gap: 14px; }
-        .settings-danger-list {
-            display: flex; flex-wrap: wrap; gap: 6px;
-        }
-        .settings-danger-list span {
-            font-size: 0.72rem; font-weight: 600; color: var(--red); background: var(--red-light);
-            padding: 3px 10px; border-radius: 100px; border: 1px solid rgba(192, 57, 43, 0.15);
-        }
-        [data-theme="dark"] .settings-danger-list span {
-            background: rgba(255, 120, 120, 0.12); border-color: rgba(255, 120, 120, 0.18);
+        .settings-row-desc {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            margin-top: 1px;
         }
 
+        /* Right side action area */
+        .settings-row-action {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .settings-chevron {
+            width: 14px;
+            height: 14px;
+            color: var(--text-tertiary);
+            opacity: 0.5;
+            flex-shrink: 0;
+        }
+
+        /* ─── Segmented Control ─── */
+        .settings-segment {
+            display: flex;
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 2px;
+            gap: 1px;
+        }
+        .settings-segment-option {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 7px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.76rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .settings-segment-option.is-active {
+            background: var(--bg-card);
+            color: var(--teal);
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* ─── Color Swatches ─── */
+        .settings-swatches {
+            display: flex;
+            gap: 10px;
+        }
+        .settings-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        }
+        .settings-swatch:hover { transform: scale(1.12); }
+        .settings-swatch.is-active {
+            border-color: var(--text-primary);
+            transform: scale(1.12);
+            box-shadow: 0 0 0 3px var(--bg-card), 0 0 0 5px currentColor;
+        }
+
+        /* ─── Goal Input Row ─── */
+        .settings-goal-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .settings-goal-input {
+            flex: 1;
+            height: 40px;
+            padding: 0 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .settings-goal-input:focus { border-color: var(--teal); }
+
+        .settings-goal-save {
+            height: 40px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--teal);
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .settings-goal-save:hover { background: var(--teal-hover); }
+        .settings-goal-save:active { transform: scale(0.97); }
+        .settings-goal-save svg { width: 15px; height: 15px; }
+
+        .settings-goal-hint {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--green);
+            margin-top: 6px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .settings-goal-hint.is-visible { opacity: 1; }
+
+        /* ─── Action Row (backup, pwa) ─── */
+        .settings-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+            transition: background 0.15s;
+            min-height: 52px;
+        }
+        .settings-action-btn:active { background: var(--bg-input); }
+        .settings-action-btn .settings-row-content { flex: 1; }
+        .settings-action-btn .settings-chevron { flex-shrink: 0; }
+
+        /* ─── Info Note ─── */
+        .settings-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 10px 16px 14px;
+            font-size: 0.72rem;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+        .settings-note svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: var(--teal);
+            opacity: 0.7;
+        }
+
+        /* ─── Danger Zone ─── */
+        .settings-danger-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0 16px 10px;
+        }
+        .settings-danger-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--red);
+            background: var(--red-light);
+            padding: 3px 10px;
+            border-radius: 100px;
+            border: 1px solid rgba(192,57,43,0.12);
+        }
         .settings-danger-btn {
-            width: 100%; height: 44px; padding: 0 20px; border: none; border-radius: var(--radius-md);
-            background: var(--red); color: #fff; font-family: inherit; font-size: 0.88rem;
-            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center;
-            justify-content: center; gap: 8px; transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            color: var(--red);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
         }
-        .settings-danger-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25); }
-        .settings-danger-btn:active { transform: translateY(0) scale(0.98); }
+        .settings-danger-btn:active { background: var(--red-light); }
         .settings-danger-btn svg { width: 16px; height: 16px; }
 
-        /* Tema Özelleştirme */
-        .theme-color-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px;
-        }
-        @media(max-width: 500px){ .theme-color-grid { grid-template-columns: 1fr; } }
-        
-        .theme-color-option {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 14px; border-radius: var(--radius-md);
-            border: 2px solid var(--border); background: var(--bg-input);
-            cursor: pointer; transition: var(--transition);
-        }
-        .theme-color-option:hover { border-color: var(--teal); background: var(--bg-card); transform: translateY(-1px); }
-        .theme-color-option.active { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 0 0 4px var(--teal-glow); }
-        .theme-color-preview {
-            width: 40px; height: 40px; border-radius: 10px;
-            flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .theme-color-option span {
-            font-size: 0.85rem; font-weight: 500; color: var(--text-primary);
+        /* ─── PWA Hint ─── */
+        .settings-pwa-hint {
+            padding: 0 16px 14px;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            opacity: 0.7;
+            line-height: 1.4;
         }
 
         /* Özel Renk Şemaları */
@@ -883,14 +1043,12 @@
         [data-theme="dark"][data-color-scheme="blue"] {
             --teal: #3399FF; --teal-hover: #5CADFF; --teal-light: rgba(51, 153, 255, 0.14); --teal-glow: rgba(51, 153, 255, 0.22);
         }
-        
         [data-color-scheme="purple"] {
             --teal: #7C3AED; --teal-hover: #6D28D9; --teal-light: #F3E8FF; --teal-glow: rgba(124, 58, 237, 0.15);
         }
         [data-theme="dark"][data-color-scheme="purple"] {
             --teal: #A78BFA; --teal-hover: #C4B5FD; --teal-light: rgba(167, 139, 250, 0.14); --teal-glow: rgba(167, 139, 250, 0.22);
         }
-        
         [data-color-scheme="gold"] {
             --teal: #D97706; --teal-hover: #B45309; --teal-light: #FEF3C7; --teal-glow: rgba(217, 119, 6, 0.15);
         }
@@ -899,12 +1057,8 @@
         }
 
         /* Yazı Boyutu Ayarları */
-        [data-font-size="large"] {
-            font-size: 17px;
-        }
-        [data-font-size="xlarge"] {
-            font-size: 19px;
-        }
+        [data-font-size="large"] { font-size: 17px; }
+        [data-font-size="xlarge"] { font-size: 19px; }
 
         /* ============================================================
            MOBİL BOTTOM NAVIGATION - BANKA UYGULAMASI TARZI
@@ -1610,8 +1764,6 @@
             .settings-card-title { font-size: 0.88rem; }
             .settings-card-sub { font-size: 0.72rem; }
             .settings-card-body { padding: 1rem 1.2rem 1.2rem; }
-            .settings-backup-grid { grid-template-columns: 1fr; gap: 8px; }
-            .theme-color-grid { grid-template-columns: 1fr; gap: 8px; }
             
             /* Debt Cards - Mobil optimize */
             .debt-card { 
@@ -1954,31 +2106,17 @@
             from { opacity: 0; transform: translateY(24px) scale(0.94); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .settings-card,
         .stat-card,
         .debt-card,
-        .card { animation: cardFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
-        .settings-card:nth-child(1),
-        .stat-card:nth-child(1) { animation-delay: 0.04s; }
-        .settings-card:nth-child(2),
-        .stat-card:nth-child(2) { animation-delay: 0.08s; }
-        .settings-card:nth-child(3),
-        .stat-card:nth-child(3) { animation-delay: 0.12s; }
-        .settings-card:nth-child(4),
-        .stat-card:nth-child(4) { animation-delay: 0.16s; }
-        .settings-card:nth-child(5),
-        .stat-card:nth-child(5) { animation-delay: 0.20s; }
-
-        /* ───────────── SETTINGS 2‑COL GRID ───────────── */
-        @media(min-width: 770px) {
-            .settings-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-                align-items: start;
-            }
-            .settings-card-danger { grid-column: 1 / -1; }
+        .card,
+        .settings-container .settings-card {
+            animation: cardFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
         }
+        .settings-container .settings-section:nth-child(1) .settings-card { animation-delay: 0.04s; }
+        .settings-container .settings-section:nth-child(2) .settings-card { animation-delay: 0.08s; }
+        .settings-container .settings-section:nth-child(3) .settings-card { animation-delay: 0.12s; }
+        .settings-container .settings-section:nth-child(4) .settings-card { animation-delay: 0.16s; }
+        .settings-container .settings-section:nth-child(5) .settings-card { animation-delay: 0.20s; }
 
         /* ───────────── MOBILE BOTTOM NAV GLASS ───────────── */
         .mobile-nav {
@@ -2016,10 +2154,9 @@
         /* ───────────── MICRO‑INTERACTIONS ───────────── */
         button:active,
         .btn:active,
-        .settings-save-btn:active,
-        .settings-backup-btn:active,
-        .debt-action-btn:active,
-        .theme-color-btn:active { transform: scale(0.95) !important; }
+        .settings-goal-save:active,
+        .settings-action-btn:active,
+        .debt-action-btn:active { transform: scale(0.95) !important; }
 
         .input-field:focus {
             box-shadow: 0 0 0 3px rgba(0,147,158,0.15), 0 1px 2px rgba(0,0,0,0.04) !important;
@@ -2220,7 +2357,7 @@
                 font-size: 0.85rem;
                 background-color: var(--bg-input);
             }
-            .btn-primary, .debt-form-submit, .settings-save-btn, .settings-danger-btn {
+            .btn-primary, .debt-form-submit, .settings-goal-save, .settings-danger-btn {
                 height: 46px;
                 border-radius: 12px;
                 font-size: 0.85rem;
@@ -2407,29 +2544,22 @@
             .pnl-modal-stats-row > div { padding: 0.5rem 0.6rem; }
 
             /* Settings */
-            .settings-input-row { flex-direction: column; align-items: stretch; }
-            .settings-save-btn { width: 100%; justify-content: center; }
-            .settings-grid { gap: 0.75rem; }
-            .settings-card { border-radius: 14px; border: 1px solid var(--border); }
-            .settings-card-header { padding: 1rem 1rem 0; gap: 10px; }
-            .settings-card-icon { width: 34px; height: 34px; border-radius: 10px; }
-            .settings-card-icon svg { width: 17px; height: 17px; }
-            .settings-card-title { font-size: 0.82rem; }
-            .settings-card-sub { font-size: 0.7rem; }
-            .settings-card-body { padding: 0.75rem 1rem 1rem; }
-            .settings-backup-grid { gap: 8px; }
-            .settings-backup-btn {
-                padding: 10px 14px; border-radius: 12px; gap: 10px;
-                min-height: 44px;
-            }
-            .settings-backup-icon { width: 20px; height: 20px; }
-            .settings-backup-label { font-size: 0.82rem; }
-            .settings-backup-desc { font-size: 0.68rem; }
-            .settings-hint { font-size: 0.7rem; }
-            .settings-danger-content { gap: 10px; }
-            .settings-danger-list { gap: 4px; }
-            .settings-danger-list span { font-size: 0.8rem; padding: 6px 10px; }
-            .settings-danger-btn { height: 44px; border-radius: 12px; font-size: 0.82rem; }
+            .settings-card { border-radius: 14px; }
+            .settings-row { min-height: 48px; padding: 8px 14px; gap: 12px; }
+            .settings-row-icon { width: 30px; height: 30px; border-radius: 8px; }
+            .settings-row-icon svg { width: 16px; height: 16px; }
+            .settings-row-label { font-size: 0.82rem; }
+            .settings-row-desc { font-size: 0.66rem; }
+            .settings-segment-option { font-size: 0.72rem; padding: 4px 10px; }
+            .settings-swatch { width: 26px; height: 26px; }
+            .settings-goal-row { flex-direction: column; align-items: stretch; }
+            .settings-goal-save { width: 100%; justify-content: center; }
+            .settings-container { padding: 0 0 5rem; }
+            .settings-section { margin-bottom: 1.25rem; }
+            .settings-action-btn { min-height: 48px; padding: 8px 14px; }
+            .settings-danger-tags { padding: 0 14px 8px; }
+            .settings-danger-tag { font-size: 0.66rem; padding: 2px 8px; }
+            .settings-danger-btn { padding: 10px 14px; font-size: 0.82rem; }
 
             /* Modals - bottom sheet style */
             .modal-overlay {
@@ -3347,175 +3477,168 @@
             <div class="page-header-sub">Kişisel hedeflerinizi, yedekleme işlemlerinizi ve verilerinizi yönetin.</div>
         </div>
 
-        <div class="settings-grid">
-            <!-- TEMA ÖZELLEŞTİRME -->
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon settings-icon-teal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                    </div>
-                    <div>
-                        <div class="settings-card-title">Tema & Görünüm</div>
-                        <div class="settings-card-sub">Uygulamanın renklerini ve görünümünü özelleştirin</div>
-                    </div>
-                </div>
-                <div class="settings-card-body">
-                    <div class="form-group">
-                        <label>Tema Modu</label>
-                        <select id="theme-mode-select" class="input-field" onchange="changeThemeMode(this.value)">
-                            <option value="light">☀️ Açık Tema</option>
-                            <option value="dark">🌙 Koyu Tema</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Renk Şeması</label>
-                        <div class="theme-color-grid">
-                            <div class="theme-color-option" data-theme="teal" onclick="changeColorScheme('teal')">
-                                <div class="theme-color-preview" style="background: linear-gradient(135deg, #00939E, #2ECBD6);"></div>
-                                <span>Turkuaz (Varsayılan)</span>
-                            </div>
-                            <div class="theme-color-option" data-theme="blue" onclick="changeColorScheme('blue')">
-                                <div class="theme-color-preview" style="background: linear-gradient(135deg, #0066CC, #3399FF);"></div>
-                                <span>Mavi</span>
-                            </div>
-                            <div class="theme-color-option" data-theme="purple" onclick="changeColorScheme('purple')">
-                                <div class="theme-color-preview" style="background: linear-gradient(135deg, #7C3AED, #A78BFA);"></div>
-                                <span>Mor</span>
-                            </div>
-                            <div class="theme-color-option" data-theme="gold" onclick="changeColorScheme('gold')">
-                                <div class="theme-color-preview" style="background: linear-gradient(135deg, #D97706, #FBBF24);"></div>
-                                <span>Altın</span>
+        <div class="settings-container">
+
+            <!-- GÖRÜNÜM -->
+            <div class="settings-section">
+                <div class="settings-section-title">Görünüm</div>
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <div class="settings-row-icon settings-icon-teal">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        </div>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Tema</div>
+                            <div class="settings-row-desc">Açık veya koyu tema seçin</div>
+                        </div>
+                        <div class="settings-row-action">
+                            <div class="settings-segment">
+                                <button type="button" class="settings-segment-option is-active" id="theme-light-btn" onclick="changeThemeMode('light')">Açık</button>
+                                <button type="button" class="settings-segment-option" id="theme-dark-btn" onclick="changeThemeMode('dark')">Koyu</button>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Yazı Boyutu</label>
-                        <select id="font-size-select" class="input-field" onchange="changeFontSize(this.value)">
-                            <option value="normal">Normal (Varsayılan)</option>
-                            <option value="large">Büyük</option>
-                            <option value="xlarge">Çok Büyük</option>
-                        </select>
-                    </div>
-                    <div class="settings-hint is-visible" style="opacity:1; color: var(--teal);">💡 Değişiklikler otomatik kaydedilir</div>
-                </div>
-            </div>
 
-            <!-- HEDEF AYARI -->
-            <div class="settings-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon settings-icon-teal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                    </div>
-                    <div>
-                        <div class="settings-card-title">Finansal Hedef</div>
-                        <div class="settings-card-sub">İstatistikler sayfasında görünecek hedef tutar</div>
-                    </div>
-                </div>
-                <div class="settings-card-body">
-                    <div class="settings-input-row">
-                        <div class="settings-input-wrap">
-                            <label>Hedef Tutar (TL)</label>
-                            <input type="number" id="target-input" class="input-field" value="1000000" min="0" step="1000">
+                    <div class="settings-row-divider"></div>
+
+                    <div class="settings-row">
+                        <div class="settings-row-icon settings-icon-purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                         </div>
-                        <button type="button" class="settings-save-btn" onclick="saveGoalTarget()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            Kaydet
-                        </button>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Renk Şeması</div>
+                            <div class="settings-row-desc">Uygulama rengini seçin</div>
+                        </div>
+                        <div class="settings-row-action">
+                            <div class="settings-swatches">
+                                <div class="settings-swatch is-active" data-theme="teal" onclick="changeColorScheme('teal')" style="background: linear-gradient(135deg, #00939E, #2ECBD6); color:#00939E;"></div>
+                                <div class="settings-swatch" data-theme="blue" onclick="changeColorScheme('blue')" style="background: linear-gradient(135deg, #0066CC, #3399FF); color:#0066CC;"></div>
+                                <div class="settings-swatch" data-theme="purple" onclick="changeColorScheme('purple')" style="background: linear-gradient(135deg, #7C3AED, #A78BFA); color:#7C3AED;"></div>
+                                <div class="settings-swatch" data-theme="gold" onclick="changeColorScheme('gold')" style="background: linear-gradient(135deg, #D97706, #FBBF24); color:#D97706;"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="settings-hint" id="goal-save-hint"></div>
+
+                    <div class="settings-row-divider"></div>
+
+                    <div class="settings-row">
+                        <div class="settings-row-icon settings-icon-blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </div>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Yazı Boyutu</div>
+                            <div class="settings-row-desc">Metin boyutunu ayarlayın</div>
+                        </div>
+                        <div class="settings-row-action">
+                            <div class="settings-segment">
+                                <button type="button" class="settings-segment-option is-active" id="font-normal-btn" onclick="changeFontSize('normal')">Normal</button>
+                                <button type="button" class="settings-segment-option" id="font-large-btn" onclick="changeFontSize('large')">Büyük</button>
+                                <button type="button" class="settings-segment-option" id="font-xlarge-btn" onclick="changeFontSize('xlarge')">Çok B.</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- YEDEKLEME -->
-            <div class="settings-card settings-card-accent">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon settings-icon-teal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <!-- HEDEFLER -->
+            <div class="settings-section">
+                <div class="settings-section-title">Hedefler</div>
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <div class="settings-row-icon settings-icon-orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        </div>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Finansal Hedef</div>
+                            <div class="settings-row-desc">İstatistikler sayfasında görünecek hedef tutar</div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="settings-card-title">Sistem Yedekleme</div>
-                        <div class="settings-card-sub">Tüm verilerinizi tek dosyada güvenle yedekleyin</div>
+                    <div style="padding:2px 16px 14px;">
+                        <div class="settings-goal-row">
+                            <input type="number" id="target-input" class="settings-goal-input" value="1000000" min="0" step="1000" placeholder="Hedef tutar (TL)">
+                            <button type="button" class="settings-goal-save" onclick="saveGoalTarget()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                Kaydet
+                            </button>
+                        </div>
+                        <div class="settings-goal-hint" id="goal-save-hint"></div>
                     </div>
                 </div>
-                <div class="settings-card-body">
-                    <div class="settings-backup-grid">
-                        <button type="button" class="settings-backup-btn settings-backup-export" onclick="exportSystemBackup()">
+            </div>
+
+            <!-- VERİ -->
+            <div class="settings-section">
+                <div class="settings-section-title">Veri</div>
+                <div class="settings-card">
+                    <button type="button" class="settings-action-btn" onclick="exportSystemBackup()">
+                        <div class="settings-row-icon settings-icon-green">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            <span class="settings-backup-label">Yedek İndir</span>
-                            <span class="settings-backup-desc">JSON dosyası olarak dışa aktar</span>
-                        </button>
-                        <button type="button" class="settings-backup-btn settings-backup-import" onclick="document.getElementById('system-import-file').click()">
+                        </div>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Yedek İndir</div>
+                            <div class="settings-row-desc">Tüm verileri JSON dosyası olarak dışa aktar</div>
+                        </div>
+                        <svg class="settings-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+
+                    <div class="settings-row-divider"></div>
+
+                    <button type="button" class="settings-action-btn" onclick="document.getElementById('system-import-file').click()">
+                        <div class="settings-row-icon settings-icon-blue">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            <span class="settings-backup-label">Yedek Yükle</span>
-                            <span class="settings-backup-desc">Mevcut verilerin üzerine yazar</span>
-                        </button>
-                        <input type="file" id="system-import-file" style="display:none" accept=".json" onchange="importSystemBackup(event)">
-                    </div>
-                    <div class="settings-info-bar">
+                        </div>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Yedek Yükle</div>
+                            <div class="settings-row-desc">Mevcut verilerin üzerine yedek dosyasını yükle</div>
+                        </div>
+                        <svg class="settings-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                    <input type="file" id="system-import-file" style="display:none" accept=".json" onchange="importSystemBackup(event)">
+
+                    <div class="settings-note">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                         <span>Yedek yükleme, tarayıcınızdaki mevcut verilerin üzerine yazılır. Farklı cihazlara veri aktarmak için kullanın.</span>
                     </div>
                 </div>
             </div>
 
-            <!-- UYGULAMAYI YÜKLE (PWA) -->
-            <div class="settings-card settings-card-accent" id="settings-pwa-card">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon settings-icon-teal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="1" width="18" height="20" rx="2"/>
-                            <line x1="12" y1="12" x2="12" y2="16"/>
-                            <polyline points="9 14 12 17 15 14"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="settings-card-title">Uygulamayı Yükle</div>
-                        <div class="settings-card-sub">Varlıklarım'ı ana ekranınıza ekleyin, daha hızlı erişin</div>
-                    </div>
-                </div>
-                <div class="settings-card-body">
-                    <button type="button" class="settings-backup-btn settings-backup-export" id="settings-pwa-install-btn" onclick="installPWA()" style="display:none;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="1" width="18" height="20" rx="2"/>
-                            <line x1="12" y1="12" x2="12" y2="16"/>
-                            <polyline points="9 14 12 17 15 14"/>
-                        </svg>
-                        <span class="settings-backup-label">Ana Ekrana Ekle</span>
-                        <span class="settings-backup-desc">Tek tıkla uygulama olarak yükleyin</span>
+            <!-- UYGULAMA -->
+            <div class="settings-section">
+                <div class="settings-section-title">Uygulama</div>
+                <div class="settings-card" id="settings-pwa-card">
+                    <button type="button" class="settings-action-btn" id="settings-pwa-install-btn" onclick="installPWA()" style="display:none;">
+                        <div class="settings-row-icon settings-icon-teal">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="1" width="18" height="20" rx="2"/><line x1="12" y1="12" x2="12" y2="16"/><polyline points="9 14 12 17 15 14"/></svg>
+                        </div>
+                        <div class="settings-row-content">
+                            <div class="settings-row-label">Ana Ekrana Ekle</div>
+                            <div class="settings-row-desc">Varlıklarım'ı ana ekranınıza ekleyin, daha hızlı erişin</div>
+                        </div>
+                        <svg class="settings-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </button>
-                    <div class="settings-hint" style="margin-top:8px;" id="pwa-install-hint">
-                        <span style="opacity:0.7;">💡 Bu özellik desteklenen tarayıcılarda kullanılabilir (Chrome, Edge, Samsung Internet)</span>
-                    </div>
+                    <div class="settings-pwa-hint" id="pwa-install-hint">Bu özellik desteklenen tarayıcılarda kullanılabilir (Chrome, Edge, Samsung Internet)</div>
                 </div>
             </div>
 
             <!-- TEHLİKELİ BÖLGE -->
-            <div class="settings-card settings-card-danger">
-                <div class="settings-card-header">
-                    <div class="settings-card-icon settings-icon-red">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div class="settings-section">
+                <div class="settings-section-title" style="color: var(--red);">Tehlikeli Bölge</div>
+                <div class="settings-card" style="border: 1px solid rgba(192,57,43,0.2);">
+                    <div class="settings-danger-tags">
+                        <span class="settings-danger-tag">Altın kayıtları</span>
+                        <span class="settings-danger-tag">Borç verileri</span>
+                        <span class="settings-danger-tag">Zekat geçmişi</span>
+                        <span class="settings-danger-tag">Fiyat ayarları</span>
+                        <span class="settings-danger-tag">Hedef tutarı</span>
                     </div>
-                    <div>
-                        <div class="settings-card-title" style="color: var(--red);">Tehlikeli Bölge</div>
-                        <div class="settings-card-sub">Geri alınamaz veri silme işlemi</div>
-                    </div>
-                </div>
-                <div class="settings-card-body">
-                    <div class="settings-danger-content">
-                        <div class="settings-danger-list">
-                            <span>Altın kayıtları</span>
-                            <span>Borç verileri</span>
-                            <span>Zekat geçmişi</span>
-                            <span>Fiyat ayarları</span>
-                            <span>Hedef tutarı</span>
-                        </div>
-                        <button type="button" class="settings-danger-btn" onclick="clearAllData()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                            Tüm Verileri Sil
-                        </button>
-                    </div>
+                    <div class="settings-row-divider" style="margin:0 16px;"></div>
+                    <button type="button" class="settings-danger-btn" onclick="clearAllData()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                        Tüm Verileri Sil
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
 </main>
@@ -3829,14 +3952,19 @@
     function changeThemeMode(mode) {
         document.documentElement.setAttribute('data-theme', mode);
         localStorage.setItem('theme', mode);
+        document.querySelectorAll('.settings-segment-option').forEach(b => {
+            if (b.closest('.settings-row')?.querySelector('.settings-row-label')?.textContent === 'Tema') {
+                b.classList.toggle('is-active', b.textContent.trim() === (mode === 'light' ? 'Açık' : 'Koyu'));
+            }
+        });
         if(document.getElementById('stats-view').style.display === 'block') renderStats();
     }
 
     function changeColorScheme(scheme) {
         document.documentElement.setAttribute('data-color-scheme', scheme);
         localStorage.setItem('colorScheme', scheme);
-        document.querySelectorAll('.theme-color-option').forEach(opt => {
-            opt.classList.toggle('active', opt.dataset.theme === scheme);
+        document.querySelectorAll('.settings-swatch').forEach(opt => {
+            opt.classList.toggle('is-active', opt.dataset.theme === scheme);
         });
         showToast('Renk şeması değiştirildi', 'success');
     }
@@ -3844,6 +3972,11 @@
     function changeFontSize(size) {
         document.documentElement.setAttribute('data-font-size', size);
         localStorage.setItem('fontSize', size);
+        document.querySelectorAll('.settings-segment-option').forEach(b => {
+            if (b.closest('.settings-row')?.querySelector('.settings-row-label')?.textContent === 'Yazı Boyutu') {
+                b.classList.toggle('is-active', b.textContent.trim() === ({normal:'Normal', large:'Büyük', xlarge:'Çok B.'})[size]);
+            }
+        });
         showToast('Yazı boyutu değiştirildi', 'success');
     }
 
@@ -3854,7 +3987,7 @@
         const hint = document.getElementById('goal-save-hint');
         if (hint) {
             hint.textContent = '✅ Hedef kaydedildi: ' + Number(val).toLocaleString('tr-TR') + ' TL';
-            hint.className = 'settings-hint is-visible';
+            hint.className = 'settings-goal-hint is-visible';
             hint.style.opacity = '1';
             hint.style.color = 'var(--green)';
             setTimeout(() => { hint.style.opacity = '0'; }, 3000);
@@ -5913,17 +6046,13 @@
         // Otomatik tema: sistem ayarını oku (localStorage öncelikli)
         try {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                const themeSelect = document.getElementById('theme-mode-select');
-                if (themeSelect) themeSelect.value = savedTheme;
-            } else {
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const defaultTheme = prefersDark ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', defaultTheme);
-                const themeSelect = document.getElementById('theme-mode-select');
-                if (themeSelect) themeSelect.value = defaultTheme;
-            }
+            const defaultTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', defaultTheme);
+            document.querySelectorAll('.settings-segment-option').forEach(b => {
+                if (b.closest('.settings-row')?.querySelector('.settings-row-label')?.textContent === 'Tema') {
+                    b.classList.toggle('is-active', b.textContent.trim() === (defaultTheme === 'light' ? 'Açık' : 'Koyu'));
+                }
+            });
         } catch(e) {}
 
         // Renk şeması yükle
@@ -5931,8 +6060,8 @@
             const savedColorScheme = localStorage.getItem('colorScheme') || 'teal';
             document.documentElement.setAttribute('data-color-scheme', savedColorScheme);
             setTimeout(() => {
-                document.querySelectorAll('.theme-color-option').forEach(opt => {
-                    opt.classList.toggle('active', opt.dataset.theme === savedColorScheme);
+                document.querySelectorAll('.settings-swatch').forEach(opt => {
+                    opt.classList.toggle('is-active', opt.dataset.theme === savedColorScheme);
                 });
             }, 100);
         } catch(e) {}
@@ -5941,8 +6070,11 @@
         try {
             const savedFontSize = localStorage.getItem('fontSize') || 'normal';
             document.documentElement.setAttribute('data-font-size', savedFontSize);
-            const fontSelect = document.getElementById('font-size-select');
-            if (fontSelect) fontSelect.value = savedFontSize;
+            document.querySelectorAll('.settings-segment-option').forEach(b => {
+                if (b.closest('.settings-row')?.querySelector('.settings-row-label')?.textContent === 'Yazı Boyutu') {
+                    b.classList.toggle('is-active', b.textContent.trim() === ({normal:'Normal', large:'Büyük', xlarge:'Çok B.'})[savedFontSize]);
+                }
+            });
         } catch(e) {}
 
         updateUI();
