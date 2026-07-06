@@ -2,7 +2,6 @@
 <html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Altın Portföyü & Zekat Hesaplayıcı</title>
     
     <!-- PWA & Mobile Settings -->
@@ -579,7 +578,7 @@
         /* ============================================================
            STATS VIEW — PREMIUM REDESIGN
         ============================================================ */
-        #stats-view, #debts-view, #settings-view { display: none; }
+        #stats-view, #debts-view, #settings-view, #expenses-view { display: none; }
         #stats-view { animation: statsFadeIn 0.5s ease; }
         @keyframes statsFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -6060,43 +6059,45 @@
     }, { passive: true });
 
     // Pull to Refresh - Mobil için
-    let touchStartY = 0;
+    let pullStartY = 0;
     let isPulling = false;
     
-    if (window.innerWidth <= 600) {
-        document.addEventListener('touchstart', (e) => {
-            if (window.scrollY === 0) {
-                touchStartY = e.touches[0].clientY;
-            }
-        });
-        
-        document.addEventListener('touchmove', (e) => {
-            if (window.scrollY === 0 && touchStartY > 0) {
-                const touchY = e.touches[0].clientY;
-                const pullDistance = touchY - touchStartY;
-                
-                if (pullDistance > 80 && !isPulling) {
-                    isPulling = true;
-                    const indicator = document.getElementById('pull-refresh-indicator');
-                    if (indicator) {
-                        indicator.classList.add('visible');
-                    }
-                }
-            }
-        });
-        
-        document.addEventListener('touchend', () => {
-            if (isPulling) {
-                isPulling = false;
+    document.addEventListener('touchstart', (e) => {
+        if (window.innerWidth > 600) return;
+        swipeTouchX = 0; // disable swipe during pull
+        if (window.scrollY === 0) {
+            pullStartY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (window.innerWidth > 600) return;
+        if (window.scrollY === 0 && pullStartY > 0) {
+            const touchY = e.touches[0].clientY;
+            const pullDistance = touchY - pullStartY;
+            
+            if (pullDistance > 80 && !isPulling) {
+                isPulling = true;
                 const indicator = document.getElementById('pull-refresh-indicator');
                 if (indicator) {
-                    indicator.classList.remove('visible');
+                    indicator.classList.add('visible');
                 }
-                fetchAndSavePrices();
             }
-            touchStartY = 0;
-        });
-    }
+        }
+    }, { passive: true });
+    
+    document.addEventListener('touchend', () => {
+        if (window.innerWidth > 600) return;
+        if (isPulling) {
+            isPulling = false;
+            const indicator = document.getElementById('pull-refresh-indicator');
+            if (indicator) {
+                indicator.classList.remove('visible');
+            }
+            fetchAndSavePrices();
+        }
+        pullStartY = 0;
+    }, { passive: true });
 
     if ('serviceWorker' in navigator) {
         try {

@@ -2,7 +2,6 @@
 <html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Altın Portföyü & Zekat Hesaplayıcı</title>
     
     <!-- PWA & Mobile Settings -->
@@ -579,7 +578,7 @@
         /* ============================================================
            STATS VIEW — PREMIUM REDESIGN
         ============================================================ */
-        #stats-view, #debts-view, #settings-view { display: none; }
+        #stats-view, #debts-view, #settings-view, #expenses-view { display: none; }
         #stats-view { animation: statsFadeIn 0.5s ease; }
         @keyframes statsFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -2460,6 +2459,7 @@
             <button type="button" class="btn-nav active" id="nav-dashboard" onclick="switchTab('dashboard')">Ana Ekran</button>
             <button type="button" class="btn-nav" id="nav-stats" onclick="switchTab('stats')">İstatistikler</button>
             <button type="button" class="btn-nav" id="nav-debts" onclick="switchTab('debts')">Borçlarım</button>
+            <button type="button" class="btn-nav" id="nav-expenses" onclick="switchTab('expenses')">Giderler</button>
             <button type="button" class="btn-nav" id="nav-settings" onclick="switchTab('settings')">Ayarlar</button>
             <button type="button" class="btn-nav btn-accent" id="btn-kur-guncelle" onclick="fetchAndSavePrices()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>
@@ -3724,6 +3724,7 @@
         document.getElementById('nav-dashboard')?.classList.toggle('active', tab === 'dashboard');
         document.getElementById('nav-stats')?.classList.toggle('active', tab === 'stats');
         document.getElementById('nav-debts')?.classList.toggle('active', tab === 'debts');
+        document.getElementById('nav-expenses')?.classList.toggle('active', tab === 'expenses');
         document.getElementById('nav-settings')?.classList.toggle('active', tab === 'settings');
         
         // Mobile navigation update
@@ -5875,43 +5876,45 @@
     }, { passive: true });
 
     // Pull to Refresh - Mobil için
-    let touchStartY = 0;
+    let pullStartY = 0;
     let isPulling = false;
     
-    if (window.innerWidth <= 600) {
-        document.addEventListener('touchstart', (e) => {
-            if (window.scrollY === 0) {
-                touchStartY = e.touches[0].clientY;
-            }
-        });
-        
-        document.addEventListener('touchmove', (e) => {
-            if (window.scrollY === 0 && touchStartY > 0) {
-                const touchY = e.touches[0].clientY;
-                const pullDistance = touchY - touchStartY;
-                
-                if (pullDistance > 80 && !isPulling) {
-                    isPulling = true;
-                    const indicator = document.getElementById('pull-refresh-indicator');
-                    if (indicator) {
-                        indicator.classList.add('visible');
-                    }
-                }
-            }
-        });
-        
-        document.addEventListener('touchend', () => {
-            if (isPulling) {
-                isPulling = false;
+    document.addEventListener('touchstart', (e) => {
+        if (window.innerWidth > 600) return;
+        swipeTouchX = 0; // disable swipe during pull
+        if (window.scrollY === 0) {
+            pullStartY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (window.innerWidth > 600) return;
+        if (window.scrollY === 0 && pullStartY > 0) {
+            const touchY = e.touches[0].clientY;
+            const pullDistance = touchY - pullStartY;
+            
+            if (pullDistance > 80 && !isPulling) {
+                isPulling = true;
                 const indicator = document.getElementById('pull-refresh-indicator');
                 if (indicator) {
-                    indicator.classList.remove('visible');
+                    indicator.classList.add('visible');
                 }
-                fetchAndSavePrices();
             }
-            touchStartY = 0;
-        });
-    }
+        }
+    }, { passive: true });
+    
+    document.addEventListener('touchend', () => {
+        if (window.innerWidth > 600) return;
+        if (isPulling) {
+            isPulling = false;
+            const indicator = document.getElementById('pull-refresh-indicator');
+            if (indicator) {
+                indicator.classList.remove('visible');
+            }
+            fetchAndSavePrices();
+        }
+        pullStartY = 0;
+    }, { passive: true });
 
     if ('serviceWorker' in navigator) {
         try {
@@ -6001,6 +6004,15 @@
                 </svg>
             </div>
             <span class="mobile-nav-label">Borçlar</span>
+        </button>
+        
+        <button type="button" class="mobile-nav-item" data-target="expenses" onclick="switchTab('expenses')">
+            <div class="mobile-nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+            </div>
+            <span class="mobile-nav-label">Giderler</span>
         </button>
         
         <button type="button" class="mobile-nav-item" data-target="settings" onclick="switchTab('settings')">
