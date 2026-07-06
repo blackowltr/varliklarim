@@ -2171,6 +2171,100 @@
             padding: 10px 14px; background: var(--bg);
             border-radius: var(--radius-sm); border: 1px solid var(--border);
         }
+
+        /* PWA Install Banner */
+        .pwa-install-banner {
+            position: fixed; bottom: calc(5rem + env(safe-area-inset-bottom)); left: 50%;
+            transform: translateX(-50%); z-index: 98; width: calc(100vw - 24px);
+            max-width: 400px; animation: slideUpBanner 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes slideUpBanner {
+            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .pwa-install-content {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--bg-card); border: 1px solid var(--border-strong);
+            border-radius: 16px; padding: 12px 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            backdrop-filter: blur(20px);
+        }
+        .pwa-install-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            background: var(--teal); color: #fff; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .pwa-install-icon svg { width: 20px; height: 20px; }
+        .pwa-install-text {
+            flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0;
+        }
+        .pwa-install-text strong { font-size: 0.85rem; color: var(--text-primary); }
+        .pwa-install-text span { font-size: 0.72rem; color: var(--text-tertiary); }
+        .pwa-install-action {
+            padding: 8px 18px; border-radius: 100px; border: none;
+            background: var(--teal); color: #fff; font-family: inherit;
+            font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            transition: var(--transition); white-space: nowrap; flex-shrink: 0;
+        }
+        .pwa-install-action:hover { background: var(--teal-hover); }
+        .pwa-install-close {
+            width: 28px; height: 28px; border-radius: 50%; border: none;
+            background: transparent; color: var(--text-tertiary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: var(--transition-linear);
+        }
+        .pwa-install-close:hover { background: var(--bg); color: var(--text-primary); }
+        .pwa-install-close svg { width: 14px; height: 14px; }
+
+        @media(min-width: 601px) {
+            .pwa-install-banner { bottom: 2rem; left: 2rem; transform: none; }
+        }
+
+        @media(hover: none) and (pointer: coarse) {
+            .stat-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+            .stats-summary-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+            .debt-stat-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+            .btn-nav:hover { transform: none; }
+            .settings-card:hover { box-shadow: var(--shadow-sm); }
+            .panel:hover { box-shadow: var(--shadow-sm); }
+        }
+
+        /* Floating Action Button for Mobile */
+        .mobile-fab {
+            position: fixed; bottom: calc(6.5rem + env(safe-area-inset-bottom));
+            right: max(16px, env(safe-area-inset-right));
+            z-index: 50; display: none;
+        }
+        @media(max-width: 600px) {
+            .mobile-fab { display: block; }
+        }
+        .mobile-fab-btn {
+            width: 56px; height: 56px; border-radius: 50%; border: none;
+            background: var(--teal); color: #fff; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,147,158,0.35), 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-fab-btn:active { transform: scale(0.92); }
+        .mobile-fab-btn svg { width: 24px; height: 24px; }
+        .mobile-fab-menu {
+            position: absolute; bottom: 66px; right: 0;
+            display: none; flex-direction: column; gap: 8px;
+            min-width: 200px;
+        }
+        .mobile-fab-menu.is-open { display: flex; }
+        .mobile-fab-menu-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px; border-radius: 14px; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-primary);
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; box-shadow: var(--shadow-md);
+            transition: var(--transition-linear);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-fab-menu-item:active { transform: scale(0.96); }
+        .mobile-fab-menu-item svg { width: 18px; height: 18px; color: var(--teal); flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -3008,6 +3102,37 @@
                     <div class="settings-info-bar">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                         <span>Yedek yükleme, tarayıcınızdaki mevcut verilerin üzerine yazılır. Farklı cihazlara veri aktarmak için kullanın.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UYGULAMAYI YÜKLE (PWA) -->
+            <div class="settings-card settings-card-accent" id="settings-pwa-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon settings-icon-teal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="1" width="18" height="20" rx="2"/>
+                            <line x1="12" y1="12" x2="12" y2="16"/>
+                            <polyline points="9 14 12 17 15 14"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="settings-card-title">Uygulamayı Yükle</div>
+                        <div class="settings-card-sub">Varlıklarım'ı ana ekranınıza ekleyin, daha hızlı erişin</div>
+                    </div>
+                </div>
+                <div class="settings-card-body">
+                    <button type="button" class="settings-backup-btn settings-backup-export" id="settings-pwa-install-btn" onclick="installPWA()" style="display:none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="1" width="18" height="20" rx="2"/>
+                            <line x1="12" y1="12" x2="12" y2="16"/>
+                            <polyline points="9 14 12 17 15 14"/>
+                        </svg>
+                        <span class="settings-backup-label">Ana Ekrana Ekle</span>
+                        <span class="settings-backup-desc">Tek tıkla uygulama olarak yükleyin</span>
+                    </button>
+                    <div class="settings-hint" style="margin-top:8px;" id="pwa-install-hint">
+                        <span style="opacity:0.7;">💡 Bu özellik desteklenen tarayıcılarda kullanılabilir (Chrome, Edge, Samsung Internet)</span>
                     </div>
                 </div>
             </div>
@@ -5467,6 +5592,19 @@
         });
     }
 
+    // Floating Action Button Menu
+    function toggleFabMenu() {
+        const menu = document.getElementById('mobile-fab-menu');
+        if (menu) menu.classList.toggle('is-open');
+    }
+    document.addEventListener('click', (e) => {
+        const fab = document.getElementById('mobile-fab');
+        if (fab && !fab.contains(e.target)) {
+            const menu = document.getElementById('mobile-fab-menu');
+            if (menu) menu.classList.remove('is-open');
+        }
+    });
+
     // Pull to Refresh - Mobil için
     let touchStartY = 0;
     let isPulling = false;
@@ -5514,6 +5652,46 @@
         } catch(e) {}
     }
 
+    // --- PWA Install Prompt Handler ---
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('pwa-install-btn');
+        const installBanner = document.getElementById('pwa-install-banner');
+        const settingsInstallBtn = document.getElementById('settings-pwa-install-btn');
+        if (installBanner) installBanner.style.display = 'flex';
+        if (installBtn) installBtn.style.display = 'inline-flex';
+        if (settingsInstallBtn) settingsInstallBtn.style.display = 'inline-flex';
+    });
+
+    function installPWA() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                const installBanner = document.getElementById('pwa-install-banner');
+                const installBtn = document.getElementById('pwa-install-btn');
+                const settingsInstallBtn = document.getElementById('settings-pwa-install-btn');
+                if (installBanner) installBanner.style.display = 'none';
+                if (installBtn) installBtn.style.display = 'none';
+                if (settingsInstallBtn) settingsInstallBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        const installBanner = document.getElementById('pwa-install-banner');
+        const installBtn = document.getElementById('pwa-install-btn');
+        const settingsInstallBtn = document.getElementById('settings-pwa-install-btn');
+        if (installBanner) installBanner.style.display = 'none';
+        if (installBtn) installBtn.style.display = 'none';
+        if (settingsInstallBtn) settingsInstallBtn.style.display = 'none';
+    });
+
     // iOS standalone mode detection
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; // MSStream: Edge/IE on Win8+ tablet, iOS değil
     const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
@@ -5528,6 +5706,46 @@
         }
     }
 </script>
+
+<!-- FLOATING ACTION BUTTON (mobile) -->
+<div class="mobile-fab" id="mobile-fab">
+    <div class="mobile-fab-menu" id="mobile-fab-menu">
+        <button type="button" class="mobile-fab-menu-item" onclick="openModal('asset-modal'); toggleFabMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Varlık Ekle
+        </button>
+        <button type="button" class="mobile-fab-menu-item" onclick="openModal('debt-modal'); toggleFabMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Borç Ekle
+        </button>
+    </div>
+    <button type="button" class="mobile-fab-btn" onclick="toggleFabMenu()" aria-label="Hızlı Ekle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+</div>
+
+<!-- PWA INSTALL BANNER (mobile) -->
+<div id="pwa-install-banner" class="pwa-install-banner" style="display:none;">
+    <div class="pwa-install-content">
+        <div class="pwa-install-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="1" width="18" height="20" rx="2"/>
+                <line x1="12" y1="12" x2="12" y2="16"/>
+                <polyline points="9 14 12 17 15 14"/>
+            </svg>
+        </div>
+        <div class="pwa-install-text">
+            <strong>Varlıklarım</strong>
+            <span>Uygulamayı yükleyin, hızlı erişin</span>
+        </div>
+        <button type="button" class="pwa-install-action" id="pwa-install-btn" onclick="installPWA()">Yükle</button>
+        <button type="button" class="pwa-install-close" onclick="this.parentElement.parentElement.style.display='none'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+</div>
 
 <!-- MOBİL BOTTOM NAVIGATION -->
 <nav class="mobile-bottom-nav">
