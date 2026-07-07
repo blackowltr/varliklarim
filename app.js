@@ -504,6 +504,7 @@
             document.getElementById('cost').value = '';
             document.getElementById('note').value = '';
             showToast('Varlık başarıyla eklendi', 'success');
+            closeFormSheet();
             updateUI();
         });
     }
@@ -729,6 +730,7 @@
         document.getElementById('debt-min-payment').value = '';
         document.getElementById('debt-min-payment-ratio').value = '40';
         showToast('Borç başarıyla eklendi', 'success');
+        closeFormSheet();
         updateDebtsUI();
         updateUI();
     }
@@ -1526,6 +1528,7 @@
         if(expenseDateInput) expenseDateInput.valueAsDate = new Date();
 
         showToast(`${expenseCategoryNames[category]} gideri eklendi: ${amount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL`, 'success');
+        closeFormSheet();
         updateExpensesUI();
     }
 
@@ -2262,24 +2265,25 @@
         if (btn && navigator.vibrate) navigator.vibrate(6);
     }, { passive: true });
 
-    // Mobile scroll to form (FAB)
-    function mobileScrollToForm(type) {
-        const formIds = { asset: 'add-form', debt: 'debt-form', expense: 'expense-form' };
+    // Mobile bottom sheet forms (FAB)
+    function openFormSheet(type) {
         const tabMap = { asset: 'dashboard', debt: 'debts', expense: 'expenses' };
-        const id = formIds[type];
-        if (id) {
-            switchTab(tabMap[type] || 'dashboard');
-            setTimeout(() => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    const firstInput = el.querySelector('input, select, textarea');
-                    if (firstInput && window.innerWidth <= 600) {
-                        setTimeout(() => firstInput.focus(), 400);
-                    }
-                }
-            }, 350);
-        }
+        switchTab(tabMap[type] || 'dashboard');
+        setTimeout(() => {
+            const sidebar = document.querySelector(`#${tabMap[type]}-view > .content-grid > .sidebar`);
+            if (sidebar) {
+                sidebar.classList.add('open');
+                const backdrop = document.getElementById('sidebar-backdrop');
+                if (backdrop) backdrop.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }, 50);
+    }
+    function closeFormSheet() {
+        document.querySelectorAll('.sidebar.open').forEach(el => el.classList.remove('open'));
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (backdrop) backdrop.classList.remove('open');
+        document.body.style.overflow = '';
     }
 
     // Mobile swipe gesture navigation between tabs
