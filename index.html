@@ -1757,7 +1757,7 @@
             .sidebar { order: 2; } /* Form aşağı */
             
             /* Settings - Mobil optimize */
-            .settings-grid { gap: 1rem; }
+            .settings-container { gap: 1rem; }
             .settings-card { border-radius: var(--radius-md); }
             .settings-card-header { padding: 1.2rem 1.2rem 0; gap: 10px; }
             .settings-card-icon { width: 38px; height: 38px; }
@@ -2198,7 +2198,7 @@
             .content-grid { grid-template-columns: 1fr; }
             .sidebar { order: 2; }
             .panel { order: 1; }
-            .settings-grid { grid-template-columns: 1fr !important; }
+            .settings-container { grid-template-columns: 1fr !important; }
         }
 
         @media(max-width: 600px) {
@@ -4054,8 +4054,14 @@
         if(tab === 'dashboard') updateUI();
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+    }
     function closePaymentModal() { closeModal('payment-modal'); }
     function closeZakatConfirmModal() { closeModal('zakat-confirm-modal'); }
     function closeDebtDetailModal() { closeModal('debt-detail-modal'); }
