@@ -1744,14 +1744,7 @@
                 display: block !important;
             }
             .sidebar.open { transform: translateY(0); }
-            .sidebar-backdrop {
-                position: fixed; inset: 0; z-index: 109;
-                background: rgba(0,0,0,0.4);
-                backdrop-filter: blur(4px);
-                -webkit-backdrop-filter: blur(4px);
-                display: none;
-            }
-            .sidebar-backdrop.open { display: block; }
+
             .sidebar > .card:first-child,
             .sidebar > .debt-form-card:first-child {
                 border-radius: 24px 24px 0 0;
@@ -2701,8 +2694,8 @@
 
             /* Edge-to-edge content on mobile */
             main {
-                max-width: 100% !important;
-                padding: 0.5rem 0 5rem !important;
+                max-width: 100%;
+                padding: 0.5rem max(8px, env(safe-area-inset-left)) 5rem max(8px, env(safe-area-inset-right));
             }
             .page-header { padding: 1rem 16px 0.75rem; }
             .page-header h1 { font-size: 1.25rem; }
@@ -2717,7 +2710,7 @@
             .stat-value { font-size: 1.3rem; }
             .stat-sub { font-size: 0.68rem; }
             .record-count { font-size: 0.68rem; }
-            #searchInput { width: 100% !important; margin-top: 8px; }
+            #searchInput { width: 100%; margin-top: 8px; }
             .table-wrap { border-radius: 0; margin: 0 -16px; width: calc(100% + 32px); }
             .content-grid { gap: 0; }
 
@@ -2760,6 +2753,15 @@
         }
 
         /* Floating Action Button for Mobile */
+        .sidebar-backdrop {
+            position: fixed; inset: 0; z-index: 109;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: none;
+        }
+        .sidebar-backdrop.open { display: block; }
+
         .mobile-fab {
             position: fixed; bottom: calc(6.5rem + env(safe-area-inset-bottom));
             right: max(16px, env(safe-area-inset-right));
