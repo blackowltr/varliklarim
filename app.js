@@ -2274,7 +2274,7 @@
             if (sidebar) {
                 sidebar.classList.add('open');
                 const backdrop = document.getElementById('sidebar-backdrop');
-                if (backdrop) backdrop.classList.add('open');
+                if (backdrop) backdrop.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             }
         }, 50);
@@ -2282,7 +2282,7 @@
     function closeFormSheet() {
         document.querySelectorAll('.sidebar.open').forEach(el => el.classList.remove('open'));
         const backdrop = document.getElementById('sidebar-backdrop');
-        if (backdrop) backdrop.classList.remove('open');
+        if (backdrop) backdrop.style.display = 'none';
         document.body.style.overflow = '';
     }
 
