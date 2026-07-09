@@ -836,7 +836,7 @@
                    </button>`;
 
             container.insertAdjacentHTML('beforeend', `
-                <div class="debt-card" onclick="openDebtDetail(${originalIndex})" style="cursor:pointer;">
+                <div class="debt-card" data-category="${cat}" onclick="openDebtDetail(${originalIndex})" style="cursor:pointer;">
                     <div class="debt-card-top">
                         <div class="debt-card-info">
                             ${catTag}
@@ -852,7 +852,7 @@
                     ${paymentBlock}
                     ${installmentBlock}
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; padding-top:2px;">
-                        <span style="font-size:0.7rem; color:var(--text-tertiary); font-weight:500;">
+                        <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:500;">
                             ${prog || paid > 0 ? '' : 'Henüz ödeme yapılmadı'}
                         </span>
                         <div class="debt-card-actions" onclick="event.stopPropagation()">
