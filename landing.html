@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Varlık Yönetimi — Altın Portföy Takip Uygulaması</title>
+  <meta name="description" content="Altın portföyünüzü, borçlarınızı ve giderlerinizi tek yerden takip edin. Ücretsiz, gizli, PWA.">
+  <meta property="og:title" content="Varlık Yönetimi — Altın Portföy Takip">
+  <meta property="og:description" content="Portföyünüzü takip edin, borçlarınızı yönetin, giderlerinizi analiz edin. Ücretsiz, tarayıcı tabanlı.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f5f7;
+      --card: #ffffff;
+      --border: #e6e6eb;
+      --border-strong: #d2d2d7;
+      --accent: #00939E;
+      --accent-deep: #007A84;
+      --accent-soft: #E8F6F7;
+      --gold: #A87B00;
+      --gold-soft: #FFF8E6;
+      --green: #1A7F37;
+      --green-soft: #E6F4EA;
+      --red: #C0392B;
+      --text: #1d1d1f;
+      --text2: #6e6e73;
+      --text3: #86868b;
+      --radius: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 10px 30px rgba(0,0,0,.08);
+      --shadow-lg: 0 30px 60px rgba(0,0,0,.10);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 54px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
+    .nav-brand-icon {
+      width: 26px; height: 26px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14px; font-weight: 700;
+    }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-link {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--text2); text-decoration: none; font-size: 13px;
+      padding: 6px 12px; border-radius: 8px;
+      transition: color .15s, background .15s;
+    }
+    .nav-link:hover { color: var(--text); background: var(--bg-soft); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      border-radius: 980px; padding: 7px 18px;
+      font-size: 13px; font-weight: 600; text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 2px 8px rgba(0,147,158,.25);
+    }
+    .nav-cta:hover { transform: scale(1.04); }
+
+    /* HERO */
+    .hero {
+      min-height: 96vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 110px 24px 70px; text-align: center; position: relative;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, var(--accent-soft) 0%, transparent 60%),
+        var(--bg);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--accent-soft); color: var(--accent-deep);
+      border-radius: 980px; padding: 6px 15px;
+      font-size: 12.5px; font-weight: 600; margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    h1 {
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
+      margin-bottom: 22px; color: #1d1d1f;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      font-size: clamp(17px, 2vw, 21px); color: var(--text2);
+      max-width: 560px; line-height: 1.55; margin-bottom: 44px;
+    }
+
+    /* INSTALL CARD */
+    .install-card {
+      width: 100%; max-width: 520px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .install-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .itab {
+      flex: 1; padding: 13px 16px;
+      background: transparent; border: none;
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: background .15s, color .15s;
+      position: relative; color: var(--text2);
+    }
+    .itab.active { color: var(--text); background: var(--bg-soft); }
+    .itab.active::after {
+      content: ''; position: absolute; bottom: -1px; left: 16px; right: 16px;
+      height: 2px; background: var(--accent); border-radius: 2px;
+    }
+    .itab:first-child { border-right: 1px solid var(--border); }
+    .ipanel { display: none; padding: 20px; text-align: left; }
+    .ipanel.active { display: block; }
+    .code-block {
+      background: #1d1d1f; border-radius: 12px; padding: 16px 18px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 13px; line-height: 1.9; color: #f5f5f7;
+    }
+    .code-block .prompt { color: var(--accent); user-select: none; }
+
+    .pwa-steps { display: flex; flex-direction: column; gap: 10px; }
+    .pwa-step {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13.5px; color: var(--text);
+    }
+    .pwa-step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent-soft); color: var(--accent-deep);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .pwa-step b { font-weight: 600; }
+
+    .install-footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: 12px; color: var(--text3);
+    }
+    .install-footer .ck { color: var(--accent); font-weight: 700; }
+
+    /* SHORTCUTS */
+    .shortcuts {
+      max-width: 720px; margin: 60px auto 0; padding: 0 24px;
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    }
+    .shortcut-card {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .shortcut-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .shortcut-card .sc-keys { display: flex; gap: 4px; }
+    .key {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: 13px; font-weight: 600; font-family: "SF Mono", monospace;
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    }
+    .shortcut-card .sc-label { font-size: 13px; color: var(--text2); font-weight: 500; }
+
+    /* FEATURES */
+    .features { max-width: 1080px; margin: 0 auto; padding: 0 24px 100px; }
+    .features-head { text-align: center; margin-bottom: 56px; }
+    .features-head h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 700; letter-spacing: -0.025em; max-width: 540px; margin: 0 auto; color: #1d1d1f; }
+    .label {
+      font-size: 13px; font-weight: 600; letter-spacing: .02em;
+      color: var(--accent); margin-bottom: 14px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media(max-width:780px){ .grid { grid-template-columns: 1fr; } }
+    .feat {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .feat:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+    .feat.hl { background: var(--accent-soft); border-color: rgba(0,147,158,.25); }
+    .feat-ic {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--bg-soft); display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 16px;
+    }
+    .feat.hl .feat-ic { background: #fff; }
+    .feat h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .feat p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+    /* STATS SECTION */
+    .stats-section {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px 100px;
+    }
+    .stats-section .section-head { text-align: center; margin-bottom: 56px; }
+    .stats-section h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 700; letter-spacing: -0.025em; color: #1d1d1f; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media(max-width:780px){ .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width:500px){ .stats-grid { grid-template-columns: 1fr; } }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px 24px; text-align: center;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .stat-card-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 24px;
+    }
+    .stat-card-icon.teal { background: var(--accent-soft); }
+    .stat-card-icon.gold { background: var(--gold-soft); }
+    .stat-card-icon.green { background: var(--green-soft); }
+    .stat-card-icon.red { background: #FDECEA; }
+    .stat-card-val {
+      font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .stat-card-label { font-size: 13px; color: var(--text2); font-weight: 500; }
+
+    /* SCREENSHOT */
+    .ss-section {
+      max-width: 900px; margin: 0 auto; padding: 0 24px 100px; text-align: center;
+    }
+    .ss-section h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 14px; color: #1d1d1f; }
+    .ss-section p { font-size: 18px; color: var(--text2); margin-bottom: 48px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+    .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:700px){ .ss-grid { grid-template-columns: 1fr; } }
+    .ss-card {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .ss-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .ss-card-icon { font-size: 40px; margin-bottom: 4px; }
+    .ss-card h4 { font-size: 16px; font-weight: 600; }
+    .ss-card p { font-size: 13px; color: var(--text2); line-height: 1.5; margin: 0; text-align: center; }
+
+    /* CTA */
+    .cta {
+      padding: 120px 24px; text-align: center;
+      background: radial-gradient(ellipse 60% 60% at 50% 100%, var(--accent-soft) 0%, transparent 65%), var(--bg);
+    }
+    .cta-icon {
+      width: 76px; height: 76px; border-radius: 18px; margin: 0 auto 28px;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 32px; font-weight: 700;
+      box-shadow: var(--shadow-md);
+    }
+    .cta h2 { font-size: clamp(30px, 5vw, 50px); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 14px; color: #1d1d1f; }
+    .cta p { font-size: 18px; color: var(--text2); margin-bottom: 40px; }
+    .cta-dl {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff; border-radius: 980px;
+      padding: 16px 38px; font-size: 17px; font-weight: 600; text-decoration: none;
+      transition: transform .15s; box-shadow: 0 6px 20px rgba(0,147,158,.3);
+    }
+    .cta-dl:hover { transform: scale(1.04); }
+    .cta-code {
+      margin-top: 20px; font-size: 13px; color: var(--text3);
+    }
+    .cta-code code {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 6px; font-family: "SF Mono", monospace;
+    }
+    .cta-note { margin-top: 16px; font-size: 13px; color: var(--text3); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 30px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; background: var(--bg-soft);
+    }
+    footer span { font-size: 13px; color: var(--text3); }
+    .footer-links { display: flex; gap: 22px; }
+    footer a { color: var(--text2); text-decoration: none; font-size: 13px; transition: color .15s; }
+    footer a:hover { color: var(--text); }
+
+    @media(max-width:600px){
+      nav { padding: 0 20px; }
+      .hero { padding: 96px 20px 56px; }
+      footer { padding: 24px 20px; }
+      .shortcuts { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-icon">VY</div>
+    Varlık Yönetimi
+  </div>
+  <div class="nav-right">
+    <a class="nav-link" href="https://github.com/blackowltr/varliklarim" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a class="nav-cta" href="index.html">Uygulamayı Aç</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Ücretsiz · Açık Kaynak · PWA
+  </div>
+  <h1>Altın portföyün,<br><em> kontrol altında.</em></h1>
+  <p class="hero-sub">Varlıklarınızı, borçlarınızı ve giderlerinizi tek yerden takip edin. Grafiklerle analiz edin, hedeflerinize ulaşın.</p>
+
+  <div class="install-card">
+    <div class="install-tabs">
+      <button class="itab active" onclick="switchTab('pwa',this)">📱 &nbsp;PWA Yükle</button>
+      <button class="itab" onclick="switchTab('src',this)">💻 &nbsp;Kaynak Kodu</button>
+    </div>
+    <div id="panel-pwa" class="ipanel active">
+      <div class="pwa-steps">
+        <div class="pwa-step">
+          <span class="pwa-step-num">1</span>
+          <span>Uygulamayı <b>Safari</b> veya <b>Chrome</b>'da aç</span>
+        </div>
+        <div class="pwa-step">
+          <span class="pwa-step-num">2</span>
+          <span><b>Paylaş</b> butonuna tıkla → <b>"Ana Ekrana Ekle"</b> seç</span>
+        </div>
+        <div class="pwa-step">
+          <span class="pwa-step-num">3</span>
+          <span>Artık ana ekranından doğrudan açabilirsin!</span>
+        </div>
+      </div>
+    </div>
+    <div id="panel-src" class="ipanel">
+      <div class="code-block">
+        <div><span class="prompt">$</span> git clone https://github.com/blackowltr/varliklarim.git</div>
+        <div><span class="prompt">$</span> cd varliklarim</div>
+        <div><span class="prompt">$</span> open index.html</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text3)">ℹ️ Sunucu gerekmez. Dosyaları doğrudan açabilirsin.</div>
+      </div>
+    </div>
+    <div class="install-footer"><span class="ck">✓</span> Sonsuza dek ücretsiz &nbsp;·&nbsp; Hesap gerekmez &nbsp;·&nbsp; Verileriniz sizinle</div>
+  </div>
+
+  <div class="shortcuts">
+    <div class="shortcut-card">
+      <div class="sc-keys">
+        <span class="key">Altın</span>
+      </div>
+      <span class="sc-label">Portföy Takibi</span>
+    </div>
+    <div class="shortcut-card">
+      <div class="sc-keys">
+        <span class="key">Borç</span>
+      </div>
+      <span class="sc-label">Yönetim</span>
+    </div>
+    <div class="shortcut-card">
+      <div class="sc-keys">
+        <span class="key">Gider</span>
+      </div>
+      <span class="sc-label">Analiz</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="features-head">
+    <div class="label" style="text-align:center;">Özellikler</div>
+    <h2>Finansal hayatının tam kontrolü.</h2>
+  </div>
+  <div class="grid">
+    <div class="feat hl">
+      <div class="feat-ic">📊</div>
+      <h3>Portföy Takibi</h3>
+      <p>Altın çeşitlerinizi gram bazında ekleyin, anlık fiyatlarla değerini görün.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">💳</div>
+      <h3>Borç Yönetimi</h3>
+      <p>Kredi kartı, kredi, taksitli borçlarınızı takip edin, ödeme planlarınızı görüntüleyin.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">💸</div>
+      <h3>Gider Kaydı</h3>
+      <p>Aylık giderlerinizi kategorilere ayırın, harcama alışkanlıklarınızı analiz edin.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">📈</div>
+      <h3>Grafik Analiz</h3>
+      <p>Pasta grafik, çizgi grafik, çubuk grafik ile portföyünüzü görsel olarak analiz edin.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">🎯</div>
+      <h3>Hedef Belirleme</h3>
+      <p>Altın hedefinizi belirleyin, ilerleme yüzdesini takip edin.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">💰</div>
+      <h3>Zekat Hesaplama</h3>
+      <p>Nisabınızı otomatik hesaplayın, zekat yükümlülüğünüzü öğrenin.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">🔍</div>
+      <h3>Kâr/Zarar Analizi</h3>
+      <p>Maliyet girilen kalemlerde ortalama alış, güncel fiyat ve getiri oranlarını görün.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">🌙</div>
+      <h3>Dark Mode</h3>
+      <p>Aydınlık ve koyu tema desteği. Gözlerinizi yormaz.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">📱</div>
+      <h3>Mobil Uyumlu</h3>
+      <p>Telefonunuzda tam ekran, uygulama gibi çalışır. PWA desteği.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">🔒</div>
+      <h3>%100 Özel</h3>
+      <p>Bulut yok, sunucu yok. Verileriniz tarayıcınızda kalır. Kimse göremez.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">⚡</div>
+      <h3>Hızlı & Hafif</h3>
+      <p>Framework yok, bağımlılık yok. Saf HTML, CSS, JavaScript. Anında yüklenir.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ic">📥</div>
+      <h3>Dışa Aktarma</h3>
+      <p>Verilerinizi JSON olarak dışa aktarın, yedekleyin.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="section-head">
+    <div class="label" style="text-align:center;">İstatistikler</div>
+    <h2>Her şey bir bakışta.</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-icon teal">📊</div>
+      <div class="stat-card-val">8+</div>
+      <div class="stat-card-label">İstatistik Kartı</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-icon gold">📈</div>
+      <div class="stat-card-val">6</div>
+      <div class="stat-card-label">Grafik Türü</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-icon green">🏷️</div>
+      <div class="stat-card-val">7</div>
+      <div class="stat-card-label">Borç Kategorisi</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-icon red">⚡</div>
+      <div class="stat-card-val">0</div>
+      <div class="stat-card-label">Bağımlılık</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREENSHOTS / USE CASES -->
+<div class="ss-section">
+  <div class="label" style="text-align:center;">Kullanım Alanları</div>
+  <h2>Herkes için.</h2>
+  <p>Altın yatırımcısından borç takip eden kişiye, herkesin ihtiyacı tek uygulamada.</p>
+  <div class="ss-grid">
+    <div class="ss-card">
+      <div class="ss-card-icon">🏆</div>
+      <h4>Altın Yatırımcısı</h4>
+      <p>Gram altın, bilezik, cumhuriyet — tüm altınlarınızı tek ekranda takip edin. Kâr/zarar analizi yapın.</p>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-icon">💳</div>
+      <h4>Borç Takibi</h4>
+      <p>Kredi kartı borçlarınızı, taksitlerinizi ve ödeme planlarınızı yönetin.</p>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-icon">📉</div>
+      <h4>Gider Analizi</h4>
+      <p>Aylık harcamalarınızı kategorilere ayırın, nereye para gittiğini görün.</p>
+    </div>
+    <div class="ss-card">
+      <div class="ss-card-icon">🕌</div>
+      <h4>Zekat Hesaplama</h4>
+      <p>Nisabınızı hesaplayın, zekat yükümlülüğünüzü ve miktarınızı otomatik hesaplayın.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-icon">VY</div>
+  <h2>Finansal kontrolü ele al.</h2>
+  <p>Ücretsiz indir. Kayıt gerekmez. Aç ve çalışır.</p>
+  <a class="cta-dl" href="index.html">🚀 &nbsp;Hemen Başla</a>
+  <p class="cta-code">veya &nbsp;<code>git clone https://github.com/blackowltr/varliklarim.git</code></p>
+  <p class="cta-note">Tarayıcı tabanlı · PWA desteği · Verileriniz cihazınızda kalır</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Varlık Yönetimi. Tüm hakları saklıdır.</span>
+  <div class="footer-links">
+    <a href="https://github.com/blackowltr/varliklarim" target="_blank">GitHub</a>
+    <a href="index.html">Uygulama</a>
+  </div>
+</footer>
+
+<script>
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.itab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.ipanel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
