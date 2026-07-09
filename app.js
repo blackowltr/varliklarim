@@ -786,7 +786,7 @@
             const dateFormatted = dateParts.length === 3 ? `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}` : (debt.date || '-');
             const cat = debt.category || 'diger';
             const catName = debtCategoryNames[cat] || 'Diğer';
-            const catTag = `<span class="debt-category-tag debt-cat-${cat}">${debtCategoryIcons[cat] || ''}${catName}</span>`;
+            const catTag = `<span class="debt-card-badge"><span class="debt-card-badge-dot"></span>${catName}</span>`;
 
             // Taksit progress
             const prog = getInstallmentProgress(debt);
@@ -851,11 +851,11 @@
                     </div>
                     ${paymentBlock}
                     ${installmentBlock}
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; padding-top:2px;">
-                        <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:500;">
+                    <div class="debt-card-bottom" onclick="event.stopPropagation()">
+                        <span style="font-size:0.7rem; color:var(--text-tertiary); font-weight:500;">
                             ${prog || paid > 0 ? '' : 'Henüz ödeme yapılmadı'}
                         </span>
-                        <div class="debt-card-actions" onclick="event.stopPropagation()">
+                        <div class="debt-card-actions">
                             ${payBtnHTML}
                             <button class="debt-action-btn debt-action-delete" onclick="deleteDebt(${originalIndex})" title="Borcu Sil">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>

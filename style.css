@@ -1260,30 +1260,7 @@
         .debt-stat-label { font-size: 0.7rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
         .debt-stat-value { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Borç Kategori Etiketleri */
-        .debt-category-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap; border: 1px solid transparent; }
-        .debt-category-tag svg { width: 12px; height: 12px; flex-shrink: 0; }
-
-        .debt-cat-kredi-karti { background: rgba(192, 57, 43, 0.08); color: #C0392B; border-color: rgba(192, 57, 43, 0.15); }
-        [data-theme="dark"] .debt-cat-kredi-karti { background: rgba(255, 120, 120, 0.14); color: #FF8080; border-color: rgba(255, 120, 120, 0.22); }
-
-        .debt-cat-kredi { background: rgba(168, 123, 0, 0.08); color: #A87B00; border-color: rgba(168, 123, 0, 0.15); }
-        [data-theme="dark"] .debt-cat-kredi { background: rgba(224, 173, 28, 0.14); color: #E0AD1C; border-color: rgba(224, 173, 28, 0.22); }
-
-        .debt-cat-taksitli { background: rgba(0, 147, 158, 0.08); color: #00939E; border-color: rgba(0, 147, 158, 0.15); }
-        [data-theme="dark"] .debt-cat-taksitli { background: rgba(46, 203, 214, 0.14); color: #3DD5E0; border-color: rgba(46, 203, 214, 0.22); }
-
-        .debt-cat-nakit-avans { background: rgba(122, 92, 0, 0.08); color: #7A5C00; border-color: rgba(122, 92, 0, 0.15); }
-        [data-theme="dark"] .debt-cat-nakit-avans { background: rgba(224, 173, 28, 0.10); color: #E0AD1C; border-color: rgba(224, 173, 28, 0.18); }
-
-        .debt-cat-sahis { background: rgba(26, 127, 55, 0.08); color: #1A7F37; border-color: rgba(26, 127, 55, 0.15); }
-        [data-theme="dark"] .debt-cat-sahis { background: rgba(61, 214, 140, 0.14); color: #50E09A; border-color: rgba(61, 214, 140, 0.22); }
-
-        .debt-cat-kurum { background: rgba(0, 80, 90, 0.06); color: var(--text-secondary); border-color: var(--border-strong); }
-        [data-theme="dark"] .debt-cat-kurum { background: rgba(200, 200, 200, 0.08); color: var(--text-secondary); border-color: var(--border-strong); }
-
-        .debt-cat-diger { background: rgba(0,0,0,0.03); color: var(--text-tertiary); border-color: var(--border-strong); }
-        [data-theme="dark"] .debt-cat-diger { background: rgba(255,255,255,0.05); color: var(--text-tertiary); border-color: var(--border-strong); }
+        /* Borç Kategori Etiketleri — artık .debt-card-badge ile yönetiliyor (stil.css içinde) */
 
         /* Taksitli Borç Paneli */
         .installment-panel {
@@ -1407,29 +1384,36 @@
             border-radius: 100px; white-space: nowrap;
         }
 
-        .debt-list { display: flex; flex-direction: column; gap: 12px; padding: 1px 0; }
+        .debt-list { display: flex; flex-direction: column; gap: 14px; padding: 1px 0; }
 
         .debt-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-left: 4px solid var(--border);
-            border-radius: var(--radius-lg); padding: 1.1rem 1.3rem;
-            box-shadow: var(--shadow-sm); transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex; flex-direction: column; gap: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex; flex-direction: column;
             position: relative; overflow: hidden;
         }
-        .debt-card::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, transparent 60%, rgba(255,255,255,0.4) 100%);
-            pointer-events: none;
+        .debt-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            border-radius: 16px 16px 0 0;
+            opacity: 0.85; transition: opacity 0.3s;
         }
-        [data-theme="dark"] .debt-card::after {
-            background: linear-gradient(135deg, transparent 60%, rgba(255,255,255,0.03) 100%);
-        }
+        .debt-card[data-category="kredi-karti"]::before { background: linear-gradient(90deg, #C0392B, #E74C3C); }
+        .debt-card[data-category="kredi"]::before { background: linear-gradient(90deg, #A87B00, #D4A017); }
+        .debt-card[data-category="taksitli"]::before { background: linear-gradient(90deg, #00939E, #00BCD4); }
+        .debt-card[data-category="nakit-avans"]::before { background: linear-gradient(90deg, #7A5C00, #B8860B); }
+        .debt-card[data-category="sahis"]::before { background: linear-gradient(90deg, #1A7F37, #2ECC71); }
+        .debt-card[data-category="kurum"]::before { background: linear-gradient(90deg, #3D5A5E, #5D8A8F); }
+        .debt-card[data-category="diger"]::before { background: linear-gradient(90deg, var(--text-tertiary), var(--text-secondary)); }
         .debt-card:hover {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 12px 40px rgba(0,0,0,0.06);
             border-color: var(--border-strong);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
+        .debt-card:hover::before { opacity: 1; }
         .debt-card:active { transform: translateY(0) scale(0.995); }
 
         .debt-card:nth-child(1) { animation-delay: 0.03s; }
@@ -1445,83 +1429,115 @@
 
         .debt-card-top {
             display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+            padding: 1.1rem 1.25rem 0.9rem;
             position: relative; z-index: 1;
         }
-        .debt-card-info { flex: 1; min-width: 0; }
-        .debt-card-name { font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 4px; word-break: break-word; }
+        .debt-card-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
         .debt-card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .debt-card-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; padding: 4px 10px; border-radius: 100px;
+            width: fit-content; line-height: 1;
+        }
+        .debt-card-badge-dot {
+            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+        .debt-card[data-category="kredi-karti"] .debt-card-badge { background: rgba(192,57,43,0.08); color: #C0392B; }
+        .debt-card[data-category="kredi-karti"] .debt-card-badge-dot { background: #C0392B; }
+        .debt-card[data-category="kredi"] .debt-card-badge { background: rgba(168,123,0,0.08); color: #9A7209; }
+        .debt-card[data-category="kredi"] .debt-card-badge-dot { background: #A87B00; }
+        .debt-card[data-category="taksitli"] .debt-card-badge { background: rgba(0,147,158,0.08); color: #00939E; }
+        .debt-card[data-category="taksitli"] .debt-card-badge-dot { background: #00939E; }
+        .debt-card[data-category="nakit-avans"] .debt-card-badge { background: rgba(122,92,0,0.08); color: #7A5C00; }
+        .debt-card[data-category="nakit-avans"] .debt-card-badge-dot { background: #7A5C00; }
+        .debt-card[data-category="sahis"] .debt-card-badge { background: rgba(26,127,55,0.08); color: #1A7F37; }
+        .debt-card[data-category="sahis"] .debt-card-badge-dot { background: #1A7F37; }
+        .debt-card[data-category="kurum"] .debt-card-badge { background: rgba(61,90,94,0.08); color: #3D5A5E; }
+        .debt-card[data-category="kurum"] .debt-card-badge-dot { background: #3D5A5E; }
+        .debt-card[data-category="diger"] .debt-card-badge { background: var(--hover-bg); color: var(--text-secondary); }
+        .debt-card[data-category="diger"] .debt-card-badge-dot { background: var(--text-tertiary); }
+        [data-theme="dark"] .debt-card[data-category="kredi-karti"] .debt-card-badge { background: rgba(231,76,60,0.12); }
+        [data-theme="dark"] .debt-card[data-category="kredi"] .debt-card-badge { background: rgba(212,160,23,0.12); }
+        [data-theme="dark"] .debt-card[data-category="taksitli"] .debt-card-badge { background: rgba(0,188,212,0.12); }
+        [data-theme="dark"] .debt-card[data-category="nakit-avans"] .debt-card-badge { background: rgba(184,134,11,0.12); }
+        [data-theme="dark"] .debt-card[data-category="sahis"] .debt-card-badge { background: rgba(46,204,113,0.12); }
+        [data-theme="dark"] .debt-card[data-category="kurum"] .debt-card-badge { background: rgba(93,138,143,0.12); }
+
+        .debt-card-name {
+            font-weight: 700; font-size: 0.95rem; color: var(--text-primary);
+            margin: 0; word-break: break-word; line-height: 1.35;
+        }
         .debt-card-date { font-size: 0.72rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
-        .debt-card-date svg { width: 12px; height: 12px; opacity: 0.6; }
+        .debt-card-date svg { width: 12px; height: 12px; opacity: 0.5; }
 
         .debt-card-amount {
             text-align: right; flex-shrink: 0; position: relative; z-index: 1;
+            padding: 0.1rem 0;
         }
         .debt-card-amount-val {
-            font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400;
+            font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400;
             color: var(--red); line-height: 1.2; white-space: nowrap;
+            letter-spacing: -0.01em;
         }
         .debt-card-amount-label {
-            font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;
-            letter-spacing: 0.04em; font-weight: 600;
+            font-size: 0.63rem; color: var(--text-tertiary); text-transform: uppercase;
+            letter-spacing: 0.06em; font-weight: 600; margin-bottom: 2px;
         }
         .debt-card-amount-monthly {
             font-size: 0.7rem; color: var(--text-secondary); font-weight: 500;
-            margin-top: 2px; font-variant-numeric: tabular-nums;
+            margin-top: 3px; font-variant-numeric: tabular-nums;
+            padding: 2px 8px; background: var(--hover-bg); border-radius: 6px;
+            display: inline-block; margin-left: auto;
         }
-
-        /* Category left border accents */
-        .debt-card[data-category="kredi-karti"] { border-left-color: #C0392B; }
-        .debt-card[data-category="kredi"] { border-left-color: #A87B00; }
-        .debt-card[data-category="taksitli"] { border-left-color: #00939E; }
-        .debt-card[data-category="nakit-avans"] { border-left-color: #7A5C00; }
-        .debt-card[data-category="sahis"] { border-left-color: #1A7F37; }
-        .debt-card[data-category="kurum"] { border-left-color: #3D5A5E; }
-        .debt-card[data-category="diger"] { border-left-color: var(--text-tertiary); }
+        [data-theme="dark"] .debt-card-amount-monthly { background: rgba(255,255,255,0.04); }
 
         /* Ödeme progress alanı */
         .debt-card-payment {
-            display: flex; flex-direction: column; gap: 6px;
-            padding-top: 8px; border-top: 1px solid var(--border);
+            display: flex; flex-direction: column; gap: 8px;
+            padding: 0 1.25rem;
             position: relative; z-index: 1;
         }
         .debt-card-payment-row {
             display: flex; align-items: center; justify-content: space-between; gap: 10px;
         }
         .debt-card-payment-stats {
-            display: flex; gap: 14px; font-size: 0.75rem; font-weight: 500;
+            display: flex; gap: 16px; font-size: 0.73rem; font-weight: 500;
         }
-        .debt-card-payment-stats span { display: flex; align-items: center; gap: 4px; }
+        .debt-card-payment-stats span { display: flex; align-items: center; gap: 5px; }
         .debt-card-payment-stats .stat-paid { color: var(--green); }
-        .debt-card-payment-stats .stat-remaining { color: var(--red); }
+        .debt-card-payment-stats .stat-remaining { color: var(--red); opacity: 0.85; }
 
         .debt-card-bar {
-            width: 100%; height: 6px; background: var(--progress-bg);
+            width: 100%; height: 5px; background: var(--progress-bg);
             border-radius: 10px; overflow: hidden;
         }
         .debt-card-bar-fill {
             height: 100%; border-radius: 10px;
-            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
         }
         .debt-card-bar-fill.partial { background: linear-gradient(90deg, var(--teal), #4DD9E0); }
         .debt-card-bar-fill.done { background: linear-gradient(90deg, var(--green), #50E09A); }
 
         /* Taksit progress */
         .debt-installment-progress {
-            display: flex; flex-direction: column; gap: 5px;
-            padding-top: 8px; border-top: 1px solid var(--border);
+            display: flex; flex-direction: column; gap: 6px;
+            padding: 0 1.25rem;
             position: relative; z-index: 1;
         }
         .debt-installment-progress .dip-header {
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.74rem; font-weight: 600; color: var(--text-secondary);
+            font-size: 0.73rem; font-weight: 600; color: var(--text-secondary);
         }
         .debt-installment-progress .dip-track {
-            width: 100%; height: 6px; background: var(--progress-bg);
+            width: 100%; height: 5px; background: var(--progress-bg);
             border-radius: 10px; overflow: hidden;
         }
         .debt-installment-progress .dip-fill {
             height: 100%; border-radius: 10px;
-            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .debt-installment-progress .dip-fill.teal { background: linear-gradient(90deg, var(--teal), #4DD9E0); }
         .debt-installment-progress .dip-fill.green { background: linear-gradient(90deg, var(--green), #50E09A); }
@@ -1531,36 +1547,42 @@
         }
         .debt-installment-progress .dip-done {
             font-size: 0.72rem; font-weight: 600; color: var(--green);
+            display: flex; align-items: center; gap: 4px;
         }
 
         /* Kart aksiyon butonları */
+        .debt-card-bottom {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            padding: 0.75rem 1.25rem 1rem;
+            position: relative; z-index: 1;
+        }
         .debt-card-actions {
             display: flex; align-items: center; gap: 8px; flex-shrink: 0;
             position: relative; z-index: 1;
         }
         .debt-action-btn {
             display: inline-flex; align-items: center; gap: 5px;
-            padding: 6px 14px; border-radius: 100px;
-            font-family: inherit; font-size: 0.75rem; font-weight: 600;
-            cursor: pointer; transition: var(--transition); white-space: nowrap;
+            padding: 7px 16px; border-radius: 10px;
+            font-family: inherit; font-size: 0.74rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
             border: 1.5px solid transparent; line-height: 1;
         }
         .debt-action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
 
         .debt-action-pay {
             background: var(--green); color: #fff; border-color: var(--green);
-            box-shadow: 0 2px 8px rgba(26,127,55,0.15);
+            box-shadow: 0 2px 8px rgba(26,127,55,0.18);
         }
-        .debt-action-pay:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,127,55,0.25); }
+        .debt-action-pay:hover { box-shadow: 0 4px 16px rgba(26,127,55,0.3); transform: translateY(-1px); }
         .debt-action-pay:active { transform: translateY(0) scale(0.97); }
 
         .debt-action-paid {
-            font-size: 0.75rem; font-weight: 600; color: var(--green);
+            font-size: 0.74rem; font-weight: 600; color: var(--green);
             display: inline-flex; align-items: center; gap: 5px;
-            padding: 6px 14px; border-radius: 100px;
-            background: rgba(26,127,55,0.08);
+            padding: 7px 16px; border-radius: 10px;
+            background: rgba(26,127,55,0.07);
         }
-        [data-theme="dark"] .debt-action-paid { background: rgba(61, 214, 140, 0.12); }
+        [data-theme="dark"] .debt-action-paid { background: rgba(61, 214, 140, 0.1); }
 
         .debt-action-delete {
             background: transparent; color: var(--text-tertiary); border-color: var(--border);
@@ -1570,9 +1592,12 @@
         .debt-action-delete:active { transform: scale(0.95); }
 
         @media(max-width: 600px) {
-            .debt-card-top { flex-direction: column; }
+            .debt-card { border-radius: 14px; }
+            .debt-card-top { flex-direction: column; gap: 10px; }
             .debt-card-amount { text-align: left; width: 100%; }
+            .debt-card-amount-monthly { margin-left: 0; }
             .debt-card-actions { width: 100%; justify-content: flex-end; }
+            .debt-card-bottom { flex-direction: column; align-items: stretch; gap: 10px; }
             .debt-list-toolbar { width: 100%; }
             .debt-filter-select { flex: 1; min-width: 0; }
         }
