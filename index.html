@@ -467,12 +467,18 @@
                         </div>
                     </div>
                     <form id="debt-form" onsubmit="addDebt(event)">
-                        <div class="form-group">
-                            <label>Borç Adı / Açıklama</label>
+                        <div class="debt-form-group">
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                Borç Adı / Açıklama
+                            </label>
                             <input type="text" id="debt-name" class="input-field" placeholder="Örn: Garanti Kredi Kartı, Ahmet Bey" required>
                         </div>
-                        <div class="form-group">
-                            <label>Borç Kategorisi</label>
+                        <div class="debt-form-group">
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8 10h8"/></svg>
+                                Borç Kategorisi
+                            </label>
                             <select id="debt-category" class="input-field" onchange="toggleInstallmentFields()">
                                 <option value="kredi-karti">Kredi Kartı</option>
                                 <option value="kredi">Kredi</option>
@@ -484,73 +490,79 @@
                             </select>
                         </div>
 
-                        <!-- TAKSİTLİ BORÇ PANELİ — taksitli/kredi/kredi-karti/nakit-avans seçildiğinde görünür -->
+                        <!-- TAKSİTLİ BORÇ PANELİ -->
                         <div class="installment-panel" id="installment-panel">
                             <div class="installment-panel-header">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                                 Taksit Planı Bilgileri
                             </div>
-                            <div class="form-group" id="debt-interest-group" style="display:none;">
+                            <div class="debt-form-group" id="debt-interest-group" style="display:none;">
                                 <label>Faiz Oranı (Yıllık %)</label>
                                 <input type="number" id="debt-interest-rate" class="input-field" step="0.01" min="0" placeholder="Örn: 2.5">
                             </div>
-                            <div class="form-group">
+                            <div class="debt-form-group">
                                 <label>Toplam Taksit Sayısı</label>
                                 <input type="number" id="debt-installment-total" class="input-field" min="2" max="120" placeholder="Örn: 12">
                             </div>
-                            <div class="form-group">
+                            <div class="debt-form-group">
                                 <label>Aylık Taksit Tutarı (TL)</label>
                                 <input type="number" id="debt-installment-monthly" class="input-field" step="0.01" min="0.01" placeholder="Otomatik hesaplanır">
                             </div>
                             <div class="installment-hint" id="installment-hint"></div>
                         </div>
 
-                        <!-- EKSTRE PANELİ — sadece kredi-karti seçildiğinde görünür -->
+                        <!-- EKSTRE PANELİ -->
                         <div class="ekstre-panel" id="ekstre-panel">
                             <div class="installment-panel-header">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
                                 Ekstre Bilgileri
                             </div>
                             <div class="ekstre-grid">
-                                <div class="form-group">
+                                <div class="debt-form-group">
                                     <label>Ekstre Kesim Günü</label>
                                     <select id="debt-statement-day" class="input-field">
                                         <option value="">Seçin</option>
                                         <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="debt-form-group">
                                     <label>Son Ödeme Günü</label>
                                     <select id="debt-due-day" class="input-field">
                                         <option value="">Seçin</option>
                                         <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
+                                <div class="debt-form-group">
                                     <label>Asgari Ödeme Oranı (%)</label>
                                     <div style="display:flex; gap:8px; align-items:center;">
                                         <input type="number" id="debt-min-payment-ratio" class="input-field" step="1" min="1" max="100" value="40" style="width:100px;">
-                                        <span style="font-size:0.78rem; color:var(--text-tertiary);">% olarak (banka genelde %40)</span>
+                                        <span style="font-size:0.78rem; color:var(--text-secondary);">% olarak (banka genelde %40)</span>
                                     </div>
                                 </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
+                                <div class="debt-form-group">
                                     <label>Asgari Ödeme Tutarı (TL)</label>
                                     <input type="number" id="debt-min-payment" class="input-field" step="0.01" min="0.01" placeholder="Otomatik hesaplanır (borç × oran)">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label id="debt-amount-label">Tutar (TL)</label>
+                        <div class="debt-form-group">
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8 10h8"/></svg>
+                                Tutar (TL)
+                            </label>
                             <input type="number" id="debt-amount" step="0.01" min="0.01" class="input-field" placeholder="0,00" required>
                         </div>
-                        <div class="form-group">
-                            <label id="debt-date-label">Vade Tarihi</label>
+                        <div class="debt-form-group">
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                Vade Tarihi
+                            </label>
                             <input type="date" id="debt-date" class="input-field" required>
                         </div>
                         <button type="submit" class="debt-form-submit">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            Borç Ekle
+                            <span>Borç Ekle</span>
                         </button>
                     </form>
                 </div>
