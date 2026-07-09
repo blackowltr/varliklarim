@@ -678,6 +678,105 @@
         .stats-sc-value { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.2; }
         .stats-sc-hint { font-size: 0.72rem; color: var(--text-tertiary); }
 
+        /* Extended Stats Cards */
+        .stats-grid-extended { grid-template-columns: repeat(3, 1fr); }
+        @media(max-width: 900px){ .stats-grid-extended { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width: 500px){ .stats-grid-extended { grid-template-columns: 1fr; } }
+
+        .stats-sc-savings::before { background: var(--teal); }
+        .stats-sc-growth::before { background: var(--gold); }
+        .stats-sc-risk::before { background: var(--red); }
+
+        .stats-icon-teal { background: var(--teal-light); color: var(--teal); }
+        .stats-icon-gold { background: var(--gold-light); color: var(--gold); }
+        .stats-icon-red { background: var(--red-light); color: var(--red); }
+
+        /* Debt Summary Card */
+        .stats-debt-summary {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+            padding: 1.5rem 1.8rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);
+            animation: cardSlideUp 0.5s ease both;
+        }
+        .stats-debt-summary-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;
+        }
+        .stats-debt-summary-icon {
+            width: 42px; height: 42px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+            background: var(--red-light); color: var(--red);
+        }
+        .stats-debt-summary-icon svg { width: 20px; height: 20px; }
+        .stats-debt-summary-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+        .stats-debt-summary-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem;
+        }
+        @media(max-width: 700px){ .stats-debt-summary-grid { grid-template-columns: repeat(2, 1fr); } }
+        .stats-debt-summary-item { text-align: center; }
+        .stats-debt-summary-val {
+            font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400;
+            color: var(--text-primary); line-height: 1.2;
+        }
+        .stats-dsv-green { color: var(--green) !important; }
+        .stats-dsv-red { color: var(--red) !important; }
+        .stats-debt-summary-label {
+            font-size: 0.68rem; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;
+        }
+        .stats-debt-progress { margin-top: 0.5rem; }
+        .stats-debt-progress-label {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;
+        }
+        .stats-debt-progress-track {
+            width: 100%; height: 8px; background: var(--progress-bg); border-radius: 10px; overflow: hidden;
+        }
+        .stats-debt-progress-fill {
+            height: 100%; border-radius: 10px; transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: linear-gradient(90deg, var(--teal), var(--green));
+        }
+
+        /* Top 3 Card */
+        .stats-top3-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+            padding: 1.5rem 1.8rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);
+            animation: cardSlideUp 0.5s ease both; animation-delay: 0.1s;
+        }
+        .stats-top3-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 1.1rem;
+        }
+        .stats-top3-icon {
+            width: 42px; height: 42px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+            background: var(--gold-light); color: var(--gold);
+        }
+        .stats-top3-icon svg { width: 20px; height: 20px; }
+        .stats-top3-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+        .stats-top3-list { display: flex; flex-direction: column; gap: 0; }
+        .stats-top3-item {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding: 0.85rem 0; border-bottom: 1px solid var(--border);
+        }
+        .stats-top3-item:last-child { border-bottom: none; }
+        .stats-top3-placeholder { font-size: 0.85rem; color: var(--text-tertiary); }
+        .stats-top3-rank {
+            width: 28px; height: 28px; border-radius: 8px; display: flex;
+            align-items: center; justify-content: center; font-size: 0.75rem;
+            font-weight: 700; color: #fff; flex-shrink: 0;
+        }
+        .stats-top3-rank-1 { background: linear-gradient(135deg, #D4A017, #F0C040); }
+        .stats-top3-rank-2 { background: linear-gradient(135deg, #95A5A6, #BDC3C7); }
+        .stats-top3-rank-3 { background: linear-gradient(135deg, #A0522D, #CD853F); }
+        .stats-top3-name { flex: 1; font-size: 0.88rem; font-weight: 600; color: var(--text-primary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .stats-top3-weight { font-size: 0.78rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+        .stats-top3-value {
+            font-family: 'DM Serif Display', serif; font-size: 1rem; font-weight: 400;
+            color: var(--text-primary); flex-shrink: 0;
+        }
+        .stats-top3-pct {
+            font-size: 0.7rem; font-weight: 600; color: var(--text-tertiary);
+            flex-shrink: 0; text-align: right; min-width: 40px;
+        }
+
         /* Charts */
         .stats-charts-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;

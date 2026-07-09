@@ -325,6 +325,90 @@
             </div>
         </div>
 
+        <!-- YENİ İSTATİSTİK KARTLARI -->
+        <div class="stats-summary-grid stats-grid-extended">
+            <div class="stats-summary-card stats-sc-savings">
+                <div class="stats-sc-icon stats-icon-teal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                </div>
+                <div class="stats-sc-body">
+                    <div class="stats-sc-label">Tasarruf Oranı</div>
+                    <div class="stats-sc-value" id="stat-savings-rate">%0</div>
+                    <div class="stats-sc-hint">bu ayki tasarruf</div>
+                </div>
+            </div>
+            <div class="stats-summary-card stats-sc-growth">
+                <div class="stats-sc-icon stats-icon-gold">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <div class="stats-sc-body">
+                    <div class="stats-sc-label">Büyüme Hızı</div>
+                    <div class="stats-sc-value" id="stat-growth-rate">%0</div>
+                    <div class="stats-sc-hint">aylık ortalama</div>
+                </div>
+            </div>
+            <div class="stats-summary-card stats-sc-risk">
+                <div class="stats-sc-icon stats-icon-red">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div class="stats-sc-body">
+                    <div class="stats-sc-label">Risk Oranı</div>
+                    <div class="stats-sc-value" id="stat-risk-ratio">%0</div>
+                    <div class="stats-sc-hint">borç / varlık</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BORÇ ÖZETİ KARTI -->
+        <div class="stats-debt-summary" id="stats-debt-summary" style="display:none;">
+            <div class="stats-debt-summary-header">
+                <div class="stats-debt-summary-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                </div>
+                <div class="stats-debt-summary-title">Borç Özeti</div>
+            </div>
+            <div class="stats-debt-summary-grid">
+                <div class="stats-debt-summary-item">
+                    <div class="stats-debt-summary-val" id="stats-total-debt">0 TL</div>
+                    <div class="stats-debt-summary-label">Toplam Borç</div>
+                </div>
+                <div class="stats-debt-summary-item">
+                    <div class="stats-debt-summary-val stats-dsv-green" id="stats-debt-paid">0 TL</div>
+                    <div class="stats-debt-summary-label">Ödenen</div>
+                </div>
+                <div class="stats-debt-summary-item">
+                    <div class="stats-debt-summary-val stats-dsv-red" id="stats-debt-remaining">0 TL</div>
+                    <div class="stats-debt-summary-label">Kalan</div>
+                </div>
+                <div class="stats-debt-summary-item">
+                    <div class="stats-debt-summary-val" id="stats-debt-count">0</div>
+                    <div class="stats-debt-summary-label">Aktif Borç</div>
+                </div>
+            </div>
+            <div class="stats-debt-progress">
+                <div class="stats-debt-progress-label">
+                    <span>Ödeme İlerlemesi</span>
+                    <span id="stats-debt-progress-pct">%0</span>
+                </div>
+                <div class="stats-debt-progress-track">
+                    <div class="stats-debt-progress-fill" id="stats-debt-progress-fill" style="width:0%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EN DEĞERLİ 3 VARLIK -->
+        <div class="stats-top3-card" id="stats-top3-card">
+            <div class="stats-top3-header">
+                <div class="stats-top3-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="stats-top3-title">En Değerli 3 Varlık</div>
+            </div>
+            <div class="stats-top3-list" id="stats-top3-list">
+                <div class="stats-top3-item"><span class="stats-top3-placeholder">Henüz veri yok</span></div>
+            </div>
+        </div>
+
         <!-- NET DEĞER KARTI -->
         <div class="stat-strip" style="grid-template-columns: 1fr; margin-bottom: 1.5rem;">
             <div class="stat-card stat-card-red">
@@ -402,6 +486,33 @@
                     <div class="stats-chart-badge">Çubuk Grafik</div>
                 </div>
                 <div class="stats-chart-body"><canvas id="expenseChart"></canvas></div>
+            </div>
+
+            <!-- GİDER KATEGORİ DAĞILIMI -->
+            <div class="stats-chart-card">
+                <div class="stats-chart-header">
+                    <div class="stats-chart-title">Gider Kategorileri</div>
+                    <div class="stats-chart-badge">Pasta Grafik</div>
+                </div>
+                <div class="stats-chart-body"><canvas id="expenseCatChart"></canvas></div>
+            </div>
+
+            <!-- AYLIK KAR/ZARAR TRENDİ -->
+            <div class="stats-chart-card">
+                <div class="stats-chart-header">
+                    <div class="stats-chart-title">Aylık Kâr/Zarar Trendi</div>
+                    <div class="stats-chart-badge">Çubuk Grafik</div>
+                </div>
+                <div class="stats-chart-body"><canvas id="plTrendChart"></canvas></div>
+            </div>
+
+            <!-- GİDER vs VARLIK ARTIŞI -->
+            <div class="stats-chart-card" style="grid-column:1 / -1;">
+                <div class="stats-chart-header">
+                    <div class="stats-chart-title">Gider vs Varlık Artışı</div>
+                    <div class="stats-chart-badge">Karşılaştırma</div>
+                </div>
+                <div class="stats-chart-body"><canvas id="expenseVsAssetChart"></canvas></div>
             </div>
         </div>
     </div>
