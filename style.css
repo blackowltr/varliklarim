@@ -929,10 +929,350 @@
         /* ============================================================
                SETTINGS — MODERN GROUPED LIST (iOS STYLE)
             ============================================================ */
+        /* ═══════════════════════════════════════════════════════════════
+           SETTINGS — Premium SaaS Design
+        ═══════════════════════════════════════════════════════════════ */
         .settings-container {
             max-width: 640px;
             margin: 0 auto;
             padding: 0 0 2rem;
+        }
+
+        .settings-section {
+            margin-bottom: 2rem;
+        }
+        .settings-section-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            padding: 0 20px 0.65rem;
+        }
+
+        .settings-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 14px rgba(0,0,0,0.03);
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            border: 1px solid var(--border);
+        }
+        .settings-card:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .settings-card {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 4px 14px rgba(0,0,0,0.15);
+        }
+        [data-theme="dark"] .settings-card:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 20px;
+            min-height: 54px;
+            transition: background 0.2s ease;
+        }
+        .settings-row:hover { background: var(--hover-bg); }
+
+        .settings-row + .settings-row-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 20px;
+            opacity: 0.5;
+        }
+        .settings-row:last-child + .settings-row-divider { display: none; }
+
+        /* ── Icon ── */
+        .settings-row-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .settings-row:hover .settings-row-icon { transform: scale(1.08) rotate(-2deg); }
+        .settings-row-icon svg { width: 18px; height: 18px; }
+
+        .settings-icon-teal   { background: var(--teal-light); color: var(--teal); }
+        .settings-icon-red    { background: var(--red-light); color: var(--red); }
+        .settings-icon-blue   { background: var(--blue-light, rgba(0,102,204,0.12)); color: var(--blue, #0066CC); }
+        .settings-icon-green  { background: rgba(52,199,89,0.14); color: #34C759; }
+        .settings-icon-purple { background: rgba(175,82,222,0.14); color: #AF52DE; }
+        .settings-icon-orange { background: rgba(255,159,10,0.14); color: #FF9F0A; }
+
+        /* ── Content (label + desc) ── */
+        .settings-row-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .settings-row-label {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .settings-row-desc {
+            font-size: 0.72rem;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        /* ── Right side action area ── */
+        .settings-row-action {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .settings-chevron {
+            width: 14px;
+            height: 14px;
+            color: var(--text-tertiary);
+            opacity: 0.4;
+            flex-shrink: 0;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .settings-action-btn:hover .settings-chevron {
+            transform: translateX(2px);
+            opacity: 0.7;
+        }
+
+        /* ── Segmented Control ── */
+        .settings-segment {
+            display: flex;
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+            border: 1px solid var(--border);
+        }
+        .settings-segment-option {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.76rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            white-space: nowrap;
+        }
+        .settings-segment-option:hover {
+            color: var(--text-primary);
+        }
+        .settings-segment-option.is-active {
+            background: var(--bg-card);
+            color: var(--teal);
+            font-weight: 600;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0.5px 1px rgba(0,0,0,0.04);
+        }
+        .settings-segment-option:focus-visible {
+            outline: 2px solid var(--teal);
+            outline-offset: 1px;
+        }
+
+        /* ── Color Swatches ── */
+        .settings-swatches {
+            display: flex;
+            gap: 10px;
+        }
+        .settings-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2.5px solid transparent;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        }
+        .settings-swatch:hover {
+            transform: scale(1.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        .settings-swatch.is-active {
+            border-color: var(--text-primary);
+            transform: scale(1.15);
+            box-shadow: 0 0 0 3px var(--bg-card), 0 0 0 5px currentColor;
+        }
+        .settings-swatch:focus-visible {
+            outline: 2px solid var(--teal);
+            outline-offset: 3px;
+        }
+
+        /* ── Goal Input Row ── */
+        .settings-goal-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .settings-goal-input {
+            flex: 1;
+            height: 42px;
+            padding: 0 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 11px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            outline: none;
+            transition: border-color 0.22s ease, box-shadow 0.22s ease;
+        }
+        .settings-goal-input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(0,147,158,0.12);
+        }
+        .settings-goal-input::placeholder {
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        .settings-goal-save {
+            height: 42px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 11px;
+            background: var(--teal);
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.22s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,147,158,0.2);
+        }
+        .settings-goal-save:hover {
+            background: var(--teal-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0,147,158,0.3);
+        }
+        .settings-goal-save:active { transform: translateY(0) scale(0.97); }
+        .settings-goal-save:focus-visible {
+            outline: 2px solid var(--teal);
+            outline-offset: 2px;
+        }
+        .settings-goal-save svg { width: 15px; height: 15px; }
+
+        .settings-goal-hint {
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: var(--green);
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .settings-goal-hint.is-visible { opacity: 1; }
+
+        /* ── Action Row (backup, pwa) ── */
+        .settings-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+            transition: background 0.2s ease;
+            min-height: 54px;
+        }
+        .settings-action-btn:hover { background: var(--hover-bg); }
+        .settings-action-btn:active { transform: scale(0.99); }
+        .settings-action-btn:focus-visible {
+            outline: 2px solid var(--teal);
+            outline-offset: -2px;
+            border-radius: 8px;
+        }
+        .settings-action-btn .settings-row-content { flex: 1; }
+        .settings-action-btn .settings-chevron { flex-shrink: 0; }
+
+        /* ── Info Note ── */
+        .settings-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 12px 20px 16px;
+            font-size: 0.72rem;
+            color: var(--text-tertiary);
+            line-height: 1.55;
+        }
+        .settings-note svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: var(--teal);
+            opacity: 0.6;
+        }
+
+        /* ── Danger Zone ── */
+        .settings-danger-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0 20px 12px;
+        }
+        .settings-danger-tag {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--red);
+            background: var(--red-light);
+            padding: 4px 11px;
+            border-radius: 100px;
+            border: 1px solid rgba(192,57,43,0.1);
+        }
+        .settings-danger-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px 20px;
+            border: none;
+            background: transparent;
+            color: var(--red);
+            font-family: inherit;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .settings-danger-btn:hover { background: var(--red-light); }
+        .settings-danger-btn:active { transform: scale(0.99); }
+        .settings-danger-btn:focus-visible {
+            outline: 2px solid var(--red);
+            outline-offset: -2px;
+            border-radius: 8px;
+        }
+        .settings-danger-btn svg { width: 16px; height: 16px; }
+
+        /* ── PWA Hint ── */
+        .settings-pwa-hint {
+            padding: 0 20px 16px;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            opacity: 0.65;
+            line-height: 1.45;
         }
 
         .settings-section {
@@ -2505,13 +2845,13 @@
         .debt-card,
         .card,
         .settings-container .settings-card {
-            animation: cardFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            animation: cardFadeIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
         }
-        .settings-container .settings-section:nth-child(1) .settings-card { animation-delay: 0.04s; }
-        .settings-container .settings-section:nth-child(2) .settings-card { animation-delay: 0.08s; }
-        .settings-container .settings-section:nth-child(3) .settings-card { animation-delay: 0.12s; }
-        .settings-container .settings-section:nth-child(4) .settings-card { animation-delay: 0.16s; }
-        .settings-container .settings-section:nth-child(5) .settings-card { animation-delay: 0.20s; }
+        .settings-container .settings-section:nth-child(1) .settings-card { animation-delay: 0.03s; }
+        .settings-container .settings-section:nth-child(2) .settings-card { animation-delay: 0.07s; }
+        .settings-container .settings-section:nth-child(3) .settings-card { animation-delay: 0.11s; }
+        .settings-container .settings-section:nth-child(4) .settings-card { animation-delay: 0.15s; }
+        .settings-container .settings-section:nth-child(5) .settings-card { animation-delay: 0.19s; }
 
         /* ───────────── MOBILE BOTTOM NAV GLASS (Legacy class support) ───────────── */
         .mobile-nav {
@@ -2942,21 +3282,22 @@
 
             /* Settings */
             .settings-card { border-radius: 14px; }
-            .settings-row { min-height: 48px; padding: 8px 14px; gap: 12px; }
-            .settings-row-icon { width: 30px; height: 30px; border-radius: 8px; }
+            .settings-row { min-height: 50px; padding: 10px 16px; gap: 12px; }
+            .settings-row-icon { width: 32px; height: 32px; border-radius: 9px; }
             .settings-row-icon svg { width: 16px; height: 16px; }
-            .settings-row-label { font-size: 0.82rem; }
-            .settings-row-desc { font-size: 0.66rem; }
-            .settings-segment-option { font-size: 0.72rem; padding: 4px 10px; }
-            .settings-swatch { width: 26px; height: 26px; }
+            .settings-row-label { font-size: 0.84rem; }
+            .settings-row-desc { font-size: 0.68rem; }
+            .settings-segment { border-radius: 9px; }
+            .settings-segment-option { font-size: 0.74rem; padding: 5px 12px; border-radius: 7px; }
+            .settings-swatch { width: 28px; height: 28px; }
             .settings-goal-row { flex-direction: column; align-items: stretch; }
             .settings-goal-save { width: 100%; justify-content: center; }
             .settings-container { padding: 0 0 5rem; }
-            .settings-section { margin-bottom: 1.25rem; }
-            .settings-action-btn { min-height: 48px; padding: 8px 14px; }
-            .settings-danger-tags { padding: 0 14px 8px; }
-            .settings-danger-tag { font-size: 0.66rem; padding: 2px 8px; }
-            .settings-danger-btn { padding: 10px 14px; font-size: 0.82rem; }
+            .settings-section { margin-bottom: 1.5rem; }
+            .settings-action-btn { min-height: 50px; padding: 10px 16px; }
+            .settings-danger-tags { padding: 0 16px 10px; }
+            .settings-danger-tag { font-size: 0.68rem; padding: 3px 9px; }
+            .settings-danger-btn { padding: 12px 16px; font-size: 0.84rem; }
 
             /* Modals - bottom sheet style */
             .modal-overlay {
