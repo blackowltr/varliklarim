@@ -90,27 +90,125 @@
         ============================================================ */
         body { font-family: 'DM Sans', sans-serif; background-color: var(--bg); color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; transition: background-color 0.4s ease, color 0.4s ease; line-height: 1.6; }
         
-        nav { position: sticky; top: 0; z-index: 100; background: var(--bg-nav); backdrop-filter: saturate(140%) blur(24px); -webkit-backdrop-filter: saturate(140%) blur(24px); border-bottom: 1px solid var(--border); transition: background 0.3s ease, border-color 0.3s ease; }
-        .nav-inner { max-width: 1600px; margin: 0 auto; padding: 0 2.5rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor:pointer; transition: opacity 0.2s; }
-        .nav-brand:hover { opacity: 0.8; }
-        .nav-logo { width: 30px; height: 30px; background: var(--teal); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-        .nav-brand:hover .nav-logo { border-radius: 10px; transform: scale(1.05); }
-        .nav-logo svg { width: 16px; height: 16px; fill: #fff; }
-        .nav-title { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
-        .nav-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+        /* ═══════════════════════════════════════════════════════════════
+           NAVBAR — Premium Glassmorphism Design
+        ═══════════════════════════════════════════════════════════════ */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: color-mix(in srgb, var(--bg) 72%, transparent);
+            backdrop-filter: saturate(180%) blur(24px) brightness(1.02);
+            -webkit-backdrop-filter: saturate(180%) blur(24px) brightness(1.02);
+            border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        nav.scrolled {
+            background: color-mix(in srgb, var(--bg) 88%, transparent);
+            box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+        }
+        [data-theme="dark"] nav {
+            background: color-mix(in srgb, var(--bg) 78%, transparent);
+            border-bottom-color: color-mix(in srgb, var(--border) 50%, transparent);
+        }
+        [data-theme="dark"] nav.scrolled {
+            background: color-mix(in srgb, var(--bg) 92%, transparent);
+            box-shadow: 0 1px 12px rgba(0,0,0,0.2);
+        }
+        .nav-inner {
+            max-width: 1600px; margin: 0 auto;
+            padding: 0 2.5rem; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1.5rem;
+        }
 
-        .btn-theme { height: 36px; width: 36px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-        .btn-theme:hover { background: var(--teal); color: #fff; border-color: transparent; transform: rotate(15deg) scale(1.05); }
-        .btn-theme:active { transform: rotate(30deg) scale(0.95); }
+        /* ── Brand ── */
+        .nav-brand {
+            display: flex; align-items: center; gap: 11px;
+            text-decoration: none; cursor: pointer;
+            transition: opacity 0.2s ease;
+            flex-shrink: 0;
+        }
+        .nav-brand:hover { opacity: 0.85; }
+        .nav-brand:focus-visible {
+            outline: 2px solid var(--teal); outline-offset: 4px;
+            border-radius: 8px;
+        }
+        .nav-logo {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--teal) 0%, color-mix(in srgb, var(--teal) 70%, #fff) 100%);
+            border-radius: 9px; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-radius 0.25s ease;
+            box-shadow: 0 2px 8px rgba(0,147,158,0.2);
+        }
+        .nav-brand:hover .nav-logo {
+            border-radius: 11px; transform: scale(1.08) rotate(-2deg);
+        }
+        .nav-logo svg { width: 17px; height: 17px; fill: #fff; }
+        .nav-title {
+            font-size: 1.02rem; font-weight: 650; color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+
+        /* ── Actions ── */
+        .nav-actions {
+            display: flex; gap: 6px; align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* ── Theme Toggle ── */
+        .btn-theme {
+            height: 36px; width: 36px; border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-secondary);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-theme:hover {
+            background: var(--teal); color: #fff; border-color: transparent;
+            transform: rotate(20deg) scale(1.08);
+            box-shadow: 0 4px 14px rgba(0,147,158,0.25);
+        }
+        .btn-theme:active { transform: rotate(35deg) scale(0.94); }
+        .btn-theme:focus-visible {
+            outline: 2px solid var(--teal); outline-offset: 2px;
+        }
         .btn-theme svg { width: 16px; height: 16px; }
 
-        .btn-nav { height: 36px; padding: 0 18px; border-radius: 100px; border: 1px solid var(--border-strong); background: var(--bg-card); color: var(--text-primary); font-family: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition); white-space: nowrap; }
-        .btn-nav:hover, .btn-nav.active { background: var(--teal); color: #fff; border-color: transparent; transform: translateY(-1px); box-shadow: 0 4px 12px var(--teal-glow); }
-        .btn-nav:active { transform: translateY(0) scale(0.97); }
-        .btn-nav.btn-accent { background: var(--teal-light); color: var(--teal); border-color: transparent; font-weight: 600;}
-        .btn-nav.btn-accent:hover { background: var(--teal); color: #fff; }
-        .btn-nav svg { width: 13px; height: 13px; flex-shrink: 0; }
+        /* ── Nav Buttons ── */
+        .btn-nav {
+            height: 36px; padding: 0 16px; border-radius: 10px;
+            border: 1px solid transparent; background: transparent;
+            color: var(--text-secondary); font-family: inherit;
+            font-size: 0.84rem; font-weight: 500; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.22s ease; white-space: nowrap;
+            position: relative;
+        }
+        .btn-nav:hover {
+            color: var(--text-primary); background: var(--hover-bg);
+            border-color: var(--border);
+        }
+        .btn-nav.active {
+            color: var(--teal); background: var(--teal-light);
+            font-weight: 600; border-color: color-mix(in srgb, var(--teal) 20%, transparent);
+        }
+        .btn-nav:active { transform: scale(0.96); }
+        .btn-nav:focus-visible {
+            outline: 2px solid var(--teal); outline-offset: 2px;
+        }
+        .btn-nav svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        /* ── Accent Button (Kur Güncelle) ── */
+        .btn-nav.btn-accent {
+            background: var(--teal); color: #fff;
+            border-color: transparent; font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,147,158,0.2);
+        }
+        .btn-nav.btn-accent:hover {
+            background: var(--teal-hover); color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0,147,158,0.3);
+        }
+        .btn-nav.btn-accent:active { transform: translateY(0) scale(0.97); }
 
         .btn-submit { height: 40px; padding: 0 24px; border-radius: 100px; border: none; background: var(--teal); color: #fff; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition); white-space: nowrap; }
         .btn-submit:hover { background: var(--teal-hover); transform: translateY(-1px); box-shadow: 0 4px 12px var(--teal-glow); }
@@ -1139,16 +1237,22 @@
         [data-font-size="xlarge"] { font-size: 19px; }
 
         /* ============================================================
-           MOBİL BOTTOM NAVIGATION - BANKA UYGULAMASI TARZI
+           MOBİL BOTTOM NAVIGATION — Premium Design
         ============================================================ */
         .mobile-bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
-            background: var(--bg-nav); backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+            background: color-mix(in srgb, var(--bg) 72%, transparent);
+            backdrop-filter: saturate(180%) blur(24px) brightness(1.02);
+            -webkit-backdrop-filter: saturate(180%) blur(24px) brightness(1.02);
+            border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+            padding: 6px 0 max(6px, env(safe-area-inset-bottom));
             display: none;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 -1px 12px rgba(0,0,0,0.04);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        [data-theme="dark"] .mobile-bottom-nav {
+            background: color-mix(in srgb, var(--bg) 80%, transparent);
+            box-shadow: 0 -1px 12px rgba(0,0,0,0.15);
         }
         
         @media(max-width: 600px) {
@@ -1157,35 +1261,50 @@
         }
         
         .mobile-bottom-nav-inner {
-            display: flex; justify-content: space-around; align-items: stretch;
-            gap: 4px; padding: 0 8px; max-width: 600px; margin: 0 auto;
+            display: flex; justify-content: space-around; align-items: center;
+            gap: 2px; padding: 0 12px; max-width: 480px; margin: 0 auto;
         }
         
         .mobile-nav-item {
             display: flex; flex-direction: column; align-items: center;
-            gap: 4px; padding: 6px 8px; border-radius: 10px;
+            gap: 3px; padding: 6px 12px; border-radius: 12px;
             background: transparent; border: none; cursor: pointer;
-            transition: var(--transition-linear); position: relative;
+            transition: all 0.22s ease; position: relative;
             text-decoration: none; color: var(--text-tertiary);
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        .mobile-nav-item:active { transform: scale(0.95); }
+        .mobile-nav-item:focus-visible {
+            outline: 2px solid var(--teal); outline-offset: 2px;
+        }
+        .mobile-nav-item:active { transform: scale(0.92); }
         
         .mobile-nav-item.active {
-            color: var(--teal); background: var(--teal-light);
+            color: var(--teal);
+        }
+        .mobile-nav-item.active::before {
+            content: ''; position: absolute; top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 24px; height: 2.5px; border-radius: 0 0 3px 3px;
+            background: var(--teal);
+            animation: navIndicatorIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        @keyframes navIndicatorIn {
+            from { transform: translateX(-50%) scaleX(0); opacity: 0; }
+            to { transform: translateX(-50%) scaleX(1); opacity: 1; }
         }
         
         .mobile-nav-icon {
-            width: 24px; height: 24px; display: flex;
+            width: 26px; height: 26px; display: flex;
             align-items: center; justify-content: center;
-            transition: var(--transition-linear);
+            transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .mobile-nav-item.active .mobile-nav-icon { transform: scale(1.1); }
-        .mobile-nav-icon svg { width: 20px; height: 20px; }
+        .mobile-nav-item.active .mobile-nav-icon { transform: scale(1.15); }
+        .mobile-nav-icon svg { width: 21px; height: 21px; }
         
         .mobile-nav-label {
-            font-size: 0.65rem; font-weight: 600;
+            font-size: 0.62rem; font-weight: 600;
             letter-spacing: -0.01em; line-height: 1;
+            transition: color 0.2s ease;
         }
         
         /* Mobil için Desktop Nav gizle */
@@ -2394,20 +2513,20 @@
         .settings-container .settings-section:nth-child(4) .settings-card { animation-delay: 0.16s; }
         .settings-container .settings-section:nth-child(5) .settings-card { animation-delay: 0.20s; }
 
-        /* ───────────── MOBILE BOTTOM NAV GLASS ───────────── */
+        /* ───────────── MOBILE BOTTOM NAV GLASS (Legacy class support) ───────────── */
         .mobile-nav {
-            backdrop-filter: blur(22px) saturate(1.8);
-            -webkit-backdrop-filter: blur(22px) saturate(1.8);
-            background: rgba(255,255,255,0.82) !important;
-            border-top: 1px solid var(--border) !important;
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            background: color-mix(in srgb, var(--bg) 75%, transparent) !important;
+            border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent) !important;
             padding-bottom: max(8px, env(safe-area-inset-bottom));
         }
         [data-theme="dark"] .mobile-nav {
-            background: rgba(25,25,30,0.88) !important;
-            border-top-color: rgba(255,255,255,0.06) !important;
+            background: color-mix(in srgb, var(--bg) 82%, transparent) !important;
+            border-top-color: color-mix(in srgb, var(--border) 40%, transparent) !important;
         }
         .mobile-nav-item {
-            position: relative; transition: var(--transition);
+            position: relative; transition: all 0.22s ease;
             -webkit-tap-highlight-color: transparent;
         }
         .mobile-nav-item::after {
@@ -2424,8 +2543,8 @@
         .mobile-nav-item.active .mobile-nav-label {
             color: var(--teal) !important; font-weight: 600;
         }
-        .mobile-nav-icon { transition: transform 0.2s; }
-        .mobile-nav-label { transition: color 0.2s; }
+        .mobile-nav-icon { transition: transform 0.22s ease; }
+        .mobile-nav-label { transition: color 0.2s ease; }
 
         /* ───────────── MICRO‑INTERACTIONS ───────────── */
         button:active,
@@ -2492,21 +2611,22 @@
             body::before { display: none; }
             nav:not(.mobile-bottom-nav) {
                 position: sticky; top: 0; z-index: 100;
-                background: color-mix(in srgb, var(--bg) 82%, transparent);
-                backdrop-filter: blur(24px);
-                -webkit-backdrop-filter: blur(24px);
-                border-bottom: 1px solid var(--border);
+                background: color-mix(in srgb, var(--bg) 80%, transparent);
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+                border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
             }
             .nav-inner {
                 height: 52px;
                 padding: 0 max(14px, env(safe-area-inset-left)) 0 max(14px, env(safe-area-inset-right));
             }
             .nav-title {
-                font-size: 0.92rem; max-width: 120px;
+                font-size: 0.9rem; max-width: 110px;
                 overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+                letter-spacing: -0.02em;
             }
-            .nav-logo { width: 26px; height: 26px; border-radius: 7px; }
-            .nav-logo svg { width: 14px; height: 14px; }
+            .nav-logo { width: 28px; height: 28px; border-radius: 8px; }
+            .nav-logo svg { width: 15px; height: 15px; }
             #price-last-update { display: none; }
 
             /* Hide all desktop text nav buttons, show only icon buttons */
@@ -2515,7 +2635,8 @@
                 display: inline-flex !important;
                 width: 34px; height: 34px; padding: 0;
                 justify-content: center; border-radius: 10px;
-                background: var(--teal-light); border-color: transparent;
+                background: var(--teal); color: #fff; border-color: transparent;
+                box-shadow: 0 2px 8px rgba(0,147,158,0.2);
             }
             .btn-nav.btn-accent svg { width: 15px !important; height: 15px !important; }
             .btn-nav.btn-accent { font-size: 0; gap: 0; }
@@ -3015,18 +3136,26 @@
             .stat-card:hover { transform: none; box-shadow: var(--shadow-sm); }
             .stats-summary-card:hover { transform: none; box-shadow: var(--shadow-sm); }
             .debt-stat-card:hover { transform: none; box-shadow: var(--shadow-sm); }
-            .btn-nav:hover { transform: none; }
+            .btn-nav:hover { transform: none; background: transparent; border-color: transparent; }
+            .btn-nav.active:hover { background: var(--teal-light); }
             .settings-card:hover { box-shadow: var(--shadow-sm); }
             .panel:hover { box-shadow: var(--shadow-sm); }
         }
 
-        /* Floating Action Button for Mobile */
+        /* Floating Action Button for Mobile — Premium */
         .sidebar-backdrop {
             position: fixed; inset: 0; z-index: 109;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(6px) saturate(120%);
+            -webkit-backdrop-filter: blur(6px) saturate(120%);
             display: none;
+            animation: backdropFadeIn 0.25s ease;
+        }
+        [data-theme="dark"] .sidebar-backdrop {
+            background: rgba(0,0,0,0.55);
+        }
+        @keyframes backdropFadeIn {
+            from { opacity: 0; } to { opacity: 1; }
         }
         .sidebar-backdrop.open { display: block; }
 
@@ -3039,19 +3168,30 @@
             .mobile-fab { display: block; }
         }
         .mobile-fab-btn {
-            width: 56px; height: 56px; border-radius: 50%; border: none;
-            background: var(--teal); color: #fff; cursor: pointer;
+            width: 54px; height: 54px; border-radius: 16px; border: none;
+            background: linear-gradient(135deg, var(--teal) 0%, color-mix(in srgb, var(--teal) 80%, #fff) 100%);
+            color: #fff; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 16px rgba(0,147,158,0.35), 0 2px 8px rgba(0,0,0,0.08);
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 16px rgba(0,147,158,0.3), 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             -webkit-tap-highlight-color: transparent;
         }
+        .mobile-fab-btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 24px rgba(0,147,158,0.4), 0 2px 8px rgba(0,0,0,0.08);
+        }
         .mobile-fab-btn:active { transform: scale(0.92); }
-        .mobile-fab-btn svg { width: 24px; height: 24px; }
+        .mobile-fab-btn svg { width: 22px; height: 22px; }
+        .mobile-fab-btn.is-open svg { transform: rotate(45deg); transition: transform 0.25s ease; }
         .mobile-fab-menu {
-            position: absolute; bottom: 66px; right: 0;
+            position: absolute; bottom: 64px; right: 0;
             display: none; flex-direction: column; gap: 8px;
             min-width: 200px;
+            animation: fabMenuIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        @keyframes fabMenuIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .mobile-fab-menu.is-open { display: flex; }
         .mobile-fab-menu-item {
@@ -3060,8 +3200,11 @@
             background: var(--bg-card); color: var(--text-primary);
             font-family: inherit; font-size: 0.85rem; font-weight: 500;
             cursor: pointer; box-shadow: var(--shadow-md);
-            transition: var(--transition-linear);
+            transition: all 0.2s ease;
             -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-fab-menu-item:hover {
+            background: var(--hover-bg); border-color: var(--border-strong);
         }
         .mobile-fab-menu-item:active { transform: scale(0.96); }
         .mobile-fab-menu-item svg { width: 18px; height: 18px; color: var(--teal); flex-shrink: 0; }

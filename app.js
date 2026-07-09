@@ -2384,6 +2384,23 @@
         // Mobil Bottom Navigation aktif durumu
         updateMobileNav();
 
+        // Navbar scroll detection — glassmorphism shadow
+        const mainNav = document.querySelector('nav:not(.mobile-bottom-nav)');
+        if (mainNav) {
+            let lastScrollY = 0;
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                lastScrollY = window.scrollY;
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        mainNav.classList.toggle('scrolled', lastScrollY > 8);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
+
         // URL hash ile gizli sayfa yönlendirmesi (örn: #expenses)
         if (window.location.hash) {
             const hashTab = window.location.hash.replace('#', '');
