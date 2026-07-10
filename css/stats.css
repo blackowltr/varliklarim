@@ -1,0 +1,320 @@
+/* ============================================================
+   STATS — Statistics Page: Hero, Summary Cards, Charts,
+           Debt Summary, Top 3, P&L Detail
+   ============================================================ */
+
+/* ============================================================
+   STATS VIEW — PREMIUM REDESIGN
+============================================================ */
+#stats-view, #debts-view, #settings-view, #expenses-view { display: none; }
+#stats-view { animation: statsFadeIn 0.5s ease; }
+
+/* Hero Goal Section */
+.stats-hero {
+    position: relative; border-radius: var(--radius-xl); overflow: hidden;
+    margin-bottom: 1.5rem; min-height: 200px;
+    background: linear-gradient(145deg, var(--bg-card) 0%, var(--teal-light) 100%);
+    border: 1px solid var(--border-strong); box-shadow: var(--shadow-md);
+}
+[data-theme="dark"] .stats-hero { background: linear-gradient(145deg, var(--bg-card) 0%, rgba(46, 203, 214, 0.06) 100%); }
+.stats-hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+        radial-gradient(circle at 15% 50%, var(--teal-glow) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(168, 123, 0, 0.06) 0%, transparent 40%);
+    opacity: 0.8;
+}
+.stats-hero-content {
+    position: relative; display: flex; align-items: center; justify-content: space-between;
+    padding: 2.5rem 3rem; gap: 2rem; z-index: 1;
+}
+
+.stats-hero-left { flex: 1; }
+.stats-hero-eyebrow {
+    font-size: 0.68rem; font-weight: 600; color: var(--teal); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 0.3rem;
+}
+.stats-hero-title {
+    font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400;
+    color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.3rem; line-height: 1.15;
+}
+.stats-hero-sub {
+    font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.875rem; line-height: 1.5;
+}
+.stats-hero-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--teal); color: #fff; padding: 5px 14px;
+    border-radius: 100px; font-size: 0.74rem; font-weight: 600;
+    box-shadow: 0 4px 14px var(--teal-glow);
+}
+.stats-hero-badge svg { width: 13px; height: 13px; }
+
+.stats-hero-right { flex-shrink: 0; }
+.stats-ring-wrap { position: relative; width: 120px; height: 120px; }
+.stats-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.stats-ring-bg {
+    fill: none; stroke: var(--border-strong); stroke-width: 6;
+}
+.stats-ring-fill {
+    fill: none; stroke: url(#ringGrad); stroke-width: 6; stroke-linecap: round;
+    stroke-dasharray: 326.7; stroke-dashoffset: 326.7;
+    transition: stroke-dashoffset 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stats-ring-label {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+}
+.stats-ring-pct {
+    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
+    font-weight: 400; color: var(--text-primary); line-height: 1.1;
+}
+.stats-ring-sub { font-size: 0.65rem; color: var(--text-tertiary); font-weight: 500; }
+
+/* Summary Cards — Premium */
+.stats-summary-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;
+}
+
+.stats-summary-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 1.2rem 1.4rem; box-shadow: var(--shadow-sm); display: flex; align-items: center;
+    gap: 14px; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden;
+    animation: cardSlideUp 0.5s ease both;
+}
+.stats-summary-card:nth-child(1) { animation-delay: 0.05s; }
+.stats-summary-card:nth-child(2) { animation-delay: 0.12s; }
+.stats-summary-card:nth-child(3) { animation-delay: 0.19s; }
+.stats-summary-card:nth-child(4) { animation-delay: 0.26s; }
+
+.stats-summary-card::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; opacity: 0;
+    transition: opacity 0.3s;
+}
+.stats-summary-card::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06) 0%, transparent 60%);
+    pointer-events: none;
+}
+.stats-summary-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.stats-summary-card:hover::before { opacity: 1; }
+
+.stats-sc-1m::before { background: var(--teal); }
+.stats-sc-6m::before { background: var(--gold); }
+.stats-sc-1y::before { background: var(--green); }
+
+.stats-sc-icon {
+    width: 44px; height: 44px; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stats-summary-card:hover .stats-sc-icon { transform: scale(1.08) rotate(-3deg); }
+.stats-sc-1m .stats-sc-icon { background: var(--teal-light); color: var(--teal); }
+.stats-sc-6m .stats-sc-icon { background: var(--gold-light); color: var(--gold); }
+.stats-sc-1y .stats-sc-icon { background: var(--green-light); color: var(--green); }
+.stats-sc-icon svg { width: 20px; height: 20px; }
+
+.stats-sc-body { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.stats-sc-label { font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; }
+.stats-sc-value { font-family: 'DM Serif Display', serif; font-size: 1.35rem; font-weight: 400; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.2; }
+.stats-sc-hint { font-size: 0.68rem; color: var(--text-tertiary); }
+
+/* Extended Stats Cards */
+.stats-grid-extended { grid-template-columns: repeat(3, 1fr); }
+
+.stats-sc-savings::before { background: var(--teal); }
+.stats-sc-growth::before { background: var(--gold); }
+.stats-sc-risk::before { background: var(--red); }
+
+.stats-icon-teal { background: var(--teal-light); color: var(--teal); }
+.stats-icon-gold { background: var(--gold-light); color: var(--gold); }
+.stats-icon-red { background: var(--red-light); color: var(--red); }
+
+/* Debt Summary Card */
+/* ═══════════════════════════════════════════════════════════════
+   DEBT SUMMARY CARD — Premium Design
+═══════════════════════════════════════════════════════════════ */
+.stats-debt-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 0;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 14px rgba(0,0,0,0.03);
+    overflow: hidden;
+    animation: cardSlideUp 0.5s ease both;
+    position: relative;
+}
+[data-theme="dark"] .stats-debt-summary {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 4px 14px rgba(0,0,0,0.15);
+}
+.stats-debt-summary::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--red), #E74C3C, var(--gold));
+    opacity: 0.8;
+}
+
+.stats-debt-summary-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 1.4rem 1.8rem 1rem;
+}
+.stats-debt-summary-icon {
+    width: 44px; height: 44px; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(192,57,43,0.1), rgba(192,57,43,0.05));
+    color: var(--red);
+    border: 1px solid rgba(192,57,43,0.12);
+}
+.stats-debt-summary-icon svg { width: 20px; height: 20px; }
+.stats-debt-summary-title {
+    font-size: 1rem; font-weight: 700; color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+.stats-debt-summary-subtitle {
+    font-size: 0.72rem; color: var(--text-tertiary); margin-top: 1px;
+}
+
+.stats-debt-summary-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin: 0;
+}
+.stats-debt-summary-item {
+    text-align: center;
+    padding: 1.1rem 0.5rem;
+    position: relative;
+    transition: background 0.2s ease;
+}
+.stats-debt-summary-item:hover { background: var(--hover-bg); }
+.stats-debt-summary-item:not(:last-child)::after {
+    content: '';
+    position: absolute; top: 20%; right: 0; bottom: 20%;
+    width: 1px; background: var(--border);
+}
+.stats-debt-summary-val {
+    font-family: 'DM Serif Display', serif; font-size: 1.35rem; font-weight: 400;
+    color: var(--text-primary); line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+.stats-dsv-green { color: var(--green) !important; }
+.stats-dsv-red { color: var(--red) !important; }
+.stats-debt-summary-label {
+    font-size: 0.66rem; font-weight: 700; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px;
+}
+
+.stats-debt-progress {
+    padding: 0.75rem 1.8rem 1.4rem;
+    border-top: 1px solid var(--border);
+}
+.stats-debt-progress-label {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.76rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px;
+}
+.stats-debt-progress-pct {
+    font-family: 'DM Serif Display', serif; font-size: 0.9rem;
+    color: var(--teal); font-weight: 400;
+}
+.stats-debt-progress-track {
+    width: 100%; height: 8px; background: var(--progress-bg);
+    border-radius: 10px; overflow: hidden;
+    position: relative;
+}
+.stats-debt-progress-fill {
+    height: 100%; border-radius: 10px;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    position: relative;
+}
+.stats-debt-progress-fill::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+
+/* Top 3 Card */
+.stats-top3-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+    padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);
+    animation: cardSlideUp 0.5s ease both; animation-delay: 0.1s;
+}
+.stats-top3-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem;
+}
+.stats-top3-icon {
+    width: 38px; height: 38px; border-radius: 11px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    background: var(--gold-light); color: var(--gold);
+}
+.stats-top3-icon svg { width: 18px; height: 18px; }
+.stats-top3-title { font-size: 0.88rem; font-weight: 650; color: var(--text-primary); }
+.stats-top3-list { display: flex; flex-direction: column; gap: 0; }
+.stats-top3-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+}
+.stats-top3-item:last-child { border-bottom: none; }
+.stats-top3-placeholder { font-size: 0.85rem; color: var(--text-tertiary); }
+.stats-top3-rank {
+    width: 26px; height: 26px; border-radius: 7px; display: flex;
+    align-items: center; justify-content: center; font-size: 0.72rem;
+    font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.stats-top3-rank-1 { background: linear-gradient(135deg, #D4A017, #F0C040); }
+.stats-top3-rank-2 { background: linear-gradient(135deg, #95A5A6, #BDC3C7); }
+.stats-top3-rank-3 { background: linear-gradient(135deg, #A0522D, #CD853F); }
+.stats-top3-name { flex: 1; font-size: 0.84rem; font-weight: 600; color: var(--text-primary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stats-top3-weight { font-size: 0.78rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.stats-top3-value {
+    font-family: 'DM Serif Display', serif; font-size: 1rem; font-weight: 400;
+    color: var(--text-primary); flex-shrink: 0;
+}
+.stats-top3-pct {
+    font-size: 0.7rem; font-weight: 600; color: var(--text-tertiary);
+    flex-shrink: 0; text-align: right; min-width: 40px;
+}
+
+/* Charts */
+.stats-charts-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;
+}
+
+.stats-chart-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+    padding: 1.25rem 1.5rem; box-shadow: var(--shadow-sm); transition: all 0.25s ease;
+    animation: chartFadeIn 0.6s ease both;
+}
+.stats-chart-card:nth-child(1) { animation-delay: 0.15s; }
+.stats-chart-card:nth-child(2) { animation-delay: 0.25s; }
+.stats-chart-card:hover { box-shadow: var(--shadow-md); }
+.stats-chart-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;
+}
+.stats-chart-title { font-size: 0.85rem; font-weight: 650; color: var(--text-primary); letter-spacing: -0.01em; }
+.stats-chart-badge {
+    font-size: 0.66rem; font-weight: 600; color: var(--teal); background: var(--teal-light);
+    padding: 3px 10px; border-radius: 100px;
+}
+.stats-chart-body { height: 260px; position: relative; }
+
+/* P&L Detail Card */
+.pnl-detail-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.875rem; margin-bottom: 1rem;
+}
+.pnl-detail-item {
+    background: var(--bg-input); border-radius: var(--radius-md); padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+}
+.pnl-detail-label { font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.pnl-detail-value { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; color: var(--text-primary); }
+.pnl-bar-wrap {
+    display: flex; align-items: center; gap: 10px; padding: 0.5rem 0;
+}
+.pnl-bar-label { font-size: 0.68rem; font-weight: 600; color: var(--text-tertiary); white-space: nowrap; }
+.pnl-bar-track {
+    flex: 1; height: 6px; background: var(--border-strong); border-radius: 100px; overflow: hidden;
+}
+.pnl-bar-fill {
+    height: 100%; background: var(--green); border-radius: 100px; transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.pnl-bar-pct { font-size: 0.75rem; font-weight: 700; color: var(--text-primary); min-width: 40px; text-align: right; font-variant-numeric: tabular-nums; }

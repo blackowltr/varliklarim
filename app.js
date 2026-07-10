@@ -24,6 +24,13 @@
         if (Array.isArray(storedExpenses)) expenses = storedExpenses;
     } catch(e) { console.error(e); }
 
+    // Abonelik Takip Sistemi
+    let subscriptions = [];
+    try {
+        const storedSubs = JSON.parse(localStorage.getItem('userSubscriptions'));
+        if (Array.isArray(storedSubs)) subscriptions = storedSubs;
+    } catch(e) { console.error(e); }
+
     const defaultPrices = { "24k": 3000, "22k": 2850, "cumhuriyet": 20500, "yarim": 10250, "ceyrek": 5125, "18k": 2250, "14k": 1750, "usd": 34.50 };
     let prices = { ...defaultPrices };
     try {
@@ -64,6 +71,9 @@
     
     const expenseDateInput = document.getElementById('expense-date');
     if(expenseDateInput) expenseDateInput.valueAsDate = new Date();
+
+    const subStartDateInput = document.getElementById('sub-start-date');
+    if(subStartDateInput) subStartDateInput.valueAsDate = new Date();
 
     function toggleTheme() {
         const doc = document.documentElement;
@@ -1296,6 +1306,7 @@
         let expPrices = prices;
         let expPriceHistory = [];
         let expExpenses = expenses;
+        let expSubscriptions = subscriptions;
 
         try { const s = localStorage.getItem('goldInventory'); if(s) expInventory = JSON.parse(s); } catch(e){}
         try { const s = localStorage.getItem('goldDebts');     if(s) expDebts     = JSON.parse(s); } catch(e){}
@@ -1303,6 +1314,7 @@
         try { const s = localStorage.getItem('goldPrices');    if(s) expPrices    = JSON.parse(s); } catch(e){}
         try { const s = localStorage.getItem('priceHistory');  if(s) expPriceHistory = JSON.parse(s); } catch(e){}
         try { const s = localStorage.getItem('monthlyExpenses'); if(s) expExpenses = JSON.parse(s); } catch(e){}
+        try { const s = localStorage.getItem('userSubscriptions'); if(s) expSubscriptions = JSON.parse(s); } catch(e){}
 
         const fullData = {
             inventory:    expInventory,
@@ -1311,6 +1323,7 @@
             zakatHistory: expZakatHistory,
             priceHistory: expPriceHistory,
             expenses:     expExpenses,
+            subscriptions: expSubscriptions,
             targetGoal:   localStorage.getItem('goldGoalTarget') || "1000000"
         };
         const blob = new Blob([JSON.stringify(fullData, null, 2)], { type: 'application/json' });
@@ -1348,6 +1361,11 @@
                 if (Array.isArray(data.expenses)) {
                     expenses = data.expenses;
                     localStorage.setItem('monthlyExpenses', JSON.stringify(expenses));
+                }
+
+                if (Array.isArray(data.subscriptions)) {
+                    subscriptions = data.subscriptions;
+                    localStorage.setItem('userSubscriptions', JSON.stringify(subscriptions));
                 }
 
                 if (data.prices && typeof data.prices === 'object') {
@@ -1694,18 +1712,226 @@
 
     function clearAllData() {
         if (!confirm('Tüm veriler kalıcı olarak silinecek. Bu işlem geri alınamaz!\n\nDevam etmek istiyor musunuz?')) return;
-        const keys = ['goldInventory', 'goldPrices', 'goldDebts', 'zakatHistoryRecords', 'goldGoalTarget', 'zakatNextDueDate', 'priceHistory', 'monthlyExpenses'];
+        const keys = ['goldInventory', 'goldPrices', 'goldDebts', 'zakatHistoryRecords', 'goldGoalTarget', 'zakatNextDueDate', 'priceHistory', 'monthlyExpenses', 'userSubscriptions'];
         keys.forEach(k => localStorage.removeItem(k));
         inventory = [];
         debts = [];
         zakatHistory = [];
         expenses = [];
+        subscriptions = [];
         zakatNextDueDate = null;
         prices = { ...defaultPrices };
         updateUI();
         updateDebtsUI();
         updateExpensesUI();
         alert('Tüm veriler başarıyla silindi.');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // ABONELİK TAKİP SİSTEMİ
+    // ═══════════════════════════════════════════════════════════════
+
+    const subscriptionCategoryNames = {
+        streaming: '📺 Streaming',
+        music: '🎵 Müzik',
+        software: '💻 Yazılım',
+        cloud: '☁️ Bulut',
+        gaming: '🎮 Oyun',
+        news: '📰 Haber/Medya',
+        fitness: '🏋️ Spor/Sağlık',
+        education: '📚 Eğitim',
+        telefon: '📱 Telefon/İnternet',
+        diger: '📦 Diğer'
+    };
+
+    const subscriptionCategoryColors = {
+        streaming: '#E74C3C',
+        music: '#1DB954',
+        software: '#0078D4',
+        cloud: '#3498DB',
+        gaming: '#9B59B6',
+        news: '#E67E22',
+        fitness: '#2ECC71',
+        education: '#F1C40F',
+        telefon: '#00939E',
+        diger: '#7A9FA5'
+    };
+
+    function toggleSubscriptionsView() {
+        const expView = document.getElementById('expenses-view');
+        const subView = document.getElementById('subscriptions-view');
+        if (!expView || !subView) return;
+
+        const isSubVisible = subView.style.display !== 'none';
+        if (isSubVisible) {
+            subView.style.display = 'none';
+            expView.style.display = 'block';
+            expView.classList.remove('view-enter');
+            void expView.offsetWidth;
+            expView.classList.add('view-enter');
+            updateExpensesUI();
+        } else {
+            expView.style.display = 'none';
+            subView.style.display = 'block';
+            subView.classList.remove('view-enter');
+            void subView.offsetWidth;
+            subView.classList.add('view-enter');
+            updateSubscriptionsUI();
+        }
+    }
+
+    function addSubscription(event) {
+        event.preventDefault();
+        const name = document.getElementById('sub-name').value.trim();
+        const category = document.getElementById('sub-category').value;
+        const amount = parseFloat(document.getElementById('sub-amount').value);
+        const period = document.getElementById('sub-period').value;
+        const startDate = document.getElementById('sub-start-date').value;
+        const note = document.getElementById('sub-note').value.trim();
+
+        if (!name || !amount || amount <= 0 || !startDate) {
+            showToast('Lütfen tüm zorunlu alanları doldurun', 'error');
+            return;
+        }
+
+        const sub = {
+            id: Date.now(),
+            name,
+            category,
+            amount,
+            period,
+            startDate,
+            note,
+            timestamp: new Date(startDate).getTime()
+        };
+
+        subscriptions.push(sub);
+        localStorage.setItem('userSubscriptions', JSON.stringify(subscriptions));
+
+        document.getElementById('subscription-form').reset();
+        const subDateInput = document.getElementById('sub-start-date');
+        if (subDateInput) subDateInput.valueAsDate = new Date();
+
+        showToast(`${name} aboneliği eklendi: ${amount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL/${period === 'yearly' ? 'yıl' : 'ay'}`, 'success');
+        updateSubscriptionsUI();
+    }
+
+    function deleteSubscription(id) {
+        if (!confirm('Bu aboneliği silmek istediğinize emin misiniz?')) return;
+        
+        subscriptions = subscriptions.filter(s => s.id !== id);
+        localStorage.setItem('userSubscriptions', JSON.stringify(subscriptions));
+        
+        showToast('Abonelik silindi', 'success');
+        updateSubscriptionsUI();
+    }
+
+    function updateSubscriptionsUI() {
+        if (!document.getElementById('subscriptions-view')) return;
+
+        let totalMonthly = 0;
+        let totalCount = subscriptions.length;
+        let mostExpensive = { name: '—', amount: 0, monthlyAmount: 0 };
+
+        subscriptions.forEach(s => {
+            const monthlyAmount = s.period === 'yearly' ? s.amount / 12 : s.amount;
+            totalMonthly += monthlyAmount;
+
+            if (monthlyAmount > mostExpensive.monthlyAmount) {
+                mostExpensive = { name: s.name, amount: s.amount, monthlyAmount };
+            }
+        });
+
+        const yearlyTotal = totalMonthly * 12;
+
+        const countEl = document.getElementById('subs-total-count');
+        const monthlyEl = document.getElementById('subs-monthly-total');
+        const yearlyEl = document.getElementById('subs-yearly-total');
+        const expensiveEl = document.getElementById('subs-most-expensive');
+
+        if (countEl) countEl.textContent = totalCount;
+        if (monthlyEl) monthlyEl.textContent = totalMonthly.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' TL';
+        if (yearlyEl) yearlyEl.textContent = yearlyTotal.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' TL';
+        if (expensiveEl) {
+            if (totalCount > 0) {
+                expensiveEl.innerHTML = `${mostExpensive.name}<br><span style="font-size:0.7rem;color:var(--text-tertiary);font-family:inherit;">${mostExpensive.monthlyAmount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL/ay</span>`;
+            } else {
+                expensiveEl.textContent = '—';
+            }
+        }
+
+        renderSubscriptionList();
+    }
+
+    function renderSubscriptionList() {
+        const container = document.getElementById('subs-list-container');
+        const subtitle = document.getElementById('subs-list-subtitle');
+
+        if (!container) return;
+
+        if (subtitle) {
+            subtitle.textContent = `Toplam ${subscriptions.length} abonelik`;
+        }
+
+        if (subscriptions.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:2.5rem 1rem;"><div style="width:48px;height:48px;border-radius:14px;background:var(--gold-light);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><p style="color:var(--text-tertiary); font-size:0.88rem; font-weight:500;">Henüz abonelik eklenmemiş</p><p style="color:var(--text-tertiary); font-size:0.76rem; margin-top:4px;">Sol panelden düzenli ödemelerinizi ekleyin</p></div>';
+            return;
+        }
+
+        const sorted = [...subscriptions].sort((a, b) => {
+            const mA = a.period === 'yearly' ? a.amount / 12 : a.amount;
+            const mB = b.period === 'yearly' ? b.amount / 12 : b.amount;
+            return mB - mA;
+        });
+
+        let html = '<div style="display:flex; flex-direction:column; gap:10px;">';
+
+        sorted.forEach(sub => {
+            const monthlyAmount = sub.period === 'yearly' ? sub.amount / 12 : sub.amount;
+            const yearlyAmount = monthlyAmount * 12;
+            const catColor = subscriptionCategoryColors[sub.category] || '#7A9FA5';
+            const catName = subscriptionCategoryNames[sub.category] || sub.category;
+            const dateStr = new Date(sub.startDate).toLocaleDateString('tr-TR', {day:'2-digit', month:'short', year:'numeric'});
+            const monthsActive = Math.max(1, Math.floor((Date.now() - sub.timestamp) / (1000 * 60 * 60 * 24 * 30)));
+            const totalPaid = monthlyAmount * monthsActive;
+
+            html += `
+            <div class="sub-card" style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.1rem; transition:all 0.22s ease; position:relative; overflow:hidden;">
+                <div style="position:absolute; top:0; left:0; right:0; height:3px; background:${catColor}; opacity:0.8;"></div>
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                    <div style="flex:1; min-width:0;">
+                        <div style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:${catColor}; background:${catColor}14; padding:2px 8px; border-radius:100px; margin-bottom:6px;">
+                            <span style="width:5px;height:5px;border-radius:50%;background:${catColor};"></span>
+                            ${catName}
+                        </div>
+                        <div style="font-weight:650; font-size:0.9rem; color:var(--text-primary); margin-bottom:2px;">${sub.name}</div>
+                        <div style="font-size:0.68rem; color:var(--text-tertiary);">${dateStr}den beri · ${monthsActive} aydır aktif</div>
+                        ${sub.note ? `<div style="font-size:0.7rem; color:var(--text-secondary); margin-top:3px;">${sub.note}</div>` : ''}
+                    </div>
+                    <div style="text-align:right; flex-shrink:0;">
+                        <div style="font-family:'DM Serif Display',serif; font-size:1.15rem; font-weight:400; color:${catColor}; line-height:1.2; letter-spacing:-0.01em;">
+                            ${monthlyAmount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL
+                        </div>
+                        <div style="font-size:0.6rem; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">
+                            /ay
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:0.7rem; padding-top:0.6rem; border-top:1px solid var(--border);">
+                    <div style="display:flex; gap:12px; font-size:0.7rem; color:var(--text-secondary);">
+                        <span>Yıllık: <strong>${yearlyAmount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</strong></span>
+                        <span>·</span>
+                        <span>Ödenen: <strong style="color:var(--gold);">${totalPaid.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</strong></span>
+                    </div>
+                    <button type="button" onclick="deleteSubscription(${sub.id})" class="btn-icon-danger" title="Sil" style="flex-shrink:0;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                </div>
+            </div>`;
+        });
+
+        html += '</div>';
+        container.innerHTML = html;
     }
 
     function openPricesModal() {

@@ -3648,3 +3648,89 @@
             padding: 9px 12px; background: var(--bg);
             border-radius: var(--radius-sm); border: 1px solid var(--border);
         }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SUBSCRIPTIONS SECTION
+        ═══════════════════════════════════════════════════════════════ */
+        .sub-card {
+            transition: all 0.22s ease;
+        }
+        .sub-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-strong);
+        }
+        .btn-icon-danger {
+            background: none; border: none; cursor: pointer;
+            width: 32px; height: 32px; border-radius: var(--radius-sm);
+            display: inline-flex; align-items: center; justify-content: center;
+            color: var(--text-tertiary); transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-icon-danger svg { width: 16px; height: 16px; }
+        .btn-icon-danger:hover {
+            background: var(--red-bg, #FEE2E2);
+            color: var(--red);
+        }
+        .btn-icon-danger:active { transform: scale(0.9); }
+        [data-theme="dark"] .btn-icon-danger:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        #subscriptions-view {
+            animation: viewEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        /* Subscriptions nav button - gold theme */
+        .btn-subscriptions {
+            background: linear-gradient(135deg, var(--gold), #C8960C) !important;
+            color: #fff !important;
+            border: none !important;
+            box-shadow: 0 2px 8px rgba(181, 148, 0, 0.3) !important;
+            font-weight: 600 !important;
+        }
+        .btn-subscriptions:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 16px rgba(181, 148, 0, 0.4) !important;
+        }
+
+        /* Subscription form */
+        #subscription-form {
+            display: flex; flex-direction: column; gap: 0.7rem;
+        }
+        #subscription-form .form-group {
+            display: flex; flex-direction: column; gap: 0.3rem;
+        }
+        #subscription-form label {
+            font-size: 0.68rem; font-weight: 700; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        #subscription-form select,
+        #subscription-form input[type="text"],
+        #subscription-form input[type="number"],
+        #subscription-form input[type="date"],
+        #subscription-form textarea {
+            padding: 9px 12px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); background: var(--bg);
+            color: var(--text-primary); font-family: inherit; font-size: 0.84rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%; box-sizing: border-box;
+        }
+        #subscription-form select:focus,
+        #subscription-form input:focus,
+        #subscription-form textarea:focus {
+            outline: none; border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(181, 148, 0, 0.15);
+        }
+
+        /* Mobile subscriptions responsive */
+        @media (max-width: 600px) {
+            .sub-card {
+                border-radius: var(--radius-md) !important;
+                padding: 0.875rem 1rem !important;
+            }
+            .sub-card:hover {
+                transform: none;
+                box-shadow: var(--shadow-sm);
+            }
+        }
