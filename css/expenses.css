@@ -34,25 +34,43 @@
     animation: viewEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Subscriptions nav button - gold theme */
+/* Subscriptions button - gold themed variant of debt-form-submit */
 .btn-subscriptions {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; height: 44px; margin-bottom: 0.5rem;
-    border: none; border-radius: 12px;
-    background: linear-gradient(135deg, var(--gold), #8B6508);
-    color: #fff; font-family: inherit; font-size: 0.85rem; font-weight: 700;
-    cursor: pointer; transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 2px 12px rgba(168, 123, 0, 0.25);
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; height: 48px; margin-top: 0.8rem;
+    border: none; border-radius: 14px;
+    background: linear-gradient(135deg, var(--gold) 0%, #8B6508 100%);
+    color: #fff; font-family: inherit; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(168, 123, 0, 0.25);
+    position: relative; z-index: 1; overflow: hidden;
 }
-.btn-subscriptions svg { width: 16px; height: 16px; color: #fff; flex-shrink: 0; }
+.btn-subscriptions::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, #8B6508 0%, var(--gold) 100%);
+    opacity: 0; transition: opacity 0.3s; border-radius: inherit;
+}
+.btn-subscriptions svg,
+.btn-subscriptions span { position: relative; z-index: 1; }
+.btn-subscriptions svg { width: 18px; height: 18px; color: #fff; flex-shrink: 0; }
 .btn-subscriptions:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(168, 123, 0, 0.35);
+    box-shadow: 0 6px 24px rgba(168, 123, 0, 0.35);
 }
-.btn-subscriptions:active { transform: translateY(0) scale(0.97); }
+.btn-subscriptions:hover::before { opacity: 1; }
+.btn-subscriptions:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 8px rgba(168, 123, 0, 0.2);
+}
 [data-theme="dark"] .btn-subscriptions {
-    background: linear-gradient(135deg, #E0AD1C, #C8960C);
-    box-shadow: 0 2px 12px rgba(224, 173, 28, 0.2);
+    background: linear-gradient(135deg, #E0AD1C 0%, #B8960A 100%);
+    box-shadow: 0 4px 16px rgba(224, 173, 28, 0.2);
+}
+[data-theme="dark"] .btn-subscriptions::before {
+    background: linear-gradient(135deg, #B8960A 0%, #E0AD1C 100%);
+}
+[data-theme="dark"] .btn-subscriptions:hover {
+    box-shadow: 0 6px 24px rgba(224, 173, 28, 0.3);
 }
 
 /* Subscription form */
