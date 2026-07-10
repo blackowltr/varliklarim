@@ -48,16 +48,16 @@
 
     function updateUI() {
         // Fiyat geçmişi göstergesi
-        const lastUpdateEl = document.getElementById('price-last-update');
-        if (lastUpdateEl) {
+        const timeText = document.getElementById('nav-time-text');
+        if (timeText) {
             const last = getLastPriceUpdate();
             if (last) {
                 const d = new Date(last.timestamp);
                 const timeStr = d.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
                 const dateStr = d.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short' });
-                lastUpdateEl.textContent = `${dateStr} ${timeStr}`;
+                timeText.textContent = `${dateStr} ${timeStr}`;
             } else {
-                lastUpdateEl.textContent = '';
+                timeText.textContent = '';
             }
         }
 

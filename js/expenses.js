@@ -271,6 +271,11 @@
             expView.classList.remove('view-enter');
             void expView.offsetWidth;
             expView.classList.add('view-enter');
+            document.getElementById('nav-expenses')?.classList.remove('active');
+            document.getElementById('nav-subscriptions')?.classList.remove('active');
+            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.target === 'expenses');
+            });
             updateExpensesUI();
         } else {
             expView.style.display = 'none';
@@ -278,6 +283,11 @@
             subView.classList.remove('view-enter');
             void subView.offsetWidth;
             subView.classList.add('view-enter');
+            document.getElementById('nav-expenses')?.classList.remove('active');
+            document.getElementById('nav-subscriptions')?.classList.add('active');
+            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.target === 'subscriptions');
+            });
             updateSubscriptionsUI();
         }
     }

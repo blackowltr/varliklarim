@@ -1026,6 +1026,9 @@
     }
     .mobile-nav-item.active .mobile-nav-icon,
     .mobile-nav-item.active .mobile-nav-label { color: #fff !important; }
+    .mobile-nav-item[data-target="subscriptions"].active {
+        background: var(--gold) !important;
+    }
     .mobile-nav-icon {
         width: 21px; height: 21px; display: flex;
         align-items: center; justify-content: center;

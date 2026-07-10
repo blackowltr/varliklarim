@@ -48,6 +48,7 @@
         document.getElementById('nav-debts')?.classList.toggle('active', tab === 'debts');
         document.getElementById('nav-expenses')?.classList.toggle('active', tab === 'expenses');
         document.getElementById('nav-settings')?.classList.toggle('active', tab === 'settings');
+        document.getElementById('nav-subscriptions')?.classList.remove('active');
         
         // Mobile navigation update
         document.querySelectorAll('.mobile-nav-item').forEach(btn => {

@@ -46,12 +46,19 @@
             <button type="button" class="btn-nav" id="nav-stats" onclick="switchTab('stats')">İstatistikler</button>
             <button type="button" class="btn-nav" id="nav-debts" onclick="switchTab('debts')">Borçlarım</button>
             <button type="button" class="btn-nav" id="nav-expenses" onclick="switchTab('expenses')">Giderler</button>
+            <button type="button" class="btn-nav" id="nav-subscriptions" onclick="toggleSubscriptionsView()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Abonelikler
+            </button>
             <button type="button" class="btn-nav" id="nav-settings" onclick="switchTab('settings')">Ayarlar</button>
             <button type="button" class="btn-nav btn-accent" id="btn-kur-guncelle" onclick="fetchAndSavePrices()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>
                 Kur Güncelle
             </button>
-            <span id="price-last-update" style="font-size:0.7rem; color:var(--text-tertiary); white-space:nowrap;"></span>
+            <span id="price-last-update" style="display:inline-flex;align-items:center;gap:4px;font-size:0.62rem;font-weight:600;color:var(--text-tertiary);padding:3px 8px;border-radius:100px;background:var(--bg-input);white-space:nowrap;letter-spacing:0.02em;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="nav-time-text"></span>
+            </span>
             <button type="button" class="btn-theme" onclick="toggleTheme()" title="Temayı Değiştir">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             </button>
@@ -341,23 +348,6 @@
 
         <div class="content-grid">
             <aside class="sidebar">
-                <!-- ABONELİKLERİM BUTONU -->
-                <div class="debt-form-card">
-                    <div class="debt-form-header">
-                        <div class="debt-form-icon" style="background:var(--gold-light);color:var(--gold);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        </div>
-                        <div class="debt-form-header-text">
-                            <div class="debt-form-title">Aboneliklerim</div>
-                            <div class="debt-form-sub">Düzenli ödemelerinizi takip edin</div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-subscriptions" onclick="toggleSubscriptionsView()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        Aboneliklerimi Yönet
-                    </button>
-                </div>
-
                 <div class="debt-form-card">
                     <div class="debt-form-header">
                         <div class="debt-form-icon">
@@ -1018,6 +1008,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             Borç Ekle
         </button>
+        <button type="button" class="mobile-fab-menu-item" onclick="toggleSubscriptionsView(); toggleFabMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Abonelikler
+        </button>
     </div>
     <button type="button" class="mobile-fab-btn" onclick="toggleFabMenu()" aria-label="Hızlı Ekle">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1056,6 +1050,15 @@
                 </svg>
             </div>
             <span class="mobile-nav-label">Giderler</span>
+        </button>
+
+        <button type="button" class="mobile-nav-item" data-target="subscriptions" onclick="toggleSubscriptionsView()">
+            <div class="mobile-nav-icon" style="color:var(--gold);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+            </div>
+            <span class="mobile-nav-label" style="color:var(--gold);">Abonelik</span>
         </button>
         
         <button type="button" class="mobile-nav-item" data-target="settings" onclick="switchTab('settings')">

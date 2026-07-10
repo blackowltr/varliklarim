@@ -40,6 +40,16 @@
     color: var(--teal); background: var(--teal-light);
     font-weight: 600; border-color: color-mix(in srgb, var(--teal) 20%, transparent);
 }
+#nav-subscriptions {
+    color: var(--gold);
+}
+#nav-subscriptions.active {
+    color: var(--gold); background: var(--gold-light);
+    border-color: color-mix(in srgb, var(--gold) 20%, transparent);
+}
+#nav-subscriptions:hover {
+    background: var(--gold-light);
+}
 .btn-nav:active { transform: scale(0.96); }
 .btn-nav:focus-visible {
     outline: 2px solid var(--teal); outline-offset: 2px;
