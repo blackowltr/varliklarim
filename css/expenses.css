@@ -36,15 +36,23 @@
 
 /* Subscriptions nav button - gold theme */
 .btn-subscriptions {
-    background: linear-gradient(135deg, var(--gold), #C8960C) !important;
-    color: #fff !important;
-    border: none !important;
-    box-shadow: 0 2px 8px rgba(181, 148, 0, 0.3) !important;
-    font-weight: 600 !important;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; height: 44px; margin-bottom: 0.5rem;
+    border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold), #8B6508);
+    color: #fff; font-family: inherit; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 12px rgba(168, 123, 0, 0.25);
 }
+.btn-subscriptions svg { width: 16px; height: 16px; color: #fff; flex-shrink: 0; }
 .btn-subscriptions:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(181, 148, 0, 0.4) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(168, 123, 0, 0.35);
+}
+.btn-subscriptions:active { transform: translateY(0) scale(0.97); }
+[data-theme="dark"] .btn-subscriptions {
+    background: linear-gradient(135deg, #E0AD1C, #C8960C);
+    box-shadow: 0 2px 12px rgba(224, 173, 28, 0.2);
 }
 
 /* Subscription form */
