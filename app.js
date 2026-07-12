@@ -132,6 +132,7 @@
     }
 
     function switchTab(tab, direction) {
+        document.getElementById('subscriptions-view') && (document.getElementById('subscriptions-view').style.display = 'none');
         const views = ['dashboard-view', 'stats-view', 'expenses-view', 'debts-view', 'settings-view'];
         const targetId = tab + '-view';
         const isMobile = window.innerWidth <= 600;
@@ -1763,21 +1764,32 @@
         if (!expView || !subView) return;
 
         const isSubVisible = subView.style.display !== 'none';
+        const views = ['dashboard-view', 'stats-view', 'expenses-view', 'debts-view', 'settings-view', 'subscriptions-view'];
+
         if (isSubVisible) {
-            subView.style.display = 'none';
-            expView.style.display = 'block';
-            expView.classList.remove('view-enter');
-            void expView.offsetWidth;
-            expView.classList.add('view-enter');
+            views.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = id === 'expenses-view' ? 'block' : 'none';
+            });
+            document.getElementById('nav-expenses')?.classList.remove('active');
+            document.getElementById('nav-subscriptions')?.classList.remove('active');
+            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.target === 'expenses');
+            });
             updateExpensesUI();
         } else {
-            expView.style.display = 'none';
-            subView.style.display = 'block';
-            subView.classList.remove('view-enter');
-            void subView.offsetWidth;
-            subView.classList.add('view-enter');
+            views.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = id === 'subscriptions-view' ? 'block' : 'none';
+            });
+            document.getElementById('nav-expenses')?.classList.remove('active');
+            document.getElementById('nav-subscriptions')?.classList.add('active');
+            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.target === 'subscriptions');
+            });
             updateSubscriptionsUI();
         }
+    }
     }
 
     function addSubscription(event) {

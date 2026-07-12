@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════
 
     function switchTab(tab, direction) {
+        document.getElementById('subscriptions-view') && (document.getElementById('subscriptions-view').style.display = 'none');
         const views = ['dashboard-view', 'stats-view', 'expenses-view', 'debts-view', 'settings-view'];
         const targetId = tab + '-view';
         const isMobile = window.innerWidth <= 600;
