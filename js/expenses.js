@@ -260,34 +260,16 @@
     };
 
     function toggleSubscriptionsView() {
-        const expView = document.getElementById('expenses-view');
         const subView = document.getElementById('subscriptions-view');
-        if (!expView || !subView) return;
+        if (!subView) return;
 
         const isSubVisible = subView.style.display !== 'none';
-        const views = ['dashboard-view', 'stats-view', 'expenses-view', 'debts-view', 'settings-view', 'subscriptions-view'];
 
         if (isSubVisible) {
-            views.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = id === 'expenses-view' ? 'block' : 'none';
-            });
-            document.getElementById('nav-expenses')?.classList.remove('active');
-            document.getElementById('nav-subscriptions')?.classList.remove('active');
-            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.target === 'expenses');
-            });
+            showView('expenses');
             updateExpensesUI();
         } else {
-            views.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = id === 'subscriptions-view' ? 'block' : 'none';
-            });
-            document.getElementById('nav-expenses')?.classList.remove('active');
-            document.getElementById('nav-subscriptions')?.classList.add('active');
-            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.target === 'subscriptions');
-            });
+            showView('subscriptions');
             updateSubscriptionsUI();
         }
     }

@@ -3,63 +3,29 @@
 // ═══════════════════════════════════════════════════════════
 
     function switchTab(tab, direction) {
-        document.getElementById('subscriptions-view') && (document.getElementById('subscriptions-view').style.display = 'none');
-        const views = ['dashboard-view', 'stats-view', 'expenses-view', 'debts-view', 'settings-view'];
-        const targetId = tab + '-view';
         const isMobile = window.innerWidth <= 600;
-
-        // Determine slide direction for mobile transitions
-        const currentView = document.querySelector('[id$="-view"]:not([style*="display: none"])')?.id || 'dashboard-view';
-        const currentTab = currentView.replace('-view', '');
+        const current = getCurrentView();
         const tabOrder = ['dashboard', 'stats', 'expenses', 'debts', 'settings'];
-        const fromIdx = tabOrder.indexOf(currentTab);
+        const fromIdx = tabOrder.indexOf(current);
         const toIdx = tabOrder.indexOf(tab);
         const slideDir = (toIdx > fromIdx) ? 'slide-left' : 'slide-right';
 
-        views.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            if (id === targetId) {
-                el.style.display = 'block';
-                el.classList.remove('view-enter', 'slide-left', 'slide-right');
+        showView(tab);
+
+        // Apply slide animation on mobile
+        if (isMobile) {
+            const el = document.getElementById(tab + '-view');
+            if (el) {
+                el.classList.remove('slide-left', 'slide-right');
                 void el.offsetWidth;
-                if (isMobile) {
-                    el.classList.add(slideDir);
-                } else {
-                    el.classList.add('view-enter');
-                }
-            } else {
-                el.style.display = 'none';
-                el.classList.remove('view-enter', 'slide-left', 'slide-right');
+                el.classList.add(slideDir);
             }
-        });
-        
-        // Trigger card stagger: remove & re-add animation on cards inside target
-        const targetEl = document.getElementById(targetId);
-        if (targetEl) {
-            targetEl.querySelectorAll('.settings-card, .stat-card, .debt-card, .card').forEach((card, i) => {
-                card.style.animation = 'none';
-                card.offsetHeight; // reflow
-                card.style.animation = '';
-            });
         }
-        
-        document.getElementById('nav-dashboard')?.classList.toggle('active', tab === 'dashboard');
-        document.getElementById('nav-stats')?.classList.toggle('active', tab === 'stats');
-        document.getElementById('nav-debts')?.classList.toggle('active', tab === 'debts');
-        document.getElementById('nav-expenses')?.classList.toggle('active', tab === 'expenses');
-        document.getElementById('nav-settings')?.classList.toggle('active', tab === 'settings');
-        document.getElementById('nav-subscriptions')?.classList.remove('active');
-        
-        // Mobile navigation update
-        document.querySelectorAll('.mobile-nav-item').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.target === tab);
-        });
-        
-        if(tab === 'stats') renderStats();
-        if(tab === 'debts') updateDebtsUI();
-        if(tab === 'expenses') updateExpensesUI();
-        if(tab === 'dashboard') updateUI();
+
+        if (tab === 'stats') renderStats();
+        if (tab === 'debts') updateDebtsUI();
+        if (tab === 'expenses') updateExpensesUI();
+        if (tab === 'dashboard') updateUI();
     }
 
 
@@ -253,14 +219,14 @@
             });
         } catch(e) {}
 
+        // Başlangıç view'ını göster
+        initView('dashboard');
+
         updateUI();
         updateDebtsUI();
         updateExpensesUI();
         // Sayfa yüklenirken sessizce kurları güncelle
         fetchPricesSilent();
-        
-        // Mobil Bottom Navigation aktif durumu
-        updateMobileNav();
 
         // Navbar scroll detection — glassmorphism shadow
         const mainNav = document.querySelector('nav:not(.mobile-bottom-nav)');
@@ -288,21 +254,6 @@
             }
         }
     });
-
-    // Mobil Bottom Nav handler
-    function updateMobileNav() {
-        const navItems = document.querySelectorAll('.mobile-nav-item');
-        const currentView = document.querySelector('[id$="-view"][style*="block"]')?.id.replace('-view', '') || 'dashboard';
-        
-        navItems.forEach(item => {
-            const target = item.dataset.target;
-            if (target === currentView) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
-    }
 
     // Floating Action Button Menu
     function toggleFabMenu() {
