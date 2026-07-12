@@ -938,14 +938,18 @@
     .settings-segment { border-radius: var(--radius-sm); }
     .settings-segment-option { font-size: 0.72rem; padding: 4px 10px; border-radius: 6px; }
     .settings-swatch { width: 26px; height: 26px; }
+    .settings-goal-area { padding: 2px 15px 14px; }
     .settings-goal-row { flex-direction: column; align-items: stretch; }
-    .settings-goal-save { width: 100%; justify-content: center; }
+    .settings-goal-input { height: 42px; font-size: 0.85rem; }
+    .settings-goal-save { width: 100%; justify-content: center; height: 42px; }
     .settings-container { padding: 0 0 5rem; }
     .settings-section { margin-bottom: 1.5rem; }
+    .settings-section-title { padding: 0 15px 0.55rem; font-size: 0.68rem; }
     .settings-action-btn { min-height: 48px; padding: 9px 15px; }
     .settings-danger-tags { padding: 0 15px 8px; }
     .settings-danger-tag { font-size: 0.64rem; padding: 2px 8px; }
     .settings-danger-btn { padding: 10px 15px; font-size: 0.8rem; }
+    .settings-danger-divider { margin: 0 15px; }
 
     /* Modals - bottom sheet style */
     .modal-overlay {

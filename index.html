@@ -1104,7 +1104,7 @@
                             <div class="settings-row-desc">İstatistikler sayfasında görünecek hedef tutar</div>
                         </div>
                     </div>
-                    <div style="padding:2px 16px 14px;">
+                    <div class="settings-goal-area">
                         <div class="settings-goal-row">
                             <input type="number" id="target-input" class="settings-goal-input" value="1000000" min="0" step="1000" placeholder="Hedef tutar (TL)">
                             <button type="button" class="settings-goal-save" onclick="saveGoalTarget()">
@@ -1174,7 +1174,7 @@
             <!-- TEHLİKELİ BÖLGE -->
             <div class="settings-section">
                 <div class="settings-section-title" style="color: var(--red);">Tehlikeli Bölge</div>
-                <div class="settings-card" style="border: 1px solid rgba(192,57,43,0.2);">
+                <div class="settings-card" style="border-color: rgba(192,57,43,0.25);">
                     <div class="settings-danger-tags">
                         <span class="settings-danger-tag">Altın kayıtları</span>
                         <span class="settings-danger-tag">Borç verileri</span>
@@ -1182,7 +1182,7 @@
                         <span class="settings-danger-tag">Fiyat ayarları</span>
                         <span class="settings-danger-tag">Hedef tutarı</span>
                     </div>
-                    <div class="settings-row-divider" style="margin:0 16px;"></div>
+                    <div class="settings-danger-divider"></div>
                     <button type="button" class="settings-danger-btn" onclick="clearAllData()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                         Tüm Verileri Sil
