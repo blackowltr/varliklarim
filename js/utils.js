@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════
-// utils.js — Utility functions (modal helpers, toast notifications)
+// utils.js — Utility functions (modal helpers, toast, undo)
 // ═══════════════════════════════════════════════════════════
 
     function openModal(id) {
@@ -17,18 +17,26 @@
     function closePnlModal() { currentPnlModalIndex = -1; closeModal('pnl-detail-modal'); }
 
 
-    // --- Toast Bildirim Sistemi ---
+    // --- Toast Notification System ---
     let toastTimer = null;
-    function showToast(message, type) {
+    let toastActionCallback = null;
+
+    function showToast(message, type, actionLabel, actionFn) {
         const toast = document.getElementById('toast');
         const text = document.getElementById('toast-text');
         const icon = toast.querySelector('.toast-icon');
+        const actionBtn = document.getElementById('toast-action');
         if (!toast || !text) return;
 
         clearTimeout(toastTimer);
+        toastActionCallback = null;
         toast.className = 'toast';
 
         text.textContent = message;
+        if (actionBtn) {
+            actionBtn.classList.remove('is-visible');
+            actionBtn.onclick = null;
+        }
 
         if (type === 'success') {
             toast.classList.add('is-success');
@@ -41,10 +49,60 @@
             icon.innerHTML = '<path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/>';
         }
 
+        if (actionLabel && actionFn) {
+            toastActionCallback = actionFn;
+            actionBtn.textContent = actionLabel;
+            actionBtn.classList.add('is-visible');
+            actionBtn.onclick = () => {
+                if (toastActionCallback) {
+                    toastActionCallback();
+                    toastActionCallback = null;
+                }
+                toast.classList.remove('is-visible');
+                clearTimeout(toastTimer);
+            };
+        }
+
         requestAnimationFrame(() => toast.classList.add('is-visible'));
 
         if (type !== 'loading') {
-            toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 3000);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('is-visible');
+                toastActionCallback = null;
+            }, 4000);
         }
     }
 
+
+    // --- Undo Delete System ---
+    let _pendingUndo = null;
+
+    function deleteWithUndo(item, { onDelete, onRestore, label }) {
+        if (_pendingUndo) {
+            _pendingUndo.onExpire();
+            _pendingUndo = null;
+        }
+
+        onDelete();
+
+        const timeout = setTimeout(() => {
+            if (_pendingUndo) {
+                _pendingUndo = null;
+            }
+        }, 4000);
+
+        _pendingUndo = {
+            item,
+            onExpire: () => { /* already deleted */ },
+            cancel: () => {
+                clearTimeout(timeout);
+                _pendingUndo = null;
+            }
+        };
+
+        showToast(`${label} silindi`, 'success', 'Geri Al', () => {
+            onRestore();
+            _pendingUndo = null;
+            clearTimeout(timeout);
+        });
+    }

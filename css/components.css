@@ -290,6 +290,16 @@ tbody tr:hover .row-value { color: var(--teal); }
 }
 .toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 .toast-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.toast-action {
+    display: none; flex-shrink: 0;
+    padding: 5px 12px; border: none; border-radius: 8px;
+    background: var(--teal); color: #fff; cursor: pointer;
+    font-family: inherit; font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.02em; transition: all 0.2s ease;
+    min-height: 32px; white-space: nowrap;
+}
+.toast-action:hover { background: var(--teal-hover); }
+.toast-action.is-visible { display: inline-flex; align-items: center; gap: 4px; }
 .toast.is-success { border-color: rgba(26, 127, 55, 0.3); }
 [data-theme="dark"] .toast.is-success { border-color: rgba(61, 214, 140, 0.25); }
 .toast.is-success .toast-icon { color: var(--green); }

@@ -211,12 +211,23 @@
     }
 
     function deleteDebt(index) {
-        if(confirm('Bu borç kaydını silmek istediğinize emin misiniz?')) {
-            debts.splice(index, 1);
-            localStorage.setItem('goldDebts', JSON.stringify(debts));
-            updateDebtsUI();
-            updateUI();
-        }
+        const item = debts[index];
+        if (!item) return;
+        deleteWithUndo(item, {
+            label: 'Borç',
+            onDelete: () => {
+                debts.splice(index, 1);
+                localStorage.setItem('goldDebts', JSON.stringify(debts));
+                updateDebtsUI();
+                updateUI();
+            },
+            onRestore: () => {
+                debts.push(item);
+                localStorage.setItem('goldDebts', JSON.stringify(debts));
+                updateDebtsUI();
+                updateUI();
+            }
+        });
     }
 
     function filterDebts() {

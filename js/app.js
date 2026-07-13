@@ -324,6 +324,17 @@
         const deltaX = e.changedTouches[0].clientX - swipeTouchX;
         const threshold = 60;
         if (Math.abs(deltaX) < threshold) { swipeTouchX = 0; return; }
+
+        // Swipe-to-delete: check if swiping on a deletable item
+        if (deltaX < 0) {
+            const deleteBtn = e.target.closest('.debt-card, .sub-card, tr')?.querySelector('[onclick*="delete"]');
+            if (deleteBtn) {
+                deleteBtn.click();
+                swipeTouchX = 0;
+                return;
+            }
+        }
+
         const tabs = ['dashboard', 'stats', 'expenses', 'debts', 'settings'];
         const currentView = document.querySelector('[id$="-view"][style*="block"]')?.id.replace('-view', '') || 'dashboard';
         const currentIdx = tabs.indexOf(currentView);

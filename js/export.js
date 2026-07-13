@@ -204,3 +204,132 @@
         document.body.removeChild(link);
     }
 
+    function generateMonthlyReport() {
+        const now = new Date();
+        const monthNames = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+        const monthStr = monthNames[now.getMonth()] + ' ' + now.getFullYear();
+        const dateStr = now.toLocaleDateString('tr-TR', {day:'2-digit', month:'long', year:'numeric'});
+        const timeStr = now.toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+
+        // Calculate monthly data
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+        const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1).getTime();
+
+        const monthExpenses = expenses.filter(e => e.timestamp >= monthStart && e.timestamp < monthEnd);
+        const expenseTotal = monthExpenses.reduce((s, e) => s + e.amount, 0);
+
+        const monthDebts = debts.filter(d => {
+            const dDate = new Date(d.date).getTime();
+            return dDate >= monthStart && dDate < monthEnd;
+        });
+        const debtTotal = monthDebts.reduce((s, d) => s + d.totalAmount, 0);
+
+        // Calculate portfolio value
+        let totalAssetValue = 0;
+        inventory.forEach(item => {
+            const w = parseFloat(item.weight) || 0;
+            totalAssetValue += w * (prices[item.ayar] || 0);
+        });
+
+        // Zekat calculation
+        const zekatThreshold = totalAssetValue >= (80 * (prices['24k'] || 2540));
+        const zekatAmount = zekatThreshold ? totalAssetValue * 0.025 : 0;
+
+        // Subscriptions
+        let monthlySubs = 0;
+        subscriptions.forEach(s => {
+            monthlySubs += s.period === 'yearly' ? s.amount / 12 : s.amount;
+        });
+
+        // Build printable content
+        const style = `
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { font-family: 'DM Sans', -apple-system, sans-serif; padding: 40px; color: #111; max-width: 800px; margin: 0 auto; }
+                h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 4px; }
+                .meta { color: #666; font-size: 13px; margin-bottom: 30px; }
+                .section { margin-bottom: 28px; }
+                h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #00939E; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #00939E; }
+                .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+                .card { background: #F5FAFA; border-radius: 12px; padding: 14px 16px; }
+                .card-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #666; }
+                .card-val { font-size: 22px; font-weight: 700; color: #00939E; margin-top: 4px; }
+                .card-val.red { color: #C0392B; }
+                .card-val.gold { color: #A87B00; }
+                table { width: 100%; border-collapse: collapse; font-size: 13px; }
+                th { text-align: left; padding: 8px 10px; border-bottom: 1px solid #ddd; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #666; }
+                td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+                .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ddd; font-size: 11px; color: #999; text-align: center; }
+            </style>
+        `;
+
+        let expenseRows = '';
+        monthExpenses.sort((a, b) => b.timestamp - a.timestamp).forEach(e => {
+            expenseRows += `<tr><td>${new Date(e.date).toLocaleDateString('tr-TR')}</td><td>${expenseCategoryNames[e.category] || e.category}</td><td style="text-align:right;">${e.amount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</td><td>${e.note || '—'}</td></tr>`;
+        });
+
+        let debtRows = '';
+        monthDebts.forEach(d => {
+            debtRows += `<tr><td>${new Date(d.date).toLocaleDateString('tr-TR')}</td><td>${d.name}</td><td style="text-align:right;">${d.totalAmount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</td></tr>`;
+        });
+
+        // Category breakdown
+        let catRows = '';
+        const catTotals = {};
+        monthExpenses.forEach(e => {
+            const cat = expenseCategoryNames[e.category] || e.category || 'Diğer';
+            catTotals[cat] = (catTotals[cat] || 0) + e.amount;
+        });
+        Object.entries(catTotals).sort((a, b) => b[1] - a[1]).forEach(([cat, amt]) => {
+            const pct = expenseTotal > 0 ? (amt / expenseTotal * 100).toFixed(1) : 0;
+            catRows += `<tr><td>${cat}</td><td style="text-align:right;">${amt.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</td><td style="text-align:right; color:#999;">%${pct}</td></tr>`;
+        });
+
+        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        printWindow.document.write(`
+            <html><head><title>Aylık Rapor — ${monthStr}</title>${style}</head><body>
+                <h1>Aylık Rapor</h1>
+                <div class="meta">${monthStr} · ${dateStr} ${timeStr} · Varlıklarım</div>
+
+                <div class="section">
+                    <h2>Özet</h2>
+                    <div class="grid">
+                        <div class="card"><div class="card-label">Portföy Değeri</div><div class="card-val">${totalAssetValue.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div></div>
+                        <div class="card"><div class="card-label">Aylık Gider</div><div class="card-val red">${expenseTotal.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div></div>
+                        <div class="card"><div class="card-label">Aylık Borç</div><div class="card-val red">${debtTotal.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div></div>
+                        <div class="card"><div class="card-label">Abonelikler/Ay</div><div class="card-val gold">${monthlySubs.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div></div>
+                    </div>
+                </div>
+
+                ${expenseTotal > 0 ? `
+                <div class="section">
+                    <h2>Gider Kategorileri</h2>
+                    <table><thead><tr><th>Kategori</th><th style="text-align:right;">Tutar</th><th style="text-align:right;">Oran</th></tr></thead><tbody>${catRows}</tbody></table>
+                </div>` : ''}
+
+                ${monthExpenses.length > 0 ? `
+                <div class="section">
+                    <h2>Gider Detayı (${monthExpenses.length} kayıt)</h2>
+                    <table><thead><tr><th>Tarih</th><th>Kategori</th><th style="text-align:right;">Tutar</th><th>Açıklama</th></tr></thead><tbody>${expenseRows}</tbody></table>
+                </div>` : ''}
+
+                ${monthDebts.length > 0 ? `
+                <div class="section">
+                    <h2>Borç Detayı (${monthDebts.length} kayıt)</h2>
+                    <table><thead><tr><th>Tarih</th><th>Borç</th><th style="text-align:right;">Tutar</th></tr></thead><tbody>${debtRows}</tbody></table>
+                </div>` : ''}
+
+                ${zekatThreshold ? `
+                <div class="section">
+                    <h2>Zekat Bilgisi</h2>
+                    <div class="card"><div class="card-label">Tahmini Zekat</div><div class="card-val gold">${zekatAmount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div></div>
+                </div>` : ''}
+
+                <div class="footer">Bu rapor Varlıklarım uygulaması tarafından ${dateStr} tarihinde oluşturulmuştur. · varliklarim.app</div>
+            </body></html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => printWindow.print(), 300);
+    }
+

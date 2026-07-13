@@ -499,6 +499,18 @@
                 </div>
             </div>
             
+            <!-- RAPOR BUTONLARI -->
+            <div class="stats-chart-card" style="grid-column:1 / -1;">
+                <div style="display:flex; flex-wrap:wrap; gap:8px; padding:1rem;">
+                    <button type="button" class="btn-pdf" onclick="generateMonthlyReport()" style="flex:1; min-width:140px; justify-content:center;">
+                        Aylık Rapor
+                    </button>
+                    <button type="button" class="btn-pdf btn-csv" onclick="printPDF()" style="flex:1; min-width:140px; justify-content:center;">
+                        Tam PDF
+                    </button>
+                </div>
+            </div>
+
             <!-- GİDER GRAFİĞİ -->
             <div class="stats-chart-card" style="grid-column:1 / -1;">
                 <div class="stats-chart-header">
@@ -1421,6 +1433,7 @@
 <div class="toast" id="toast">
     <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>
     <span id="toast-text"></span>
+    <button type="button" class="toast-action" id="toast-action"></button>
 </div>
 
 

@@ -53,13 +53,21 @@
     }
 
     function deleteExpense(id) {
-        if (!confirm('Bu gider kaydını silmek istediğinize emin misiniz?')) return;
-        
-        expenses = expenses.filter(e => e.id !== id);
-        localStorage.setItem('monthlyExpenses', JSON.stringify(expenses));
-        
-        showToast('Gider kaydı silindi', 'success');
-        updateExpensesUI();
+        const item = expenses.find(e => e.id === id);
+        if (!item) return;
+        deleteWithUndo(item, {
+            label: 'Gider',
+            onDelete: () => {
+                expenses = expenses.filter(e => e.id !== id);
+                localStorage.setItem('monthlyExpenses', JSON.stringify(expenses));
+                updateExpensesUI();
+            },
+            onRestore: () => {
+                expenses.push(item);
+                localStorage.setItem('monthlyExpenses', JSON.stringify(expenses));
+                updateExpensesUI();
+            }
+        });
     }
 
     function updateExpensesUI() {
@@ -77,9 +85,14 @@
         }
 
         // Filter expenses by period
-        const filteredExpenses = period === 'all' 
+        let filteredExpenses = period === 'all' 
             ? [...expenses] 
             : expenses.filter(e => e.timestamp >= threshold);
+
+        // Apply category filter if active
+        if (_activeCatFilter) {
+            filteredExpenses = filteredExpenses.filter(e => e.category === _activeCatFilter);
+        }
 
         // Sort by date descending
         filteredExpenses.sort((a, b) => b.timestamp - a.timestamp);
@@ -121,6 +134,8 @@
         document.getElementById('exp-avg-month').textContent = avgMonth.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' TL';
     }
 
+    let _activeCatFilter = null;
+
     function updateCategorySummary(filteredExpenses) {
         const categoryTotals = {};
         const categoryCounts = {};
@@ -152,26 +167,48 @@
         sortedCategories.forEach(([category, amount]) => {
             const percentage = total > 0 ? (amount / total) * 100 : 0;
             const recordCount = categoryCounts[category] || 0;
+            const isActive = _activeCatFilter === category;
             html += `
-                <div style="display:flex; flex-direction:column; gap:6px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.9rem; font-weight:500; color:var(--text-primary);">${expenseCategoryNames[category]}</span>
+                <div class="cat-summary-row" data-category="${category}" style="cursor:pointer; padding:8px 10px; border-radius:12px; transition:background 0.2s; background:${isActive ? 'var(--teal-light)' : 'transparent'}; border:${isActive ? '1px solid var(--teal)' : '1px solid transparent'};" onclick="toggleCatFilter('${category}')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                        <span style="font-size:0.9rem; font-weight:${isActive ? '700' : '500'}; color:var(--text-primary);">${expenseCategoryNames[category]}</span>
                         <span style="font-size:0.9rem; font-weight:600; color:var(--teal);">${amount.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</span>
                     </div>
-                    <div style="background:var(--bg-input); height:8px; border-radius:100px; overflow:hidden; position:relative;">
+                    <div style="background:var(--bg-input); height:8px; border-radius:100px; overflow:hidden; position:relative; margin-top:6px;">
                         <div style="background:var(--teal); height:100%; width:${percentage}%; border-radius:100px; transition:width 0.5s ease;"></div>
                     </div>
-                    <div style="font-size:0.75rem; color:var(--text-tertiary);">%${percentage.toFixed(1)} (${recordCount} kayıt)</div>
+                    <div style="font-size:0.75rem; color:var(--text-tertiary); margin-top:2px;">%${percentage.toFixed(1)} (${recordCount} kayıt) ${isActive ? '· Filtre aktif (tıkla kaldır)' : '· Filtrele'}</div>
                 </div>`;
         });
 
         html += '</div>';
+        
+        if (_activeCatFilter) {
+            html += `<div style="margin-top:0.75rem; display:flex; gap:8px;">
+                <button type="button" class="btn-primary" style="flex:1; justify-content:center;" onclick="clearCatFilter()">Filtreyi Temizle</button>
+            </div>`;
+        }
+        
         html += `<div style="margin-top:1rem; padding:1rem; background:var(--teal-light); border-radius:var(--radius-md); text-align:center;">
             <div style="font-size:0.75rem; font-weight:600; color:var(--teal); text-transform:uppercase;">Dönem Toplam</div>
             <div style="font-size:1.8rem; font-weight:700; color:var(--teal); margin-top:4px;">${total.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div>
         </div>`;
 
         container.innerHTML = html;
+    }
+
+    function toggleCatFilter(category) {
+        if (_activeCatFilter === category) {
+            clearCatFilter();
+        } else {
+            _activeCatFilter = category;
+            updateExpensesUI();
+        }
+    }
+
+    function clearCatFilter() {
+        _activeCatFilter = null;
+        updateExpensesUI();
     }
 
     function updateExpenseList(filteredExpenses) {
@@ -311,13 +348,21 @@
     }
 
     function deleteSubscription(id) {
-        if (!confirm('Bu aboneliği silmek istediğinize emin misiniz?')) return;
-        
-        subscriptions = subscriptions.filter(s => s.id !== id);
-        localStorage.setItem('userSubscriptions', JSON.stringify(subscriptions));
-        
-        showToast('Abonelik silindi', 'success');
-        updateSubscriptionsUI();
+        const item = subscriptions.find(s => s.id === id);
+        if (!item) return;
+        deleteWithUndo(item, {
+            label: 'Abonelik',
+            onDelete: () => {
+                subscriptions = subscriptions.filter(s => s.id !== id);
+                localStorage.setItem('userSubscriptions', JSON.stringify(subscriptions));
+                updateSubscriptionsUI();
+            },
+            onRestore: () => {
+                subscriptions.push(item);
+                localStorage.setItem('userSubscriptions', JSON.stringify(subscriptions));
+                updateSubscriptionsUI();
+            }
+        });
     }
 
     function updateSubscriptionsUI() {

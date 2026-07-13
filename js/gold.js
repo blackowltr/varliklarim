@@ -267,10 +267,20 @@
     }
 
     function deleteItem(index) {
-        if(confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
-            inventory.splice(index, 1);
-            localStorage.setItem('goldInventory', JSON.stringify(inventory));
-            updateUI();
-        }
+        const item = inventory[index];
+        if (!item) return;
+        deleteWithUndo(item, {
+            label: 'Varlık',
+            onDelete: () => {
+                inventory.splice(index, 1);
+                localStorage.setItem('goldInventory', JSON.stringify(inventory));
+                updateUI();
+            },
+            onRestore: () => {
+                inventory.push(item);
+                localStorage.setItem('goldInventory', JSON.stringify(inventory));
+                updateUI();
+            }
+        });
     }
 
