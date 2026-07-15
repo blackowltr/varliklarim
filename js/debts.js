@@ -23,11 +23,19 @@
     };
 
     // Taksitli borç formu: panel aç/kapat, otomatik hesaplama
+    function toggleInstallmentPeriodField() {
+        const panel = document.getElementById('installment-panel');
+        const total = document.getElementById('debt-installment-total');
+        const periodGroup = document.getElementById('debt-installment-period-group');
+        periodGroup.style.display = (panel.classList.contains('is-visible') && parseInt(total.value) >= 2) ? '' : 'none';
+    }
+
     function toggleInstallmentFields() {
         const cat = document.getElementById('debt-category').value;
         const panel = document.getElementById('installment-panel');
         const ekstrePanel = document.getElementById('ekstre-panel');
         const interestGroup = document.getElementById('debt-interest-group');
+        const periodGroup = document.getElementById('debt-installment-period-group');
         const amountLabel = document.getElementById('debt-amount-label');
         const dateLabel = document.getElementById('debt-date-label');
         const installmentTotal = document.getElementById('debt-installment-total');
@@ -60,6 +68,8 @@
         } else {
             ekstrePanel.classList.remove('is-visible');
         }
+
+        periodGroup.style.display = (panel.classList.contains('is-visible') && parseInt(installmentTotal.value) >= 2) ? '' : 'none';
     }
 
     function calcLoanMonthly(amount, ratePercent, numPayments) {
@@ -166,9 +176,20 @@
                     showToast('Taksit tutarı hesaplanamadı, kontrol edin', 'error');
                     return;
                 }
+                const periodMonths = parseInt(document.getElementById('debt-installment-period').value) || 1;
                 debtObj.installmentTotal = instTotal;
                 debtObj.installmentMonthly = Math.round(instMonthly * 100) / 100;
                 debtObj.installmentPaid = 0;
+                debtObj.installmentPeriod = periodMonths;
+                debtObj.installmentDates = [];
+                const instStart = new Date(debtObj.date);
+                for (let i = 0; i < instTotal; i++) {
+                    const d = new Date(instStart);
+                    d.setMonth(d.getMonth() + (i * periodMonths));
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    debtObj.installmentDates.push(d.getFullYear() + '-' + mm + '-' + dd);
+                }
             }
         }
 
@@ -199,11 +220,13 @@
         document.getElementById('debt-installment-total').value = '';
         document.getElementById('debt-installment-monthly').value = '';
         document.getElementById('debt-interest-rate').value = '';
+        document.getElementById('debt-installment-period').value = '1';
         document.getElementById('installment-hint').innerHTML = '';
         document.getElementById('debt-statement-day').value = '';
         document.getElementById('debt-due-day').value = '';
         document.getElementById('debt-min-payment').value = '';
         document.getElementById('debt-min-payment-ratio').value = '40';
+        toggleInstallmentPeriodField();
         showToast('Borç başarıyla eklendi', 'success');
         closeFormSheet();
         updateDebtsUI();
@@ -236,7 +259,6 @@
 
     function getInstallmentProgress(debt) {
         if (!debt.installmentTotal || debt.installmentTotal < 2) return null;
-        // installmentPaid varsa (0 dahil) onu kullan, yoksa zaman bazlı hesapla
         let paid;
         if (typeof debt.installmentPaid === 'number') {
             paid = Math.min(Math.max(debt.installmentPaid, 0), debt.installmentTotal);
@@ -244,12 +266,27 @@
             const startDate = new Date(debt.date);
             const now = new Date();
             const monthsDiff = (now.getFullYear() - startDate.getFullYear()) * 12 + (now.getMonth() - startDate.getMonth());
-            paid = Math.min(Math.max(monthsDiff, 0), debt.installmentTotal);
+            const period = debt.installmentPeriod || 1;
+            paid = Math.min(Math.max(Math.floor(monthsDiff / period), 0), debt.installmentTotal);
         }
         const remaining = debt.installmentTotal - paid;
         const remainingAmount = remaining * (debt.installmentMonthly || 0);
         const pct = Math.min((paid / debt.installmentTotal) * 100, 100);
-        return { paid, total: debt.installmentTotal, remaining, remainingAmount, monthly: debt.installmentMonthly, pct, isDone: paid >= debt.installmentTotal };
+
+        // Find next installment date
+        let nextInstDate = null;
+        if (debt.installmentDates && debt.installmentDates.length > 0) {
+            const now = new Date();
+            for (let i = 0; i < debt.installmentDates.length; i++) {
+                const instDate = new Date(debt.installmentDates[i] + 'T00:00:00');
+                if (instDate >= now || (i >= paid)) {
+                    nextInstDate = debt.installmentDates[i];
+                    break;
+                }
+            }
+        }
+
+        return { paid, total: debt.installmentTotal, remaining, remainingAmount, monthly: debt.installmentMonthly, pct, isDone: paid >= debt.installmentTotal, nextInstDate };
     }
 
     function updateDebtsUI() {
@@ -290,7 +327,12 @@
                     </div>`;
             }
 
-            const amountMonthly = prog && !prog.isDone ? `<div class="debt-card-amount-monthly">Aylık ${prog.monthly.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div>` : '';
+            const amountMonthly = prog && !prog.isDone
+                ? `<div class="debt-card-amount-monthly">
+                     <span>Aylık ${prog.monthly.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</span>
+                     ${prog.nextInstDate ? `<span class="debt-card-next-date">Sonraki: ${formatDisplayDate(prog.nextInstDate)}</span>` : ''}
+                   </div>`
+                : '';
             const amountDate = !prog ? `<div class="debt-card-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${dateFormatted}</div>` : '';
 
             // Ödeme progress
@@ -385,5 +427,11 @@
             if (debtRatio > 100) ratioEl.style.color = 'var(--red)';
             else if (debtRatio > 50) ratioEl.style.color = 'var(--gold)';
         }
+    }
+
+    function formatDisplayDate(dateStr) {
+        const parts = (dateStr || '').split('-');
+        if (parts.length === 3) return `${parts[2]}.${parts[1]}.${parts[0]}`;
+        return dateStr || '-';
     }
 

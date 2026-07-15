@@ -5,7 +5,7 @@
     function switchTab(tab, direction) {
         const isMobile = window.innerWidth <= 600;
         const current = getCurrentView();
-        const tabOrder = ['dashboard', 'stats', 'expenses', 'debts', 'settings'];
+        const tabOrder = ['dashboard', 'stats', 'expenses', 'debts', 'salary', 'settings', 'subscriptions'];
         const fromIdx = tabOrder.indexOf(current);
         const toIdx = tabOrder.indexOf(tab);
         const slideDir = (toIdx > fromIdx) ? 'slide-left' : 'slide-right';
@@ -25,6 +25,7 @@
         if (tab === 'stats') renderStats();
         if (tab === 'debts') updateDebtsUI();
         if (tab === 'expenses') updateExpensesUI();
+        if (tab === 'salary') updateSalaryUI();
         if (tab === 'dashboard') updateUI();
     }
 

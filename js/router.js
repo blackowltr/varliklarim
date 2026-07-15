@@ -2,7 +2,7 @@
 // router.js — Unified View Manager (single source of truth)
 // ═══════════════════════════════════════════════════════════
 
-const VIEW_IDS = ['dashboard', 'stats', 'expenses', 'debts', 'settings', 'subscriptions'];
+const VIEW_IDS = ['dashboard', 'stats', 'expenses', 'debts', 'salary', 'settings', 'subscriptions'];
 
 let _currentView = null;
 

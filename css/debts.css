@@ -284,9 +284,14 @@
     font-size: 0.68rem; color: var(--text-secondary); font-weight: 500;
     margin-top: 3px; font-variant-numeric: tabular-nums;
     padding: 2px 7px; background: var(--hover-bg); border-radius: 6px;
-    display: inline-block; margin-left: auto;
+    display: inline-flex; flex-direction: column; align-items: flex-end; gap: 2px;
+    margin-left: auto;
 }
 [data-theme="dark"] .debt-card-amount-monthly { background: rgba(255,255,255,0.04); }
+.debt-card-next-date {
+    font-size: 0.6rem; color: var(--gold); font-weight: 600;
+    white-space: nowrap;
+}
 
 /* Ödeme progress alanı */
 .debt-card-payment {

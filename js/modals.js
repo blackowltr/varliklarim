@@ -157,11 +157,19 @@
                 </div>
                 <div class="dd-installment-list" id="dd-installment-list">`;
 
-            const startDate = new Date(debt.date);
+            const instDates = debt.installmentDates || [];
             for (let i = 1; i <= debt.installmentTotal; i++) {
-                const instDate = new Date(startDate);
-                instDate.setMonth(instDate.getMonth() + (i - 1));
-                const instDateStr = instDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+                let instDateStr;
+                if (instDates[i - 1]) {
+                    const parts = instDates[i - 1].split('-');
+                    instDateStr = parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : instDates[i - 1];
+                } else {
+                    const startDate = new Date(debt.date);
+                    const instDate = new Date(startDate);
+                    const period = debt.installmentPeriod || 1;
+                    instDate.setMonth(instDate.getMonth() + ((i - 1) * period));
+                    instDateStr = instDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+                }
                 const isPaid = instPaid >= i;
                 const isPartial = !isPaid && instPaid > i - 1 && instPaid < i;
                 const checked = isPaid || isPartial;

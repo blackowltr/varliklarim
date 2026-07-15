@@ -1,0 +1,185 @@
+/* ═══════════════════════════════════════════════════════════
+   salary.css — Salary & income tracking styles
+   ═══════════════════════════════════════════════════════════ */
+
+/* Salary Cards */
+.salary-card {
+    background: var(--bg-card); border-radius: 14px; border: 1px solid var(--border-soft);
+    margin-bottom: 12px; display: flex; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s, transform 0.15s;
+}
+.salary-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    transform: translateY(-1px);
+}
+
+.salary-card-accent {
+    width: 4px; flex-shrink: 0;
+    background: linear-gradient(180deg, var(--green), #34d399);
+}
+
+.salary-card-body {
+    flex: 1; padding: 16px;
+}
+
+.salary-card-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+}
+.salary-card-month {
+    font-size: 0.78rem; font-weight: 700; color: var(--text-primary);
+    display: flex; align-items: center; gap: 6px;
+}
+.salary-card-delete {
+    background: none; border: none; cursor: pointer; padding: 6px;
+    color: var(--text-tertiary); border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+    display: flex; align-items: center; justify-content: center;
+}
+.salary-card-delete:hover { background: var(--red-bg, rgba(220,53,69,0.1)); color: var(--red); }
+.salary-card-delete svg { width: 14px; height: 14px; display: block; }
+
+/* Hero section */
+.salary-card-hero {
+    margin-bottom: 16px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-soft);
+}
+.salary-card-hero-label {
+    font-size: 0.6rem; color: var(--text-tertiary); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+}
+.salary-card-hero-value {
+    font-size: 1.35rem; font-weight: 800; color: var(--green);
+    font-variant-numeric: tabular-nums; line-height: 1.2;
+}
+.salary-card-hero-sub {
+    font-size: 0.68rem; color: var(--text-tertiary); font-weight: 500;
+    margin-top: 3px;
+}
+
+/* Detail grid */
+.salary-card-details {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-bottom: 14px;
+}
+.salary-card-detail {
+    display: flex; align-items: center; gap: 10px;
+}
+.salary-cd-icon {
+    width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.salary-cd-icon svg { width: 14px; height: 14px; }
+
+.salary-cd-polsan { background: rgba(220,38,38,0.1); color: var(--red); }
+.salary-cd-other { background: rgba(100,116,139,0.1); color: var(--text-secondary); }
+.salary-cd-bonus { background: rgba(217,119,6,0.1); color: var(--gold); }
+.salary-cd-save { background: rgba(13,148,136,0.1); color: #0d9488; }
+
+.salary-cd-body {
+    display: flex; flex-direction: column; gap: 1px; min-width: 0;
+}
+.salary-cd-label {
+    font-size: 0.55rem; color: var(--text-tertiary); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.salary-cd-value {
+    font-size: 0.8rem; font-weight: 700; color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Savings bar */
+.salary-card-savings-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+}
+.salary-card-savings-bar-track {
+    flex: 1; height: 6px; border-radius: 3px;
+    background: var(--hover-bg); overflow: hidden;
+}
+.salary-card-savings-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, #0d9488, #5eead4);
+    transition: width 0.3s ease;
+}
+.salary-card-savings-bar-label {
+    font-size: 0.65rem; font-weight: 700; color: #0d9488;
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+
+/* Notes */
+.salary-card-notes {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-soft);
+    font-size: 0.72rem; color: var(--text-secondary);
+    display: flex; align-items: flex-start; gap: 6px;
+}
+
+/* Polsan section */
+.salary-polsan-section {
+    background: var(--bg-card); border-radius: 14px; border: 1px solid var(--border-soft);
+    padding: 16px 18px; margin-top: 12px;
+}
+.salary-polsan-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.salary-polsan-header svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--gold); }
+.salary-polsan-title { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); }
+
+.salary-polsan-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.salary-polsan-row label { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); min-width: 120px; }
+.salary-polsan-row .input-field { width: 120px; }
+.salary-polsan-row .btn-small {
+    padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer;
+    font-size: 0.75rem; font-weight: 600; color: #fff;
+    background: linear-gradient(135deg, var(--gold), #7A5C00);
+    transition: opacity 0.15s;
+}
+.salary-polsan-row .btn-small:hover { opacity: 0.85; }
+
+.salary-dividend-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--border-soft);
+}
+.salary-dividend-row:last-child { border-bottom: none; }
+.salary-dividend-year {
+    font-size: 0.82rem; font-weight: 700; color: var(--text-primary); min-width: 60px;
+}
+.salary-dividend-amount {
+    font-size: 0.85rem; font-weight: 800; color: var(--green); margin-left: auto;
+}
+.salary-dividend-del {
+    background: none; border: none; cursor: pointer; padding: 4px;
+    color: var(--text-tertiary); border-radius: 6px; transition: color 0.15s;
+    display: flex; align-items: center;
+}
+.salary-dividend-del:hover { color: var(--red); }
+.salary-dividend-del svg { width: 13px; height: 13px; }
+
+/* Dividend form inline */
+.dividend-form-inline {
+    display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+}
+.dividend-form-inline .input-field { width: 100px; }
+.dividend-form-inline button {
+    padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer;
+    font-size: 0.75rem; font-weight: 600; color: #fff;
+    background: linear-gradient(135deg, var(--green), #0d9488);
+    transition: opacity 0.15s;
+}
+.dividend-form-inline button:hover { opacity: 0.85; }
+
+/* Mobile */
+@media (max-width: 600px) {
+    .salary-card-hero-value { font-size: 1.15rem; }
+    .salary-card-details { gap: 8px; }
+    .salary-cd-icon { width: 26px; height: 26px; }
+    .salary-cd-icon svg { width: 12px; height: 12px; }
+    .salary-cd-value { font-size: 0.75rem; }
+    .salary-polsan-row { flex-direction: column; align-items: stretch; gap: 6px; }
+    .salary-polsan-row .input-field { width: 100%; }
+    .dividend-form-inline .input-field { width: 80px; }
+}

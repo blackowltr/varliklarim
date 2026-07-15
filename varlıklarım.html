@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/stats.css">
     <link rel="stylesheet" href="css/debts.css">
     <link rel="stylesheet" href="css/expenses.css">
+    <link rel="stylesheet" href="css/salary.css">
     <link rel="stylesheet" href="css/settings.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -46,6 +47,7 @@
             <button type="button" class="btn-nav" id="nav-stats" onclick="switchTab('stats')">İstatistikler</button>
             <button type="button" class="btn-nav" id="nav-debts" onclick="switchTab('debts')">Borçlarım</button>
             <button type="button" class="btn-nav" id="nav-expenses" onclick="switchTab('expenses')">Giderler</button>
+            <button type="button" class="btn-nav" id="nav-salary" onclick="switchTab('salary')">Maaşım</button>
             <button type="button" class="btn-nav" id="nav-subscriptions" onclick="toggleSubscriptionsView()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 Abonelikler
@@ -207,11 +209,21 @@
                             </div>
                             <div class="debt-form-group">
                                 <label>Toplam Taksit Sayısı</label>
-                                <input type="number" id="debt-installment-total" class="input-field" min="2" max="120" placeholder="Örn: 12">
+                                <input type="number" id="debt-installment-total" class="input-field" min="2" max="120" placeholder="Örn: 12" oninput="toggleInstallmentPeriodField()">
                             </div>
                             <div class="debt-form-group">
                                 <label>Aylık Taksit Tutarı (TL)</label>
                                 <input type="number" id="debt-installment-monthly" class="input-field" step="0.01" min="0.01" placeholder="Otomatik hesaplanır">
+                            </div>
+                            <div class="debt-form-group" id="debt-installment-period-group">
+                                <label>Taksit Periyodu</label>
+                                <select id="debt-installment-period" class="input-field">
+                                    <option value="1">Her ay</option>
+                                    <option value="2">2 ayda bir</option>
+                                    <option value="3">3 ayda bir (çeyrek)</option>
+                                    <option value="6">6 ayda bir</option>
+                                    <option value="12">Yılda bir</option>
+                                </select>
                             </div>
                             <div class="installment-hint" id="installment-hint"></div>
                         </div>
@@ -453,6 +465,188 @@
                     </div>
                     <div class="card-body">
                         <div id="expense-list-container"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- MAAŞ YÖNETİMİ SAYFASI -->
+    <div id="salary-view" style="display:none;">
+        <div class="page-header">
+            <div class="page-header-eyebrow">Gelir Takibi</div>
+            <h1>Maaş Yönetimi</h1>
+            <div class="page-header-sub">Aylık maaş, promosyon, kesinti ve tasarruf bilgilerinizi kaydedin.</div>
+        </div>
+
+        <div class="debt-stats-strip" id="salary-stats-strip">
+            <div class="debt-stat-card">
+                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                </div>
+                <div class="debt-stat-body">
+                    <div class="debt-stat-label">Yıllık Brüt</div>
+                    <div class="debt-stat-value" id="salary-total-gross">0 TL</div>
+                </div>
+            </div>
+            <div class="debt-stat-card">
+                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#2563eb,#60a5fa);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="debt-stat-body">
+                    <div class="debt-stat-label">Yıllık Net</div>
+                    <div class="debt-stat-value" id="salary-total-net">0 TL</div>
+                </div>
+            </div>
+            <div class="debt-stat-card">
+                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="15" r="2"/></svg>
+                </div>
+                <div class="debt-stat-body">
+                    <div class="debt-stat-label">Toplam Tasarruf</div>
+                    <div class="debt-stat-value" id="salary-total-savings">0 TL</div>
+                </div>
+            </div>
+            <div class="debt-stat-card">
+                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#d97706,#fbbf24);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </div>
+                <div class="debt-stat-body">
+                    <div class="debt-stat-label">Tasarruf Oranı</div>
+                    <div class="debt-stat-value" id="salary-savings-rate">%0</div>
+                </div>
+            </div>
+            <div class="debt-stat-card">
+                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                </div>
+                <div class="debt-stat-body">
+                    <div class="debt-stat-label">Promosyon</div>
+                    <div class="debt-stat-value" id="salary-total-bonuses">0 TL</div>
+                </div>
+            </div>
+            <div class="debt-stat-card">
+                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#dc2626,#f87171);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"/><circle cx="12" cy="12" r="10"/></svg>
+                </div>
+                <div class="debt-stat-body">
+                    <div class="debt-stat-label">Polsan Kesinti</div>
+                    <div class="debt-stat-value" id="salary-total-polsan-ded">0 TL</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <aside class="sidebar">
+                <div class="debt-form-card">
+                    <div class="debt-form-header">
+                        <div class="debt-form-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                        </div>
+                        <div class="debt-form-header-text">
+                            <div class="debt-form-title">Maaş Bilgisi Ekle</div>
+                            <div class="debt-form-sub">Aylık brüt/net maaş, promosyon ve tasarruf girin.</div>
+                        </div>
+                    </div>
+                    <form id="salary-form" onsubmit="addSalaryEntry(event)">
+                        <div class="debt-form-group">
+                            <label>Ay</label>
+                            <input type="month" id="salary-month" class="input-field" required>
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Brüt Maaş (TL)</label>
+                            <input type="number" id="salary-gross" step="0.01" min="0.01" class="input-field" placeholder="Örn: 50000" required>
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Net Maaş (TL)</label>
+                            <input type="number" id="salary-net" step="0.01" min="0.01" class="input-field" placeholder="Örn: 35000" required>
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Polsan Kesintisi (TL)</label>
+                            <input type="number" id="salary-polsan" step="0.01" min="0" class="input-field" placeholder="Örn: 500">
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Diğer Kesintiler (TL)</label>
+                            <input type="number" id="salary-other-ded" step="0.01" min="0" class="input-field" placeholder="Opsiyonel">
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Ek Promosyon / İkramiye (TL)</label>
+                            <input type="number" id="salary-bonuses" step="0.01" min="0" class="input-field" placeholder="Opsiyonel">
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Bu Aydan Tasarruf (TL)</label>
+                            <input type="number" id="salary-savings" step="0.01" min="0" class="input-field" placeholder="Ne kadar biriktirdiniz?">
+                        </div>
+                        <div class="debt-form-group">
+                            <label>Not (Opsiyonel)</label>
+                            <input type="text" id="salary-notes" class="input-field" placeholder="Örn: Zam geldi, ikramiye alındı...">
+                        </div>
+                        <button type="submit" class="debt-form-submit" style="background:linear-gradient(135deg,#059669,#34d399); box-shadow:0 2px 12px rgba(5,150,105,0.18);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span>Maaş Kaydet</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="debt-form-card" style="margin-top:1rem;">
+                    <div class="debt-form-header">
+                        <div class="debt-form-icon" style="background:linear-gradient(135deg,#d97706,#fbbf24);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div class="debt-form-header-text">
+                            <div class="debt-form-title">Polsan Yönetimi</div>
+                            <div class="debt-form-sub">Hisse adedi ve yıllık temettü bilgileri.</div>
+                        </div>
+                    </div>
+                    <div class="debt-form-group">
+                        <label>Polsan Hisse Adedi</label>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <input type="number" id="salary-polsan-shares-input" class="input-field" min="0" step="1" placeholder="Örn: 100" style="width:120px;">
+                            <button type="button" class="debt-form-submit" style="width:auto; padding:8px 16px; background:linear-gradient(135deg,var(--gold),#7A5C00); box-shadow:none;" onclick="savePolsanShares()">Kaydet</button>
+                        </div>
+                    </div>
+                    <div class="debt-form-group">
+                        <label>Yıllık Temettü Ekle</label>
+                        <form id="dividend-form" onsubmit="addSalaryDividend(event)" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                            <input type="number" id="dividend-year" class="input-field" min="2000" max="2100" step="1" placeholder="Yıl" style="width:90px;" required>
+                            <input type="number" id="dividend-amount" class="input-field" min="0.01" step="0.01" placeholder="Tutar TL" style="width:110px;" required>
+                            <button type="submit" style="padding:8px 14px; border-radius:8px; border:none; cursor:pointer; font-size:0.75rem; font-weight:600; color:#fff; background:linear-gradient(135deg,var(--gold),#7A5C00);">Ekle</button>
+                        </form>
+                    </div>
+                    <div id="salary-dividend-list"></div>
+                    <div style="display:flex; gap:16px; margin-top:10px; padding-top:10px; border-top:1px solid var(--border-soft);">
+                        <div style="display:flex; flex-direction:column; gap:1px;">
+                            <span style="font-size:0.6rem; color:var(--text-tertiary); font-weight:600; text-transform:uppercase;">Hisse</span>
+                            <span style="font-size:0.85rem; font-weight:700;" id="salary-polsan-shares">0 Adet</span>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:1px;">
+                            <span style="font-size:0.6rem; color:var(--text-tertiary); font-weight:600; text-transform:uppercase;">Toplam Temettü</span>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--green);" id="salary-total-dividends">0 TL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="debt-form-submit" style="margin-top:1rem; width:100%; background:var(--bg-card); color:var(--text-secondary); border:1.5px solid var(--border-strong); box-shadow:none;" onclick="switchTab('dashboard')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    Ana Ekrana Dön
+                </button>
+            </aside>
+
+            <section class="main-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-left">
+                            <div class="card-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                            </div>
+                            <div>
+                                <div class="card-title">Aylık Maaş Kayıtları</div>
+                                <div class="card-sub">Toplam <span id="salary-count-entries">0</span> kayıt</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="salary-list"></div>
                     </div>
                 </div>
             </section>
@@ -1053,6 +1247,15 @@
             <span class="mobile-nav-label">Giderler</span>
         </button>
 
+        <button type="button" class="mobile-nav-item" data-target="salary" onclick="switchTab('salary')">
+            <div class="mobile-nav-icon" style="color:var(--green);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/>
+                </svg>
+            </div>
+            <span class="mobile-nav-label" style="color:var(--green);">Maaşım</span>
+        </button>
+
         <button type="button" class="mobile-nav-item" data-target="subscriptions" onclick="toggleSubscriptionsView()">
             <div class="mobile-nav-icon" style="color:var(--gold);">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1091,6 +1294,7 @@
 <script src="js/expenses.js"></script>
 <script src="js/export.js"></script>
 <script src="js/charts.js"></script>
+<script src="js/salary.js"></script>
 <script src="js/app.js"></script>
 
 </body>
