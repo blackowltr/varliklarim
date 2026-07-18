@@ -479,59 +479,59 @@
             <div class="page-header-sub">Aylık maaş, promosyon, kesinti ve tasarruf bilgilerinizi kaydedin.</div>
         </div>
 
-        <div class="debt-stats-strip" id="salary-stats-strip">
-            <div class="debt-stat-card">
-                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+        <div class="salary-stats-strip" id="salary-stats-strip">
+            <div class="salary-stat-card salary-stat-gross">
+                <div class="salary-stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
                 </div>
-                <div class="debt-stat-body">
-                    <div class="debt-stat-label">Yıllık Brüt</div>
-                    <div class="debt-stat-value" id="salary-total-gross">0 TL</div>
-                </div>
-            </div>
-            <div class="debt-stat-card">
-                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#2563eb,#60a5fa);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                </div>
-                <div class="debt-stat-body">
-                    <div class="debt-stat-label">Yıllık Net</div>
-                    <div class="debt-stat-value" id="salary-total-net">0 TL</div>
+                <div class="salary-stat-body">
+                    <div class="salary-stat-label">Yıllık Brüt</div>
+                    <div class="salary-stat-value" id="salary-total-gross">0 TL</div>
                 </div>
             </div>
-            <div class="debt-stat-card">
-                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#0d9488,#5eead4);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="15" r="2"/></svg>
+            <div class="salary-stat-card salary-stat-net">
+                <div class="salary-stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
-                <div class="debt-stat-body">
-                    <div class="debt-stat-label">Toplam Tasarruf</div>
-                    <div class="debt-stat-value" id="salary-total-savings">0 TL</div>
-                </div>
-            </div>
-            <div class="debt-stat-card">
-                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#d97706,#fbbf24);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                </div>
-                <div class="debt-stat-body">
-                    <div class="debt-stat-label">Tasarruf Oranı</div>
-                    <div class="debt-stat-value" id="salary-savings-rate">%0</div>
+                <div class="salary-stat-body">
+                    <div class="salary-stat-label">Yıllık Net</div>
+                    <div class="salary-stat-value" id="salary-total-net">0 TL</div>
                 </div>
             </div>
-            <div class="debt-stat-card">
-                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+            <div class="salary-stat-card salary-stat-save">
+                <div class="salary-stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="15" r="2"/></svg>
                 </div>
-                <div class="debt-stat-body">
-                    <div class="debt-stat-label">Promosyon</div>
-                    <div class="debt-stat-value" id="salary-total-bonuses">0 TL</div>
+                <div class="salary-stat-body">
+                    <div class="salary-stat-label">Toplam Tasarruf</div>
+                    <div class="salary-stat-value" id="salary-total-savings">0 TL</div>
                 </div>
             </div>
-            <div class="debt-stat-card">
-                <div class="debt-stat-icon" style="background:linear-gradient(135deg,#dc2626,#f87171);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"/><circle cx="12" cy="12" r="10"/></svg>
+            <div class="salary-stat-card salary-stat-rate">
+                <div class="salary-stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
                 </div>
-                <div class="debt-stat-body">
-                    <div class="debt-stat-label">Polsan Kesinti</div>
-                    <div class="debt-stat-value" id="salary-total-polsan-ded">0 TL</div>
+                <div class="salary-stat-body">
+                    <div class="salary-stat-label">Tasarruf Oranı</div>
+                    <div class="salary-stat-value" id="salary-savings-rate">%0</div>
+                </div>
+            </div>
+            <div class="salary-stat-card salary-stat-bonus">
+                <div class="salary-stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                </div>
+                <div class="salary-stat-body">
+                    <div class="salary-stat-label">Promosyon</div>
+                    <div class="salary-stat-value" id="salary-total-bonuses">0 TL</div>
+                </div>
+            </div>
+            <div class="salary-stat-card salary-stat-polsan">
+                <div class="salary-stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"/><circle cx="12" cy="12" r="10"/></svg>
+                </div>
+                <div class="salary-stat-body">
+                    <div class="salary-stat-label">Polsan Kesinti</div>
+                    <div class="salary-stat-value" id="salary-total-polsan-ded">0 TL</div>
                 </div>
             </div>
         </div>
@@ -613,15 +613,15 @@
                             <button type="submit" style="padding:8px 14px; border-radius:8px; border:none; cursor:pointer; font-size:0.75rem; font-weight:600; color:#fff; background:linear-gradient(135deg,var(--gold),#7A5C00);">Ekle</button>
                         </form>
                     </div>
-                    <div id="salary-dividend-list"></div>
-                    <div style="display:flex; gap:16px; margin-top:10px; padding-top:10px; border-top:1px solid var(--border-soft);">
-                        <div style="display:flex; flex-direction:column; gap:1px;">
-                            <span style="font-size:0.6rem; color:var(--text-tertiary); font-weight:600; text-transform:uppercase;">Hisse</span>
-                            <span style="font-size:0.85rem; font-weight:700;" id="salary-polsan-shares">0 Adet</span>
+                    <div id="salary-dividend-list" class="salary-dividend-list"></div>
+                    <div class="salary-polsan-summary">
+                        <div class="salary-polsan-summary-item">
+                            <span class="salary-polsan-summary-label">Hisse</span>
+                            <span class="salary-polsan-summary-value" id="salary-polsan-shares">0 Adet</span>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:1px;">
-                            <span style="font-size:0.6rem; color:var(--text-tertiary); font-weight:600; text-transform:uppercase;">Toplam Temettü</span>
-                            <span style="font-size:0.85rem; font-weight:700; color:var(--green);" id="salary-total-dividends">0 TL</span>
+                        <div class="salary-polsan-summary-item">
+                            <span class="salary-polsan-summary-label">Toplam Temettü</span>
+                            <span class="salary-polsan-summary-value" style="color:#059669;" id="salary-total-dividends">0 TL</span>
                         </div>
                     </div>
                 </div>
