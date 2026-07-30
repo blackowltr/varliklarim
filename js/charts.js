@@ -190,22 +190,19 @@
             `).join('');
         }
 
-        const goalInp = document.getElementById('target-input');
-        const goal = (goalInp ? parseFloat(goalInp.value) : 1000000) || 1000000;
-        const pct = Math.min((totalVal / goal) * 100, 100);
-        const pctFixed = pct.toFixed(1);
+         const goalInp = document.getElementById('target-input');
+         const goal = (goalInp ? parseFloat(goalInp.value) : 1000000) || 1000000;
+         const pct = Math.min((totalVal / goal) * 100, 100);
+         const pctFixed = pct.toFixed(1);
 
-        // SVG Ring
-        const ringFill = document.getElementById('goal-ring-fill');
-        if (ringFill) {
-            const circumference = 2 * Math.PI * 52;
-            const offset = circumference * (1 - pct / 100);
-            ringFill.style.strokeDashoffset = offset;
-        }
-        const ringPct = document.getElementById('goal-ring-pct');
-        if (ringPct) ringPct.innerText = `%${pctFixed}`;
+         // 3D Progress Ring
+         setGoalProgress(pct);
+         setTimeout(resizeProgressRing, 50);
 
-        document.getElementById('goal-pct-text').innerText = `%${pctFixed} Tamamlandı`;
+         const ringPct = document.getElementById('goal-ring-pct');
+         if (ringPct) ringPct.innerText = `%${pctFixed}`;
+
+         document.getElementById('goal-pct-text').innerText = `%${pctFixed} Tamamlandı`;
         document.getElementById('goal-val-text').innerText = `${totalVal.toLocaleString('tr-TR', {maximumFractionDigits:0})} TL / ${goal.toLocaleString('tr-TR')} TL hedefine ulaşıldı.`;
 
         if(typeof Chart !== 'undefined') {

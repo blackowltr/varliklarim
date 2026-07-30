@@ -19,14 +19,13 @@ function addSalaryEntry(e) {
     const data = getSalaryData();
     const month = document.getElementById('salary-month').value;
     const net = parseFloat(document.getElementById('salary-net').value);
-    const gross = parseFloat(document.getElementById('salary-gross').value) || 0;
     const bonuses = parseFloat(document.getElementById('salary-bonuses').value) || 0;
 
     if (!month) { showToast('Ay seçin', 'error'); return; }
     if (isNaN(net) || net <= 0) { showToast('Geçerli net maaş girin', 'error'); return; }
 
     const existingIdx = data.entries.findIndex(e => e.month === month);
-    const entry = { month, netSalary: net, grossSalary: gross, bonuses, id: Date.now() };
+    const entry = { month, netSalary: net, bonuses, id: Date.now() };
 
     if (existingIdx >= 0) {
         data.entries[existingIdx] = entry;
@@ -70,14 +69,12 @@ function updateSalaryUI() {
     const countEl = document.getElementById('salary-count-entries');
     if (countEl) countEl.textContent = data.entries.length;
 
-    let totalGross = 0, totalNet = 0, totalBonuses = 0;
+    let totalNet = 0, totalBonuses = 0;
     data.entries.forEach(e => {
-        totalGross += e.grossSalary || 0;
         totalNet += e.netSalary || 0;
         totalBonuses += e.bonuses || 0;
     });
 
-    document.getElementById('salary-total-gross').textContent = totalGross.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' TL';
     document.getElementById('salary-total-net').textContent = totalNet.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' TL';
     document.getElementById('salary-total-bonuses').textContent = totalBonuses.toLocaleString('tr-TR', {minimumFractionDigits:2}) + ' TL';
 
@@ -91,7 +88,6 @@ function updateSalaryUI() {
     sorted.forEach(e => {
         const monthName = formatMonth(e.month);
         const net = e.netSalary || 0;
-        const gross = e.grossSalary || 0;
         const bonuses = e.bonuses || 0;
 
         container.insertAdjacentHTML('beforeend', `
@@ -108,7 +104,6 @@ function updateSalaryUI() {
                 <div class="s-card-body">
                     <div class="s-card-net">${net.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</div>
                     <div class="s-card-meta">
-                        ${gross > 0 ? `<span>Brüt: ${gross.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL</span>` : ''}
                         ${bonuses > 0 ? `<span class="s-card-bonus">+${bonuses.toLocaleString('tr-TR', {minimumFractionDigits:2})} TL promosyon</span>` : ''}
                     </div>
                 </div>

@@ -22,6 +22,7 @@
             }
         }
 
+        initProgressRing();
         if (tab === 'stats') renderStats();
         if (tab === 'debts') updateDebtsUI();
         if (tab === 'expenses') updateExpensesUI();
@@ -246,15 +247,22 @@
             }, { passive: true });
         }
 
-        // URL hash ile gizli sayfa yönlendirmesi (örn: #expenses)
-        if (window.location.hash) {
-            const hashTab = window.location.hash.replace('#', '');
-            const validTabs = ['dashboard', 'stats', 'expenses', 'debts', 'settings'];
-            if (validTabs.includes(hashTab)) {
-                setTimeout(() => switchTab(hashTab), 100);
-            }
-        }
-    });
+         // URL hash ile gizli sayfa yönlendirmesi (örn: #expenses)
+         if (window.location.hash) {
+             const hashTab = window.location.hash.replace('#', '');
+             const validTabs = ['dashboard', 'stats', 'expenses', 'debts', 'settings'];
+             if (validTabs.includes(hashTab)) {
+                 setTimeout(() => switchTab(hashTab), 100);
+             }
+         }
+
+         // Resize handler for 3D progress ring
+         let ringResizeTimeout;
+         window.addEventListener('resize', () => {
+             clearTimeout(ringResizeTimeout);
+             ringResizeTimeout = setTimeout(resizeProgressRing, 200);
+         });
+     });
 
     // Floating Action Button Menu
     function toggleFabMenu() {

@@ -31,6 +31,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
 
@@ -266,21 +267,10 @@
                     </div>
                 </div>
                 <div class="stats-hero-right">
-                    <div class="stats-ring-wrap">
-                        <svg class="stats-ring" viewBox="0 0 120 120">
-                            <defs>
-                                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#00939E"/>
-                                    <stop offset="100%" stop-color="#2ECBD6"/>
-                                </linearGradient>
-                            </defs>
-                            <circle class="stats-ring-bg" cx="60" cy="60" r="52" />
-                            <circle class="stats-ring-fill" id="goal-ring-fill" cx="60" cy="60" r="52" />
-                        </svg>
-                        <div class="stats-ring-label">
-                            <span class="stats-ring-pct" id="goal-ring-pct">%0</span>
-                            <span class="stats-ring-sub">hedef</span>
-                        </div>
+                    <div class="stats-ring-wrap" id="stats-ring-wrap"></div>
+                    <div class="stats-ring-label">
+                        <span class="stats-ring-pct" id="goal-ring-pct">%0</span>
+                        <span class="stats-ring-sub">hedef</span>
                     </div>
                 </div>
             </div>
@@ -921,20 +911,11 @@
         <div class="salary-strip">
             <div class="salary-hcard salary-hcard-full">
                 <div class="salary-hcard-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 8h8M12 8v8"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="12" y1="7" x2="12" y2="17"/></svg>
                 </div>
                 <div class="salary-hcard-body">
                     <div class="salary-hcard-label">Yıllık Net</div>
                     <div class="salary-hcard-value" id="salary-total-net">0 TL</div>
-                </div>
-            </div>
-            <div class="salary-hcard">
-                <div class="salary-hcard-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
-                </div>
-                <div class="salary-hcard-body">
-                    <div class="salary-hcard-label">Yıllık Brüt</div>
-                    <div class="salary-hcard-value" id="salary-total-gross">0 TL</div>
                 </div>
             </div>
             <div class="salary-hcard">
@@ -954,7 +935,7 @@
                 <div class="debt-form-card">
                     <div class="debt-form-header">
                         <div class="debt-form-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 8h8M12 8v8"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="12" y1="7" x2="12" y2="17"/></svg>
                         </div>
                         <div class="debt-form-header-text">
                             <div class="debt-form-title">Maaş Ekle</div>
@@ -975,13 +956,6 @@
                                 Net Maaş (TL)
                             </label>
                             <input type="number" id="salary-net" step="0.01" min="0.01" class="input-field" placeholder="Örn: 35.000" required>
-                        </div>
-                        <div class="debt-form-group">
-                            <label>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.5;"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
-                                Brüt Maaş (TL) <span style="font-weight:400;color:var(--text-tertiary);">— isteğe bağlı</span>
-                            </label>
-                            <input type="number" id="salary-gross" step="0.01" min="0" class="input-field" placeholder="Örn: 50.000">
                         </div>
                         <div class="debt-form-group">
                             <label>
@@ -1652,18 +1626,19 @@
 <!-- MOBİL FORMLAR İÇİN KAPLAMA -->
 <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeFormSheet()" style="display: none"></div>
 
-<script src="js/state.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/router.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/gold.js"></script>
-<script src="js/debts.js"></script>
-<script src="js/modals.js"></script>
-<script src="js/expenses.js"></script>
-<script src="js/export.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/salary.js"></script>
-<script src="js/app.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/gold.js"></script>
+    <script src="js/debts.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/expenses.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/three-progress.js"></script>
+    <script src="js/salary.js"></script>
+    <script src="js/app.js"></script>
 
 <!-- PULL TO REFRESH INDICATOR -->
 <div class="pull-to-refresh-indicator" id="pull-refresh-indicator">
