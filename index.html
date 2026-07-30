@@ -921,7 +921,7 @@
         <div class="salary-strip">
             <div class="salary-hcard salary-hcard-full">
                 <div class="salary-hcard-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 8h8M12 8v8"/></svg>
                 </div>
                 <div class="salary-hcard-body">
                     <div class="salary-hcard-label">Yıllık Net</div>
@@ -930,7 +930,7 @@
             </div>
             <div class="salary-hcard">
                 <div class="salary-hcard-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
                 </div>
                 <div class="salary-hcard-body">
                     <div class="salary-hcard-label">Yıllık Brüt</div>
@@ -939,7 +939,7 @@
             </div>
             <div class="salary-hcard">
                 <div class="salary-hcard-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
                 <div class="salary-hcard-body">
                     <div class="salary-hcard-label">Promosyon</div>
@@ -954,7 +954,7 @@
                 <div class="debt-form-card">
                     <div class="debt-form-header">
                         <div class="debt-form-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 8h8M12 8v8"/></svg>
                         </div>
                         <div class="debt-form-header-text">
                             <div class="debt-form-title">Maaş Ekle</div>
@@ -963,30 +963,42 @@
                     </div>
                     <form id="salary-form" onsubmit="addSalaryEntry(event)">
                         <div class="debt-form-group">
-                            <label>Ay</label>
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.5;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                Ay
+                            </label>
                             <input type="month" id="salary-month" class="input-field" required>
                         </div>
                         <div class="debt-form-group">
-                            <label>Net Maaş (TL)</label>
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.5;"><rect x="2" y="6" width="20" height="14" rx="2"/><circle cx="12" cy="13" r="3"/></svg>
+                                Net Maaş (TL)
+                            </label>
                             <input type="number" id="salary-net" step="0.01" min="0.01" class="input-field" placeholder="Örn: 35.000" required>
                         </div>
                         <div class="debt-form-group">
-                            <label>Brüt Maaş (TL) <span style="font-weight:400;color:var(--text-tertiary);">— isteğe bağlı</span></label>
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.5;"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
+                                Brüt Maaş (TL) <span style="font-weight:400;color:var(--text-tertiary);">— isteğe bağlı</span>
+                            </label>
                             <input type="number" id="salary-gross" step="0.01" min="0" class="input-field" placeholder="Örn: 50.000">
                         </div>
                         <div class="debt-form-group">
-                            <label>Promosyon / İkramiye (TL) <span style="font-weight:400;color:var(--text-tertiary);">— isteğe bağlı</span></label>
+                            <label>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.5;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                Promosyon / İkramiye (TL) <span style="font-weight:400;color:var(--text-tertiary);">— isteğe bağlı</span>
+                            </label>
                             <input type="number" id="salary-bonuses" step="0.01" min="0" class="input-field" placeholder="Varsa girin">
                         </div>
                         <button type="submit" class="debt-form-submit" style="background:linear-gradient(135deg,#059669,#34d399);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                             <span>Kaydet</span>
                         </button>
                     </form>
                 </div>
 
                 <button type="button" class="debt-form-submit" style="margin-top:1rem; width:100%; background:var(--bg-card); color:var(--text-secondary); border:1.5px solid var(--border-strong); box-shadow:none;" onclick="switchTab('dashboard')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                     Ana Ekran
                 </button>
             </aside>
@@ -996,7 +1008,7 @@
                     <div class="card-header">
                         <div class="card-header-left">
                             <div class="card-icon" style="background:linear-gradient(135deg,#059669,#34d399);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="21 12 13 12 10 8 3 8"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                             </div>
                             <div>
                                 <div class="card-title">Kayıtlar</div>
