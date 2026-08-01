@@ -1,0 +1,200 @@
+/* ============================================================
+   MAAŞ SAYFASI
+   Bu sınıflar index.html'de kullanılıyordu ama style.css'te
+   hiçbir karşılığı yoktu — sayfa tamamen stilsiz açılıyordu.
+   Mevcut kart/stat dili birebir korunarak yazıldı.
+   ============================================================ */
+
+.salary-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.salary-hcard {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.salary-hcard:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Yıllık Net kartı öne çıksın */
+.salary-hcard-full {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--green-light) 100%);
+    border-color: var(--border-strong);
+}
+
+.salary-hcard-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #059669, #34d399);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+}
+
+.salary-hcard-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.salary-hcard-body {
+    min-width: 0;
+}
+
+.salary-hcard-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 3px;
+}
+
+.salary-hcard-value {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.salary-hcard-full .salary-hcard-value {
+    font-size: 1.75rem;
+    color: var(--green);
+}
+
+/* ---- Kayıt listesi ---- */
+
+.salary-avg-note {
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    background: var(--bg-input);
+    border-radius: var(--radius-md);
+}
+
+.salary-avg-note strong {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.salary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.salary-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: var(--transition-linear);
+}
+
+.salary-row:hover {
+    border-color: var(--border-strong);
+    background: var(--hover-bg);
+}
+
+.salary-row-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.salary-row-month {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: capitalize;
+}
+
+.salary-row-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 3px;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums;
+}
+
+.salary-row-bonus {
+    padding: 2px 7px;
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--gold);
+    background: var(--gold-light);
+    white-space: nowrap;
+}
+
+.salary-row-total {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* ---- 3B hedef halkası kabı (three-progress.js) ---- */
+.stats-ring-wrap {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+}
+
+.stats-ring-wrap canvas {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .salary-strip {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .salary-hcard {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .salary-hcard-full .salary-hcard-value {
+        font-size: 1.5rem;
+    }
+
+    .salary-row {
+        padding: 12px 13px;
+        gap: 10px;
+    }
+
+    .salary-row-total {
+        font-size: 0.92rem;
+    }
+}
